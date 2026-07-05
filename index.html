@@ -17,7 +17,11 @@
             --text: #e0e0ff;
             --shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: radial-gradient(circle at 50% 50%, #0a0a2e, #020210);
@@ -30,13 +34,12 @@
         }
         #app {
             width: 100%;
-            max-width: 900px;
+            max-width: 960px;
             margin: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        /* Category cards */
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -60,10 +63,19 @@
             border-color: var(--neon-cyan);
             box-shadow: 0 0 30px var(--neon-cyan), 0 0 60px rgba(255, 0, 255, 0.4);
         }
-        .cat-card .icon { font-size: 3.5rem; filter: drop-shadow(0 0 10px var(--neon-cyan)); }
-        .cat-card h2 { margin: 10px 0 5px; font-size: 1.5rem; text-shadow: 0 0 8px var(--neon-cyan); }
-        .cat-card p { font-size: 0.9rem; color: #aaa; }
-        /* Back button */
+        .cat-card .icon {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 0 10px var(--neon-cyan));
+        }
+        .cat-card h2 {
+            margin: 10px 0 5px;
+            font-size: 1.5rem;
+            text-shadow: 0 0 8px var(--neon-cyan);
+        }
+        .cat-card p {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
         .back-btn {
             background: transparent;
             border: 1px solid var(--neon-cyan);
@@ -75,10 +87,12 @@
             margin-bottom: 20px;
             transition: 0.3s;
             text-shadow: 0 0 5px var(--neon-cyan);
-            box-shadow: 0 0 10px rgba(0,255,255,0.4);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
         }
-        .back-btn:hover { background: rgba(0,255,255,0.15); box-shadow: 0 0 25px var(--neon-cyan); }
-        /* Tool grid */
+        .back-btn:hover {
+            background: rgba(0, 255, 255, 0.15);
+            box-shadow: 0 0 25px var(--neon-cyan);
+        }
         .tool-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -99,20 +113,27 @@
             box-shadow: 0 0 20px var(--neon-magenta);
             transform: translateY(-3px);
         }
-        .tool-item .emoji { font-size: 2rem; filter: drop-shadow(0 0 6px var(--neon-magenta)); }
-        .tool-item h3 { margin: 8px 0 4px; font-size: 1rem; }
-        /* Detail card */
+        .tool-item .emoji {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 6px var(--neon-magenta));
+        }
+        .tool-item h3 {
+            margin: 8px 0 4px;
+            font-size: 1rem;
+        }
         .detail-card {
             background: rgba(15, 15, 35, 0.8);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 24px;
             width: 100%;
-            box-shadow: 0 0 25px rgba(0,255,255,0.2);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
         }
-        textarea, input, select {
+        textarea,
+        input,
+        select {
             width: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border);
             color: white;
             padding: 12px;
@@ -122,40 +143,193 @@
             outline: none;
             transition: 0.2s;
         }
-        textarea:focus, input:focus, select:focus {
+        textarea:focus,
+        input:focus,
+        select:focus {
             border-color: var(--neon-cyan);
-            box-shadow: 0 0 15px rgba(0,255,255,0.4);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
         }
-        textarea { min-height: 120px; resize: vertical; }
-        label { display: block; margin-top: 10px; font-size: 0.8rem; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 1px; }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
         button {
             background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
-            border: none; color: black; padding: 12px 24px; border-radius: 30px;
-            font-weight: bold; cursor: pointer; transition: 0.3s; margin: 5px;
-            box-shadow: 0 0 15px rgba(0,255,255,0.5); text-transform: uppercase;
+            border: none;
+            color: black;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 5px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            text-transform: uppercase;
         }
-        button:hover { filter: brightness(1.2); transform: scale(1.03); }
+        button:hover {
+            filter: brightness(1.2);
+            transform: scale(1.03);
+        }
         .outline-btn {
-            background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
-            box-shadow: none; text-shadow: 0 0 5px var(--neon-cyan);
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            box-shadow: none;
+            text-shadow: 0 0 5px var(--neon-cyan);
         }
         .output-box {
-            background: black; border: 1px solid var(--neon-magenta);
-            border-radius: 10px; padding: 16px; font-family: monospace;
-            min-height: 80px; max-height: 300px; overflow-y: auto;
-            white-space: pre-wrap; color: #ddd; margin: 10px 0;
-            box-shadow: 0 0 15px rgba(255,0,255,0.3);
+            background: black;
+            border: 1px solid var(--neon-magenta);
+            border-radius: 10px;
+            padding: 16px;
+            font-family: monospace;
+            min-height: 80px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: #ddd;
+            margin: 10px 0;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
         }
-        .row { display: flex; gap: 12px; flex-wrap: wrap; }
-        .row > * { flex: 1; min-width: 150px; }
+        .row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .row>* {
+            flex: 1;
+            min-width: 150px;
+        }
         .toast {
-            position: fixed; bottom: 30px; right: 30px;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
             background: linear-gradient(45deg, var(--neon-cyan), var(--neon-magenta));
-            color: black; padding: 12px 24px; border-radius: 30px;
-            font-weight: bold; z-index: 999; box-shadow: 0 0 20px var(--neon-cyan);
+            color: black;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            z-index: 999;
+            box-shadow: 0 0 20px var(--neon-cyan);
             animation: fadeOut 2s forwards;
         }
-        @keyframes fadeOut { 0%{opacity:1} 70%{opacity:1} 100%{opacity:0} }
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Colour Plate Styles */
+        .palette-type-label {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .color-squares-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            margin: 16px 0;
+        }
+        .color-square {
+            width: 95px;
+            height: 95px;
+            border-radius: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 8px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: 0.25s;
+            border: 2px solid transparent;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        .color-square:hover {
+            transform: translateY(-6px) scale(1.06);
+            border-color: white;
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+            z-index: 2;
+        }
+        .color-square .hex-label {
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            pointer-events: none;
+        }
+
+        /* Text Format Chooser Styles */
+        .text-format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 12px;
+        }
+        .text-format-card {
+            background: rgba(20, 20, 45, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .text-format-card:hover {
+            border-color: var(--neon-lime);
+            box-shadow: 0 0 22px rgba(57, 255, 20, 0.25);
+        }
+        .text-format-card .style-name {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--neon-lime);
+            margin-bottom: 4px;
+        }
+        .text-format-card .preview-heading {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .text-format-card .preview-body {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #ccc;
+            margin: 0;
+        }
+        .text-format-card .copy-style-btn {
+            align-self: flex-start;
+            font-size: 0.7rem;
+            padding: 8px 16px;
+            margin: 0;
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>
@@ -167,34 +341,36 @@
         const categories = [
             { id: 'text', icon: '📝', name: 'Text & Encode', desc: 'Encode, decode, generate text' },
             { id: 'design', icon: '🎨', name: 'CSS & Design', desc: 'Gradients, shadows, colors, flexbox' },
-            { id: 'code', icon: '⚡', name: 'Code Tools', desc: 'JSON, minifiers, regex, diff' },
-            { id: 'security', icon: '🔒', name: 'Security', desc: 'Passwords, hashing' }
+            { id: 'code', icon: '💻', name: 'Code Tools', desc: 'JSON, minifiers, regex, diff' },
+            { id: 'security', icon: '🔐', name: 'Security', desc: 'Passwords, hashing' }
         ];
         const tools = {
             text: [
-                { id:'base64', emoji:'🔐', title:'Base64 Encoder/Decoder' },
-                { id:'urlencode', emoji:'🔗', title:'URL Encoder/Decoder' },
-                { id:'wordcounter', emoji:'📊', title:'Word & Character Counter' },
-                { id:'lorem', emoji:'📄', title:'Lorem Ipsum Generator' },
-                { id:'uuid', emoji:'🆔', title:'UUID Generator' }
+                { id: 'base64', emoji: '🔤', title: 'Base64 Encoder/Decoder' },
+                { id: 'urlencode', emoji: '🔗', title: 'URL Encoder/Decoder' },
+                { id: 'wordcounter', emoji: '📊', title: 'Word & Character Counter' },
+                { id: 'lorem', emoji: '📄', title: 'Lorem Ipsum Generator' },
+                { id: 'uuid', emoji: '🆔', title: 'UUID Generator' }
             ],
             design: [
-                { id:'gradient', emoji:'🌈', title:'Gradient Generator' },
-                { id:'boxshadow', emoji:'🔲', title:'Box Shadow Generator' },
-                { id:'colorpicker', emoji:'🎯', title:'Color Picker & Convert' },
-                { id:'contrast', emoji:'👁️', title:'Contrast Checker' },
-                { id:'flexbox', emoji:'📐', title:'Flexbox Playground' }
+                { id: 'gradient', emoji: '🌈', title: 'Gradient Generator' },
+                { id: 'boxshadow', emoji: '📦', title: 'Box Shadow Generator' },
+                { id: 'colorpicker', emoji: '🎯', title: 'Color Picker & Convert' },
+                { id: 'contrast', emoji: '🔍', title: 'Contrast Checker' },
+                { id: 'flexbox', emoji: '📐', title: 'Flexbox Playground' },
+                { id: 'colorplate', emoji: '🎨', title: 'Colour Plate' },
+                { id: 'textformat', emoji: '✨', title: 'Text Format Chooser' }
             ],
             code: [
-                { id:'jsonfmt', emoji:'📋', title:'JSON Formatter' },
-                { id:'cssmin', emoji:'🗜️', title:'CSS Minifier' },
-                { id:'jsmin', emoji:'⚙️', title:'JavaScript Minifier' },
-                { id:'regex', emoji:'🔍', title:'Regex Tester' },
-                { id:'diff', emoji:'🔄', title:'Code Diff Checker' }
+                { id: 'jsonfmt', emoji: '📋', title: 'JSON Formatter' },
+                { id: 'cssmin', emoji: '🗜️', title: 'CSS Minifier' },
+                { id: 'jsmin', emoji: '⚡', title: 'JavaScript Minifier' },
+                { id: 'regex', emoji: '🔎', title: 'Regex Tester' },
+                { id: 'diff', emoji: '🔄', title: 'Code Diff Checker' }
             ],
             security: [
-                { id:'password', emoji:'🔑', title:'Password Generator' },
-                { id:'hash', emoji:'#️⃣', title:'Hash Generator' }
+                { id: 'password', emoji: '🔑', title: 'Password Generator' },
+                { id: 'hash', emoji: '#️⃣', title: 'Hash Generator' }
             ]
         };
 
@@ -205,6 +381,7 @@
             document.getElementById('toastContainer').appendChild(t);
             setTimeout(() => t.remove(), 2000);
         }
+
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => showToast('✅ Copied!'));
         }
@@ -212,7 +389,7 @@
         // RENDER HOME
         function renderHome() {
             app.innerHTML = `
-                <h1 style="font-size:2.5rem; text-shadow:0 0 20px var(--neon-cyan); margin-bottom:10px;">🛠️ DevToolKit Pro</h1>
+                <h1 style="font-size:2.5rem; text-shadow:0 0 20px var(--neon-cyan); margin-bottom:10px;">⚡ DevToolKit Pro</h1>
                 <p style="color:#aaa; margin-bottom:30px;">Professional developer utilities</p>
                 <div class="category-grid">
                     ${categories.map(c => `
@@ -263,28 +440,68 @@
 
         function loadTool(toolId) {
             const container = document.getElementById('toolContainer');
-            switch(toolId) {
-                case 'base64': base64Tool(container); break;
-                case 'urlencode': urlTool(container); break;
-                case 'wordcounter': wordCounterTool(container); break;
-                case 'lorem': loremTool(container); break;
-                case 'uuid': uuidTool(container); break;
-                case 'gradient': gradientTool(container); break;
-                case 'boxshadow': boxShadowTool(container); break;
-                case 'colorpicker': colorPickerTool(container); break;
-                case 'contrast': contrastTool(container); break;
-                case 'flexbox': flexboxTool(container); break;
-                case 'jsonfmt': jsonTool(container); break;
-                case 'cssmin': cssMinTool(container); break;
-                case 'jsmin': jsMinTool(container); break;
-                case 'regex': regexTool(container); break;
-                case 'diff': diffTool(container); break;
-                case 'password': passwordTool(container); break;
-                case 'hash': hashTool(container); break;
+            switch (toolId) {
+                case 'base64':
+                    base64Tool(container);
+                    break;
+                case 'urlencode':
+                    urlTool(container);
+                    break;
+                case 'wordcounter':
+                    wordCounterTool(container);
+                    break;
+                case 'lorem':
+                    loremTool(container);
+                    break;
+                case 'uuid':
+                    uuidTool(container);
+                    break;
+                case 'gradient':
+                    gradientTool(container);
+                    break;
+                case 'boxshadow':
+                    boxShadowTool(container);
+                    break;
+                case 'colorpicker':
+                    colorPickerTool(container);
+                    break;
+                case 'contrast':
+                    contrastTool(container);
+                    break;
+                case 'flexbox':
+                    flexboxTool(container);
+                    break;
+                case 'colorplate':
+                    colorPlateTool(container);
+                    break;
+                case 'textformat':
+                    textFormatTool(container);
+                    break;
+                case 'jsonfmt':
+                    jsonTool(container);
+                    break;
+                case 'cssmin':
+                    cssMinTool(container);
+                    break;
+                case 'jsmin':
+                    jsMinTool(container);
+                    break;
+                case 'regex':
+                    regexTool(container);
+                    break;
+                case 'diff':
+                    diffTool(container);
+                    break;
+                case 'password':
+                    passwordTool(container);
+                    break;
+                case 'hash':
+                    hashTool(container);
+                    break;
             }
         }
 
-        // ---------- TOOL FUNCTIONS (NO QUESTION MARKS IN PLACEHOLDERS/LABELS) ----------
+        // ---------- EXISTING TOOL FUNCTIONS ----------
         function base64Tool(c) {
             c.innerHTML = `
                 <label>Input Text</label>
@@ -298,15 +515,25 @@
                 <div class="output-box" id="b64Out"></div>
                 <button class="outline-btn" id="b64Copy">📋 Copy</button>`;
             document.getElementById('b64Encode').onclick = () => {
-                try { document.getElementById('b64Out').textContent = btoa(unescape(encodeURIComponent(document.getElementById('b64In').value))); }
-                catch(e) { document.getElementById('b64Out').textContent = 'Error: ' + e.message; }
+                try {
+                    document.getElementById('b64Out').textContent = btoa(unescape(encodeURIComponent(document
+                        .getElementById('b64In').value)));
+                } catch (e) {
+                    document.getElementById('b64Out').textContent = 'Error: ' + e.message;
+                }
             };
             document.getElementById('b64Decode').onclick = () => {
-                try { document.getElementById('b64Out').textContent = decodeURIComponent(escape(atob(document.getElementById('b64In').value.trim()))); }
-                catch(e) { document.getElementById('b64Out').textContent = 'Error: Invalid Base64'; }
+                try {
+                    document.getElementById('b64Out').textContent = decodeURIComponent(escape(atob(document
+                        .getElementById('b64In').value.trim())));
+                } catch (e) {
+                    document.getElementById('b64Out').textContent = 'Error: Invalid Base64';
+                }
             };
-            document.getElementById('b64Clear').onclick = () => { document.getElementById('b64In').value = ''; document.getElementById('b64Out').textContent = ''; };
-            document.getElementById('b64Copy').onclick = () => copyText(document.getElementById('b64Out').textContent);
+            document.getElementById('b64Clear').onclick = () => { document.getElementById('b64In').value = '';
+                document.getElementById('b64Out').textContent = ''; };
+            document.getElementById('b64Copy').onclick = () => copyText(document.getElementById('b64Out')
+        .textContent);
         }
 
         function urlTool(c) {
@@ -314,16 +541,21 @@
                 <label>Input Text</label>
                 <textarea id="urlIn" placeholder="Enter text or URL to encode/decode..."></textarea>
                 <div class="row">
-                    <button id="urlEncode">🔒 Encode URL</button>
+                    <button id="urlEncode">🔗 Encode URL</button>
                     <button id="urlDecode" class="outline-btn">🔓 Decode URL</button>
                 </div>
                 <label>Output</label>
                 <div class="output-box" id="urlOut"></div>
                 <button class="outline-btn" id="urlCopy">📋 Copy</button>`;
-            document.getElementById('urlEncode').onclick = () => document.getElementById('urlOut').textContent = encodeURIComponent(document.getElementById('urlIn').value);
+            document.getElementById('urlEncode').onclick = () => document.getElementById('urlOut').textContent =
+                encodeURIComponent(document.getElementById('urlIn').value);
             document.getElementById('urlDecode').onclick = () => {
-                try { document.getElementById('urlOut').textContent = decodeURIComponent(document.getElementById('urlIn').value); }
-                catch(e) { document.getElementById('urlOut').textContent = 'Error: Invalid URL encoding'; }
+                try {
+                    document.getElementById('urlOut').textContent = decodeURIComponent(document.getElementById(
+                    'urlIn').value);
+                } catch (e) {
+                    document.getElementById('urlOut').textContent = 'Error: Invalid URL encoding';
+                }
             };
             document.getElementById('urlCopy').onclick = () => copyText(document.getElementById('urlOut').textContent);
         }
@@ -358,19 +590,24 @@
                 <button id="loremGen">Generate</button>
                 <div class="output-box" id="loremOut"></div>
                 <button class="outline-btn" id="loremCopy">📋 Copy</button>`;
-            const words = "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum".split(' ');
+            const words =
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum"
+                .split(' ');
+
             function generate() {
                 const count = +document.getElementById('loremCount').value || 3;
                 const type = document.getElementById('loremType').value;
                 let res = '';
                 if (type === 'paragraphs') {
                     for (let i = 0; i < count; i++) {
-                        const p = [...words].sort(() => Math.random() - 0.5).slice(0, 30 + Math.floor(Math.random() * 40));
+                        const p = [...words].sort(() => Math.random() - 0.5).slice(0, 30 + Math.floor(Math.random() *
+                            40));
                         res += p.join(' ').charAt(0).toUpperCase() + p.join(' ').slice(1) + '.\n\n';
                     }
                 } else if (type === 'sentences') {
                     for (let i = 0; i < count; i++) {
-                        const s = [...words].sort(() => Math.random() - 0.5).slice(0, 8 + Math.floor(Math.random() * 12));
+                        const s = [...words].sort(() => Math.random() - 0.5).slice(0, 8 + Math.floor(Math.random() *
+                        12));
                         res += s.join(' ').charAt(0).toUpperCase() + s.join(' ').slice(1) + '. ';
                     }
                 } else {
@@ -385,11 +622,12 @@
 
         function uuidTool(c) {
             c.innerHTML = `
-                <button id="uuidGen">🎲 Generate UUIDs</button>
+                <button id="uuidGen">🆔 Generate UUIDs</button>
                 <label>Count</label>
                 <input type="number" id="uuidCount" value="5" min="1" max="50" style="width:100px;">
                 <div class="output-box" id="uuidOut"></div>
                 <button class="outline-btn" id="uuidCopy">📋 Copy All</button>`;
+
             function generate() {
                 const count = +document.getElementById('uuidCount').value || 5;
                 let res = '';
@@ -422,13 +660,16 @@
                 <label>CSS</label>
                 <div class="output-box" id="gradCSS"></div>
                 <button class="outline-btn" id="gradCopy">📋 Copy</button>`;
+
             function update() {
-                const c1 = document.getElementById('gc1').value, c2 = document.getElementById('gc2').value, dir = document.getElementById('gdir').value;
+                const c1 = document.getElementById('gc1').value,
+                    c2 = document.getElementById('gc2').value,
+                    dir = document.getElementById('gdir').value;
                 const css = `background: linear-gradient(${dir}, ${c1}, ${c2});`;
                 document.getElementById('gradPreview').style.background = `linear-gradient(${dir}, ${c1}, ${c2})`;
                 document.getElementById('gradCSS').textContent = css;
             }
-            ['gc1','gc2','gdir'].forEach(id => document.getElementById(id).addEventListener('input', update));
+            ['gc1', 'gc2', 'gdir'].forEach(id => document.getElementById(id).addEventListener('input', update));
             document.getElementById('gradCopy').onclick = () => copyText(document.getElementById('gradCSS').textContent);
             update();
         }
@@ -449,16 +690,22 @@
                 <label>CSS</label>
                 <div class="output-box" id="shadowCSS"></div>
                 <button class="outline-btn" id="shadowCopy">📋 Copy</button>`;
+
             function update() {
-                const x = document.getElementById('bsX').value, y = document.getElementById('bsY').value;
-                const blur = document.getElementById('bsBlur').value, spread = document.getElementById('bsSpread').value;
-                const color = document.getElementById('bsColor').value, inset = document.getElementById('bsInset').checked ? 'inset ' : '';
+                const x = document.getElementById('bsX').value,
+                    y = document.getElementById('bsY').value;
+                const blur = document.getElementById('bsBlur').value,
+                    spread = document.getElementById('bsSpread').value;
+                const color = document.getElementById('bsColor').value,
+                    inset = document.getElementById('bsInset').checked ? 'inset ' : '';
                 const css = `box-shadow: ${inset}${x}px ${y}px ${blur}px ${spread}px ${color};`;
                 document.getElementById('shadowPrev').style.boxShadow = css;
                 document.getElementById('shadowCSS').textContent = css;
             }
-            ['bsX','bsY','bsBlur','bsSpread','bsColor','bsInset'].forEach(id => document.getElementById(id).oninput = update);
-            document.getElementById('shadowCopy').onclick = () => copyText(document.getElementById('shadowCSS').textContent);
+            ['bsX', 'bsY', 'bsBlur', 'bsSpread', 'bsColor', 'bsInset'].forEach(id => document.getElementById(id)
+                .oninput = update);
+            document.getElementById('shadowCopy').onclick = () => copyText(document.getElementById('shadowCSS')
+        .textContent);
             update();
         }
 
@@ -470,17 +717,31 @@
                     <div><label>RGB</label><input type="text" id="cpRGB" readonly></div>
                     <div><label>HSL</label><input type="text" id="cpHSL" readonly></div>
                 </div>`;
+
             function update() {
                 const hex = document.getElementById('cpColor').value;
                 document.getElementById('cpHex').value = hex;
-                const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+                const r = parseInt(hex.slice(1, 3), 16),
+                    g = parseInt(hex.slice(3, 5), 16),
+                    b = parseInt(hex.slice(5, 7), 16);
                 document.getElementById('cpRGB').value = `rgb(${r}, ${g}, ${b})`;
-                const [h,s,l] = rgbToHsl(r,g,b);
+                const [h, s, l] = rgbToHsl(r, g, b);
                 document.getElementById('cpHSL').value = `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
             }
-            function rgbToHsl(r,g,b){ r/=255;g/=255;b/=255; const max=Math.max(r,g,b),min=Math.min(r,g,b); let h,s,l=(max+min)/2; if(max===min)h=s=0; else{const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min); switch(max){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6;break;}} return [h*360,s*100,l*100]; }
+
+            function rgbToHsl(r, g, b) { r /= 255;
+                g /= 255;
+                b /= 255; const max = Math.max(r, g, b),
+                    min = Math.min(r, g, b); let h, s, l = (max + min) / 2; if (max === min) h = s = 0; else { const d =
+                        max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r:
+                        h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break; case g:
+                        h = ((b - r) / d + 2) / 6; break; case b:
+                        h = ((r - g) / d + 4) / 6; break; } } return [h * 360, s * 100, l * 100]; }
             document.getElementById('cpColor').oninput = update;
-            document.getElementById('cpHex').oninput = function() { if(/^#[0-9a-fA-F]{6}$/.test(this.value)) { document.getElementById('cpColor').value = this.value; update(); } };
+            document.getElementById('cpHex').oninput = function() { if (/^#[0-9a-fA-F]{6}$/.test(this.value)) { document
+                        .getElementById('cpColor').value = this.value;
+                    update(); } };
             update();
         }
 
@@ -496,8 +757,10 @@
                     <div><strong id="ccAA">-</strong> AA</div>
                     <div><strong id="ccAAA">-</strong> AAA</div>
                 </div>`;
+
             function update() {
-                const tc = document.getElementById('ccText').value, bg = document.getElementById('ccBg').value;
+                const tc = document.getElementById('ccText').value,
+                    bg = document.getElementById('ccBg').value;
                 document.getElementById('ccPreview').style.color = tc;
                 document.getElementById('ccPreview').style.background = bg;
                 const ratio = getContrastRatio(tc, bg);
@@ -505,8 +768,14 @@
                 document.getElementById('ccAA').textContent = ratio >= 4.5 ? '✅ Pass' : '❌ Fail';
                 document.getElementById('ccAAA').textContent = ratio >= 7 ? '✅ Pass' : '❌ Fail';
             }
-            function getContrastRatio(c1,c2){ const l1=getLuminance(c1),l2=getLuminance(c2); return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05); }
-            function getLuminance(hex){ const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255; const toLin=c=>c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4); return 0.2126*toLin(r)+0.7152*toLin(g)+0.0722*toLin(b); }
+
+            function getContrastRatio(c1, c2) { const l1 = getLuminance(c1),
+                    l2 = getLuminance(c2); return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); }
+
+            function getLuminance(hex) { const r = parseInt(hex.slice(1, 3), 16) / 255,
+                    g = parseInt(hex.slice(3, 5), 16) / 255,
+                    b = parseInt(hex.slice(5, 7), 16) / 255; const toLin = c => c <= 0.03928 ? c / 12.92 : Math.pow((c +
+                        0.055) / 1.055, 2.4); return 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b); }
             document.getElementById('ccText').oninput = update;
             document.getElementById('ccBg').oninput = update;
             update();
@@ -526,13 +795,21 @@
                 <label>CSS</label>
                 <div class="output-box" id="fbCSS"></div>
                 <button class="outline-btn" id="fbCopy">📋 Copy</button>`;
+
             function update() {
-                const j=document.getElementById('fbj').value, a=document.getElementById('fba').value, d=document.getElementById('fbd').value, w=document.getElementById('fbw').value;
+                const j = document.getElementById('fbj').value,
+                    a = document.getElementById('fba').value,
+                    d = document.getElementById('fbd').value,
+                    w = document.getElementById('fbw').value;
                 const box = document.getElementById('fbContainer');
-                box.style.justifyContent = j; box.style.alignItems = a; box.style.flexDirection = d; box.style.flexWrap = w;
-                document.getElementById('fbCSS').textContent = `display: flex;\njustify-content: ${j};\nalign-items: ${a};\nflex-direction: ${d};\nflex-wrap: ${w};`;
+                box.style.justifyContent = j;
+                box.style.alignItems = a;
+                box.style.flexDirection = d;
+                box.style.flexWrap = w;
+                document.getElementById('fbCSS').textContent =
+                    `display: flex;\njustify-content: ${j};\nalign-items: ${a};\nflex-direction: ${d};\nflex-wrap: ${w};`;
             }
-            ['fbj','fba','fbd','fbw'].forEach(id => document.getElementById(id).onchange = update);
+            ['fbj', 'fba', 'fbd', 'fbw'].forEach(id => document.getElementById(id).onchange = update);
             document.getElementById('fbCopy').onclick = () => copyText(document.getElementById('fbCSS').textContent);
             update();
         }
@@ -541,21 +818,30 @@
             c.innerHTML = `
                 <textarea id="jsonIn" placeholder="Paste JSON here..."></textarea>
                 <div class="row">
-                    <button id="jsonFormat">✨ Format</button>
+                    <button id="jsonFormat">📋 Format</button>
                     <button id="jsonMinify" class="outline-btn">🗜️ Minify</button>
                     <button id="jsonClear" class="outline-btn">Clear</button>
                 </div>
                 <div class="output-box" id="jsonOut"></div>
                 <button class="outline-btn" id="jsonCopy">📋 Copy</button>`;
             document.getElementById('jsonFormat').onclick = () => {
-                try { document.getElementById('jsonOut').textContent = JSON.stringify(JSON.parse(document.getElementById('jsonIn').value), null, 2); }
-                catch(e) { document.getElementById('jsonOut').textContent = '❌ Invalid JSON'; }
+                try {
+                    document.getElementById('jsonOut').textContent = JSON.stringify(JSON.parse(document.getElementById(
+                        'jsonIn').value), null, 2);
+                } catch (e) {
+                    document.getElementById('jsonOut').textContent = '❌ Invalid JSON';
+                }
             };
             document.getElementById('jsonMinify').onclick = () => {
-                try { document.getElementById('jsonOut').textContent = JSON.stringify(JSON.parse(document.getElementById('jsonIn').value)); }
-                catch(e) { document.getElementById('jsonOut').textContent = '❌ Invalid JSON'; }
+                try {
+                    document.getElementById('jsonOut').textContent = JSON.stringify(JSON.parse(document.getElementById(
+                        'jsonIn').value));
+                } catch (e) {
+                    document.getElementById('jsonOut').textContent = '❌ Invalid JSON';
+                }
             };
-            document.getElementById('jsonClear').onclick = () => { document.getElementById('jsonIn').value = ''; document.getElementById('jsonOut').textContent = ''; };
+            document.getElementById('jsonClear').onclick = () => { document.getElementById('jsonIn').value = '';
+                document.getElementById('jsonOut').textContent = ''; };
             document.getElementById('jsonCopy').onclick = () => copyText(document.getElementById('jsonOut').textContent);
         }
 
@@ -567,7 +853,8 @@
                 <button class="outline-btn" id="cssCopy">📋 Copy</button>`;
             document.getElementById('cssMinify').onclick = () => {
                 let css = document.getElementById('cssIn').value;
-                css = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/\s*([{};:,>+~])\s*/g, '$1').replace(/;}/g, '}').trim();
+                css = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/\s*([{};:,>+~])\s*/g, '$1')
+                    .replace(/;}/g, '}').trim();
                 document.getElementById('cssOut').textContent = css;
                 showToast('✅ Minified');
             };
@@ -577,12 +864,13 @@
         function jsMinTool(c) {
             c.innerHTML = `
                 <textarea id="jsIn" placeholder="Paste JavaScript code..."></textarea>
-                <button id="jsMinify">⚙️ Minify</button>
+                <button id="jsMinify">⚡ Minify</button>
                 <div class="output-box" id="jsOut"></div>
                 <button class="outline-btn" id="jsCopy">📋 Copy</button>`;
             document.getElementById('jsMinify').onclick = () => {
                 let js = document.getElementById('jsIn').value;
-                js = js.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/\s*([{}();,:])\s*/g, '$1').trim();
+                js = js.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(
+                    /\s*([{}();,:])\s*/g, '$1').trim();
                 document.getElementById('jsOut').textContent = js;
                 showToast('✅ Minified');
             };
@@ -599,15 +887,19 @@
                 <textarea id="regexStr" placeholder="Enter text to test..."></textarea>
                 <div class="output-box" id="regexOut"></div>
                 <div><strong id="regexCount">0</strong> matches</div>`;
+
             function test() {
-                const p = document.getElementById('regexPat').value, f = document.getElementById('regexFlags').value, s = document.getElementById('regexStr').value;
+                const p = document.getElementById('regexPat').value,
+                    f = document.getElementById('regexFlags').value,
+                    s = document.getElementById('regexStr').value;
                 if (!p) { document.getElementById('regexOut').textContent = 'Enter a pattern'; return; }
                 try {
                     const r = new RegExp(p, f);
                     const m = s.match(r);
                     document.getElementById('regexCount').textContent = m ? m.length : 0;
-                    document.getElementById('regexOut').textContent = m ? m.map((x,i) => `Match ${i+1}: "${x}"`).join('\n') : 'No matches';
-                } catch(e) { document.getElementById('regexOut').textContent = '❌ Invalid regex'; }
+                    document.getElementById('regexOut').textContent = m ? m.map((x, i) =>
+                        `Match ${i+1}: "${x}"`).join('\n') : 'No matches';
+                } catch (e) { document.getElementById('regexOut').textContent = '❌ Invalid regex'; }
             }
             document.getElementById('regexPat').oninput = test;
             document.getElementById('regexFlags').onchange = test;
@@ -621,12 +913,16 @@
                     <div><label>Modified</label><textarea id="diffMod" placeholder="Modified text..."></textarea></div>
                 </div>
                 <div class="output-box" id="diffOut"></div>`;
+
             function run() {
-                const o = document.getElementById('diffOrig').value, m = document.getElementById('diffMod').value;
-                const oL = o.split('\n'), mL = m.split('\n');
+                const o = document.getElementById('diffOrig').value,
+                    m = document.getElementById('diffMod').value;
+                const oL = o.split('\n'),
+                    mL = m.split('\n');
                 let r = '';
                 for (let i = 0; i < Math.max(oL.length, mL.length); i++) {
-                    const a = oL[i] || '', b = mL[i] || '';
+                    const a = oL[i] || '',
+                        b = mL[i] || '';
                     if (a === b) r += `  ${a}\n`;
                     else { if (a) r += `- ${a}\n`; if (b) r += `+ ${b}\n`; }
                 }
@@ -644,7 +940,7 @@
             c.innerHTML = `
                 <div class="row">
                     <div><label>Length</label><input type="number" id="pwLen" value="16" min="4" max="128"></div>
-                    <div><button id="pwGen">🎲 Generate</button></div>
+                    <div><button id="pwGen">🔑 Generate</button></div>
                 </div>
                 <label><input type="checkbox" id="pwUpper" checked> Uppercase</label>
                 <label><input type="checkbox" id="pwLower" checked> Lowercase</label>
@@ -653,6 +949,7 @@
                 <div class="output-box" id="pwOut" style="text-align:center;font-size:1.2rem;letter-spacing:2px;"></div>
                 <button class="outline-btn" id="pwCopy">📋 Copy</button>
                 <div><strong id="pwStrength">-</strong></div>`;
+
             function generate() {
                 const len = +document.getElementById('pwLen').value || 16;
                 let chars = '';
@@ -662,10 +959,12 @@
                 if (document.getElementById('pwSymbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
                 if (!chars) chars = 'abcdefghijklmnopqrstuvwxyz';
                 let pw = '';
-                const arr = new Uint32Array(len); crypto.getRandomValues(arr);
+                const arr = new Uint32Array(len);
+                crypto.getRandomValues(arr);
                 for (let i = 0; i < len; i++) pw += chars[arr[i] % chars.length];
                 document.getElementById('pwOut').textContent = pw;
-                document.getElementById('pwStrength').textContent = len >= 16 && chars.length > 60 ? '🟢 Strong' : len >= 10 ? '🟡 Medium' : '🔴 Weak';
+                document.getElementById('pwStrength').textContent = len >= 16 && chars.length > 60 ? '🟢 Strong' : len >=
+                    10 ? '🟡 Medium' : '🔴 Weak';
             }
             document.getElementById('pwGen').onclick = generate;
             document.getElementById('pwCopy').onclick = () => copyText(document.getElementById('pwOut').textContent);
@@ -687,21 +986,387 @@
                 const input = document.getElementById('hashIn').value;
                 document.getElementById('hashLabel').textContent = algo + ' Hash';
                 if (!input) { document.getElementById('hashOut').textContent = 'Enter some text first'; return; }
-                if (algo === 'MD5') { document.getElementById('hashOut').textContent = '⚠️ MD5 not available in browser (use SHA-256)'; return; }
+                if (algo === 'MD5') { document.getElementById('hashOut').textContent =
+                        '⚠️ MD5 not available in browser (use SHA-256)'; return; }
                 try {
                     const data = new TextEncoder().encode(input);
                     const hashBuffer = await crypto.subtle.digest(algo, data);
-                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0'))
+                        .join('');
                     document.getElementById('hashOut').textContent = hashHex;
-                } catch(e) { document.getElementById('hashOut').textContent = 'Error: ' + e.message; }
+                } catch (e) { document.getElementById('hashOut').textContent = 'Error: ' + e.message; }
             }
             document.getElementById('hashSha256').onclick = () => generate('SHA-256');
             document.getElementById('hashSha1').onclick = () => generate('SHA-1');
             document.getElementById('hashMd5').onclick = () => generate('MD5');
             document.getElementById('hashCopy').onclick = () => copyText(document.getElementById('hashOut').textContent);
-            // auto example
             document.getElementById('hashIn').value = 'Hello, World!';
             generate('SHA-256');
+        }
+
+        // ========== NEW TOOL: COLOUR PLATE ==========
+        function colorPlateTool(c) {
+            // Generate a random harmonious palette
+            function generatePalette() {
+                const paletteTypes = [
+                    'warm', 'cool', 'pastel', 'vibrant', 'earthy', 'monochromatic',
+                    'complementary', 'analogous', 'triadic', 'random-harmonious'
+                ];
+                const type = paletteTypes[Math.floor(Math.random() * paletteTypes.length)];
+                const colors = [];
+                const baseHue = Math.floor(Math.random() * 360);
+
+                switch (type) {
+                    case 'warm':
+                        for (let i = 0; i < 5; i++) {
+                            const h = (baseHue % 60) + (i * 12) + 10; // reds, oranges, yellows
+                            const s = 55 + Math.floor(Math.random() * 35);
+                            const l = 35 + Math.floor(Math.random() * 30);
+                            colors.push(hslToHex(h % 360, s, l));
+                        }
+                        break;
+                    case 'cool':
+                        for (let i = 0; i < 5; i++) {
+                            const h = 180 + (i * 18) % 120; // blues, teals, purples
+                            const s = 50 + Math.floor(Math.random() * 40);
+                            const l = 30 + Math.floor(Math.random() * 35);
+                            colors.push(hslToHex(h % 360, s, l));
+                        }
+                        break;
+                    case 'pastel':
+                        for (let i = 0; i < 5; i++) {
+                            const h = (baseHue + i * 55) % 360;
+                            const s = 25 + Math.floor(Math.random() * 25);
+                            const l = 65 + Math.floor(Math.random() * 20);
+                            colors.push(hslToHex(h, s, l));
+                        }
+                        break;
+                    case 'vibrant':
+                        for (let i = 0; i < 5; i++) {
+                            const h = (baseHue + i * 42) % 360;
+                            const s = 75 + Math.floor(Math.random() * 25);
+                            const l = 40 + Math.floor(Math.random() * 20);
+                            colors.push(hslToHex(h, s, l));
+                        }
+                        break;
+                    case 'earthy':
+                        const earthyHues = [20, 30, 40, 80, 120, 160, 200, 25, 45, 100];
+                        for (let i = 0; i < 5; i++) {
+                            const h = earthyHues[Math.floor(Math.random() * earthyHues.length)];
+                            const s = 20 + Math.floor(Math.random() * 30);
+                            const l = 25 + Math.floor(Math.random() * 30);
+                            colors.push(hslToHex(h, s, l));
+                        }
+                        break;
+                    case 'monochromatic':
+                        const monoHue = baseHue;
+                        for (let i = 0; i < 5; i++) {
+                            const s = 30 + Math.floor(Math.random() * 50);
+                            const l = 20 + i * 14;
+                            colors.push(hslToHex(monoHue, s, Math.min(l, 85)));
+                        }
+                        break;
+                    case 'complementary':
+                        const compHue1 = baseHue;
+                        const compHue2 = (baseHue + 180) % 360;
+                        colors.push(hslToHex(compHue1, 70, 45));
+                        colors.push(hslToHex(compHue1, 55, 55));
+                        colors.push(hslToHex(compHue2, 70, 45));
+                        colors.push(hslToHex(compHue2, 55, 55));
+                        colors.push(hslToHex(compHue1, 40, 65));
+                        break;
+                    case 'analogous':
+                        for (let i = 0; i < 5; i++) {
+                            const h = (baseHue + i * 18 - 36) % 360;
+                            const s = 55 + Math.floor(Math.random() * 30);
+                            const l = 35 + Math.floor(Math.random() * 30);
+                            colors.push(hslToHex(h < 0 ? h + 360 : h, s, l));
+                        }
+                        break;
+                    case 'triadic':
+                        for (let i = 0; i < 3; i++) {
+                            const h = (baseHue + i * 120) % 360;
+                            colors.push(hslToHex(h, 65, 42));
+                            if (colors.length < 5) {
+                                colors.push(hslToHex(h, 45, 58));
+                            }
+                        }
+                        colors.splice(5);
+                        break;
+                    case 'random-harmonious':
+                    default:
+                        for (let i = 0; i < 5; i++) {
+                            const h = (baseHue + i * 28 + Math.floor(Math.random() * 20)) % 360;
+                            const s = 40 + Math.floor(Math.random() * 50);
+                            const l = 30 + Math.floor(Math.random() * 35);
+                            colors.push(hslToHex(h, s, l));
+                        }
+                        break;
+                }
+                return { type, colors: colors.slice(0, 5) };
+            }
+
+            function hslToHex(h, s, l) {
+                s /= 100;
+                l /= 100;
+                const a = s * Math.min(l, 1 - l);
+                const f = n => {
+                    const k = (n + h / 30) % 12;
+                    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                    return Math.round(255 * color).toString(16).padStart(2, '0');
+                };
+                return `#${f(0)}${f(8)}${f(4)}`;
+            }
+
+            const paletteTypeNames = {
+                'warm': 'Warm Tones',
+                'cool': 'Cool Blues & Purples',
+                'pastel': 'Pastel Dreams',
+                'vibrant': 'Vibrant Pop',
+                'earthy': 'Earthy Natural',
+                'monochromatic': 'Monochromatic Depth',
+                'complementary': 'Complementary Contrast',
+                'analogous': 'Analogous Harmony',
+                'triadic': 'Triadic Balance',
+                'random-harmonious': 'Random Harmony'
+            };
+
+            let currentPalette = generatePalette();
+
+            function renderPalette() {
+                const paletteContainer = document.getElementById('paletteContainer');
+                const typeLabel = document.getElementById('paletteTypeLabel');
+                typeLabel.textContent = '🎨 ' + (paletteTypeNames[currentPalette.type] || currentPalette.type);
+                paletteContainer.innerHTML = currentPalette.colors.map((color, i) => `
+                    <div class="color-square" style="background:${color};" data-color="${color}" title="Click to copy ${color}">
+                        <span class="hex-label">${color}</span>
+                    </div>
+                `).join('');
+
+                // Add click-to-copy on each square
+                paletteContainer.querySelectorAll('.color-square').forEach(sq => {
+                    sq.addEventListener('click', () => {
+                        copyText(sq.dataset.color);
+                    });
+                });
+            }
+
+            c.innerHTML = `
+                <p class="palette-type-label" id="paletteTypeLabel">🎨 Palette</p>
+                <div class="color-squares-row" id="paletteContainer"></div>
+                <div style="display:flex; justify-content:center; align-items:center; gap:16px; margin-top:16px; flex-wrap:wrap;">
+                    <button id="paletteCopyBtn" class="outline-btn" style="order:1;">📋 Copy All Colors</button>
+                    <button id="paletteRefreshBtn" style="order:2;">🔄 Refresh</button>
+                </div>
+                <div class="output-box" id="paletteCodeOut" style="margin-top:12px; text-align:center;"></div>
+                <button class="outline-btn" id="paletteCopyCSS" style="display:block;margin:8px auto;">📋 Copy as CSS Variables</button>
+            `;
+
+            renderPalette();
+            updatePaletteOutput();
+
+            function updatePaletteOutput() {
+                const codeOut = document.getElementById('paletteCodeOut');
+                const hexList = currentPalette.colors.join(', ');
+                const cssVars = currentPalette.colors.map((c, i) => `--color-${i + 1}: ${c};`).join('\n');
+                codeOut.innerHTML = `<strong>HEX:</strong> ${hexList}<br><br><strong>CSS Variables:</strong><br>${cssVars}`;
+            }
+
+            document.getElementById('paletteRefreshBtn').onclick = () => {
+                currentPalette = generatePalette();
+                renderPalette();
+                updatePaletteOutput();
+                showToast('🔄 New palette generated!');
+            };
+
+            document.getElementById('paletteCopyBtn').onclick = () => {
+                copyText(currentPalette.colors.join(', '));
+            };
+
+            document.getElementById('paletteCopyCSS').onclick = () => {
+                const cssVars = currentPalette.colors.map((c, i) => `--color-${i + 1}: ${c};`).join('\n');
+                copyText(cssVars);
+            };
+        }
+
+        // ========== NEW TOOL: TEXT FORMAT CHOOSER ==========
+        function textFormatTool(c) {
+            const textStyles = [{
+                id: 'neon-glow',
+                name: 'Neon Glow',
+                bestFor: 'Headings & Hero Text',
+                headingCSS: `
+                    color: #fff;
+                    text-shadow: 0 0 7px #00ffff, 0 0 10px #00ffff, 0 0 21px #00ffff, 0 0 42px #00ffff, 0 0 82px #00ffff, 0 0 92px #00ffff;
+                    font-weight: 700;
+                    letter-spacing: 2px;`,
+                bodyCSS: `
+                    color: #e0f7fa;
+                    text-shadow: 0 0 4px rgba(0,255,255,0.5);
+                    font-weight: 400;`,
+                headingPreview: 'NEON DREAMS',
+                bodyPreview: 'A radiant glow that cuts through the dark, perfect for futuristic interfaces and cyberpunk designs.'
+            }, {
+                id: 'gradient-clip',
+                name: 'Gradient Clip',
+                bestFor: 'Headings & Brand Text',
+                headingCSS: `
+                    background: linear-gradient(135deg, #ff00ff, #00ffff, #ff6600);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    font-weight: 800;
+                    letter-spacing: 1px;`,
+                bodyCSS: `
+                    background: linear-gradient(135deg, #ff00ff, #00ffff);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    font-weight: 600;`,
+                headingPreview: 'Gradient Magic',
+                bodyPreview: 'Smooth color transitions clipped right into your text, giving it a vibrant and modern look.'
+            }, {
+                id: 'three-d-block',
+                name: '3D Block Shadow',
+                bestFor: 'Headings & Posters',
+                headingCSS: `
+                    color: #fff;
+                    text-shadow: 1px 1px 0 #ff00ff, 2px 2px 0 #ff00ff, 3px 3px 0 #ff00ff, 4px 4px 0 #ff00ff, 5px 5px 0 #ff00ff, 6px 6px 10px rgba(0,0,0,0.5);
+                    font-weight: 900;
+                    letter-spacing: 3px;
+                    text-transform: uppercase;`,
+                bodyCSS: `
+                    color: #ddd;
+                    text-shadow: 1px 1px 2px rgba(255,0,255,0.4);
+                    font-weight: 500;`,
+                headingPreview: 'BOLD IMPACT',
+                bodyPreview: 'A heavy 3D extrusion effect that makes your headings jump off the page with dramatic depth.'
+            }, {
+                id: 'minimal-elegant',
+                name: 'Minimal Elegant',
+                bestFor: 'Body Text & Paragraphs',
+                headingCSS: `
+                    color: #f0f0f0;
+                    font-weight: 300;
+                    letter-spacing: 6px;
+                    text-transform: uppercase;
+                    border-bottom: 1px solid rgba(255,255,255,0.3);
+                    padding-bottom: 8px;
+                    display: inline-block;`,
+                bodyCSS: `
+                    color: #c0c0d0;
+                    font-weight: 300;
+                    line-height: 1.8;
+                    letter-spacing: 0.5px;`,
+                headingPreview: 'ELEGANCE',
+                bodyPreview: 'Clean, airy, and sophisticated. This style speaks softly but carries immense refinement.'
+            }, {
+                id: 'retro-typewriter',
+                name: 'Retro Typewriter',
+                bestFor: 'Blog Text & Vintage UI',
+                headingCSS: `
+                    font-family: 'Courier New', Courier, monospace;
+                    color: #f5deb3;
+                    text-shadow: 2px 2px 0 rgba(0,0,0,0.6);
+                    letter-spacing: 2px;
+                    font-weight: 700;
+                    background: rgba(30,20,10,0.4);
+                    padding: 6px 14px;
+                    border-radius: 4px;
+                    display: inline-block;`,
+                bodyCSS: `
+                    font-family: 'Courier New', Courier, monospace;
+                    color: #d4c5a9;
+                    line-height: 1.7;
+                    letter-spacing: 1px;`,
+                headingPreview: 'VINTAGE TYPE',
+                bodyPreview: 'Warm paper-like tones and monospace charm bring the nostalgic feel of old typewriters to life.'
+            }, {
+                id: 'outline-pop',
+                name: 'Outline Stroke Pop',
+                bestFor: 'Headings & Callouts',
+                headingCSS: `
+                    color: transparent;
+                    -webkit-text-stroke: 2px #ff00ff;
+                    text-stroke: 2px #ff00ff;
+                    font-weight: 900;
+                    letter-spacing: 4px;
+                    text-transform: uppercase;
+                    transition: 0.3s;`,
+                bodyCSS: `
+                    color: #ddd;
+                    -webkit-text-stroke: 0.5px rgba(255,0,255,0.3);
+                    font-weight: 500;`,
+                headingPreview: 'OUTLINED',
+                bodyPreview: 'Bold outlined text that creates a striking visual with its hollow, graphic-design feel.'
+            }, {
+                id: 'soft-shadow-modern',
+                name: 'Soft Shadow Modern',
+                bestFor: 'Card Headings & UI Text',
+                headingCSS: `
+                    color: #ffffff;
+                    text-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.15);
+                    font-weight: 600;
+                    letter-spacing: 1px;`,
+                bodyCSS: `
+                    color: #bbb;
+                    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+                    font-weight: 400;
+                    line-height: 1.6;`,
+                headingPreview: 'Smooth & Soft',
+                bodyPreview: 'Gentle shadows add depth without distraction, ideal for modern card-based layouts and clean UI.'
+            }, {
+                id: 'vibrant-highlight',
+                name: 'Vibrant Highlight',
+                bestFor: 'Emphasis & Annotations',
+                headingCSS: `
+                    color: #1a1a2e;
+                    background: linear-gradient(120deg, #39ff14 0%, #39ff14 100%);
+                    background-repeat: no-repeat;
+                    background-size: 100% 55%;
+                    background-position: 0 85%;
+                    padding: 0 8px;
+                    font-weight: 700;
+                    display: inline-block;`,
+                bodyCSS: `
+                    color: #e0e0ff;
+                    background: linear-gradient(120deg, rgba(57,255,20,0.25) 0%, rgba(57,255,20,0.15) 100%);
+                    background-repeat: no-repeat;
+                    background-size: 100% 30%;
+                    background-position: 0 90%;
+                    padding: 0 4px;
+                    display: inline;`,
+                headingPreview: 'HIGHLIGHTED',
+                bodyPreview: 'A vibrant highlighter effect that draws the eye, perfect for emphasizing key phrases and headings.'
+            }];
+
+            let styleCardsHTML = textStyles.map((style, index) => `
+                <div class="text-format-card" id="styleCard${index}">
+                    <div class="style-name">✨ ${style.name} <span style="color:#888;font-size:0.65rem;">— ${style.bestFor}</span></div>
+                    <div class="preview-heading" style="${style.headingCSS.replace(/\n/g,' ')}">${style.headingPreview}</div>
+                    <div class="preview-body" style="${style.bodyCSS.replace(/\n/g,' ')}">${style.bodyPreview}</div>
+                    <button class="copy-style-btn outline-btn" data-index="${index}">📋 Copy CSS</button>
+                </div>
+            `).join('');
+
+            c.innerHTML = `
+                <p style="color:#aaa;margin-bottom:4px;text-align:center;">🎨 Unique text formatting styles for headings & body text</p>
+                <p style="color:#666;font-size:0.7rem;text-align:center;margin-bottom:16px;">Each card shows a live preview — click <strong>Copy CSS</strong> to grab the style code</p>
+                <div class="text-format-grid">
+                    ${styleCardsHTML}
+                </div>
+            `;
+
+            // Attach copy handlers
+            c.querySelectorAll('.copy-style-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.index);
+                    const style = textStyles[idx];
+                    const fullCSS = `/* ${style.name} — ${style.bestFor} */\n/* Heading Style */\n.heading {\n    ${style.headingCSS.trim().replace(/\n/g,'\n    ')}\n}\n\n/* Body Text Style */\n.body-text {\n    ${style.bodyCSS.trim().replace(/\n/g,'\n    ')}\n}`;
+                    copyText(fullCSS);
+                    showToast(`✅ ${style.name} CSS copied!`);
+                });
+            });
         }
 
         // Start application
