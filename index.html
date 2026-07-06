@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevToolKit Pro · Neon Developer Tools</title>
-    <!-- QR / Barcode libraries -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js">
@@ -24,7 +23,6 @@
             --card-bg: rgba(10, 10, 30, 0.8);
             --border: rgba(255, 255, 255, 0.15);
             --text: #e0e0ff;
-            --shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
         * {
             margin: 0;
@@ -187,12 +185,25 @@
             filter: brightness(1.2);
             transform: scale(1.03);
         }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: none;
+            transform: none;
+        }
         .outline-btn {
             background: transparent;
             border: 1px solid var(--neon-cyan);
             color: var(--neon-cyan);
             box-shadow: none;
             text-shadow: 0 0 5px var(--neon-cyan);
+        }
+        .danger-btn {
+            background: transparent;
+            border: 1px solid #ff073a;
+            color: #ff073a;
+            box-shadow: none;
+            text-shadow: 0 0 5px #ff073a;
         }
         .output-box {
             background: black;
@@ -212,10 +223,11 @@
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
+            align-items: center;
         }
         .row>* {
             flex: 1;
-            min-width: 150px;
+            min-width: 80px;
         }
         .toast {
             position: fixed;
@@ -228,137 +240,463 @@
             font-weight: bold;
             z-index: 999;
             box-shadow: 0 0 20px var(--neon-cyan);
-            animation: fadeOut 2s forwards;
+            animation: fadeOut 2.5s forwards;
         }
         @keyframes fadeOut {
-            0% { opacity: 1; }
-            70% { opacity: 1; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
         }
-        /* Colour Plate & Text Format unchanged */
-        .palette-type-label {
-            text-align: center;
-            font-size: 0.85rem;
-            color: #aaa;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .color-squares-row {
+        .tab-bar {
             display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            justify-content: center;
-            margin: 16px 0;
-        }
-        .color-square {
-            width: 95px;
-            height: 95px;
-            border-radius: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 8px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            transition: 0.25s;
-            border: 2px solid transparent;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        }
-        .color-square:hover {
-            transform: translateY(-6px) scale(1.06);
-            border-color: white;
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
-            z-index: 2;
-        }
-        .color-square .hex-label {
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            pointer-events: none;
-        }
-        .text-format-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-            margin-top: 12px;
-        }
-        .text-format-card {
-            background: rgba(20, 20, 45, 0.7);
+            gap: 0;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            overflow: hidden;
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: none;
+            color: #aaa;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
             transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            border-radius: 0;
+            box-shadow: none;
+            text-transform: none;
+            margin: 0;
+            font-size: 0.85rem;
         }
-        .text-format-card:hover {
-            border-color: var(--neon-lime);
-            box-shadow: 0 0 22px rgba(57, 255, 20, 0.25);
+        .tab-btn.active {
+            background: rgba(0, 255, 255, 0.2);
+            color: var(--neon-cyan);
+            text-shadow: 0 0 8px var(--neon-cyan);
         }
-        .text-format-card .style-name {
-            font-size: 0.7rem;
-            text-transform: uppercase;
+        .speed-gauge {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 900;
             letter-spacing: 2px;
+            text-shadow: 0 0 30px var(--neon-lime);
             color: var(--neon-lime);
-            margin-bottom: 4px;
+            margin: 10px 0;
+            min-height: 60px;
         }
-        .text-format-card .preview-heading {
+        .speed-metric {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            min-width: 100px;
+        }
+        .speed-metric .val {
             font-size: 1.4rem;
             font-weight: 700;
-            margin: 0;
-            line-height: 1.3;
+            color: var(--neon-cyan);
         }
-        .text-format-card .preview-body {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: #ccc;
-            margin: 0;
-        }
-        .text-format-card .copy-style-btn {
-            align-self: flex-start;
+        .speed-metric .lbl {
             font-size: 0.7rem;
-            padding: 8px 16px;
-            margin: 0;
-            margin-top: auto;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .meter-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto;
+        }
+        .meter-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 12;
+        }
+        .meter-fill {
+            fill: none;
+            stroke: var(--neon-lime);
+            stroke-width: 12;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s;
+        }
+        .meter-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--neon-lime);
+            text-shadow: 0 0 10px var(--neon-lime);
+        }
+        .time-display {
+            font-size: 3.5rem;
+            font-weight: 900;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            letter-spacing: 4px;
+            text-shadow: 0 0 25px var(--neon-lime);
+            color: var(--neon-lime);
+            margin: 10px 0;
+            user-select: none;
+        }
+        .time-display.paused {
+            text-shadow: 0 0 15px var(--neon-yellow);
+            color: var(--neon-yellow);
+        }
+        .lap-list {
+            max-height: 180px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .lap-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        .notes-list {
+            max-height: 350px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .note-card {
+            background: rgba(20, 20, 45, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .note-card:hover {
+            border-color: var(--neon-lime);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+        }
+        .note-card.selected {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        .note-card h4 {
+            margin: 0 0 4px;
+            color: #fff;
+            font-size: 1rem;
+        }
+        .note-card .note-date {
+            font-size: 0.7rem;
+            color: #666;
+        }
+        .note-card .note-preview {
+            font-size: 0.8rem;
+            color: #aaa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .converter-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+        .converter-row>div {
+            flex: 1;
+            min-width: 120px;
+        }
+        .swap-icon {
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0 8px;
+            transition: 0.3s;
+            user-select: none;
+            align-self: center;
+        }
+        .swap-icon:hover {
+            transform: scale(1.3);
+            filter: drop-shadow(0 0 8px var(--neon-cyan));
+        }
+        .result-badge {
+            background: rgba(0, 255, 255, 0.15);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        #floatingTimer {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 10, 30, 0.9);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 12px;
+            padding: 12px 18px;
+            z-index: 1000;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            backdrop-filter: blur(8px);
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: var(--neon-lime);
+            text-shadow: 0 0 10px var(--neon-lime);
+            transition: transform 0.2s;
+        }
+        #floatingTimer:hover {
+            transform: scale(1.05);
+        }
+        #floatingTimer.expired {
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                border-color: #ff073a;
+                box-shadow: 0 0 20px #ff073a;
+            }
+            50% {
+                border-color: var(--neon-yellow);
+                box-shadow: 0 0 30px var(--neon-yellow);
+            }
+            100% {
+                border-color: #ff073a;
+                box-shadow: 0 0 20px #ff073a;
+            }
+        }
+        .tts-note {
+            font-size: 0.7rem;
+            color: #ffaa00;
+            background: rgba(255, 170, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid rgba(255, 170, 0, 0.3);
+        }
+        @media (max-width:600px) {
+            .time-display {
+                font-size: 2.2rem;
+                letter-spacing: 2px;
+            }
+            .speed-gauge {
+                font-size: 2rem;
+            }
+            .category-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .cat-card {
+                padding: 18px;
+            }
+            .cat-card .icon {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <div id="app"></div>
+    <div id="floatingTimer" title="Click to return to timer">⏳ 00:00:00</div>
     <div id="toastContainer"></div>
 
     <script>
         const app = document.getElementById('app');
+        const floatingTimerEl = document.getElementById('floatingTimer');
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+            return audioCtx;
+        }
+
+        function playBeep() {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.15);
+            } catch (e) {}
+        }
+        const globalTimer = {
+            running: false,
+            remaining: 0,
+            total: 0,
+            interval: null,
+            beepInterval: null,
+            expired: false,
+            startTime: 0,
+            pausedRemaining: 0
+        };
+
+        function stopBeeping() {
+            if (globalTimer.beepInterval) {
+                clearInterval(globalTimer.beepInterval);
+                globalTimer.beepInterval = null;
+            }
+        }
+
+        function startBeeping() {
+            stopBeeping();
+            playBeep();
+            globalTimer.beepInterval = setInterval(playBeep, 1000);
+        }
+
+        function updateGlobalTimerDisplay() {
+            if (!globalTimer.running) return;
+            const now = performance.now();
+            const newRemaining = globalTimer.pausedRemaining - (now - globalTimer.startTime);
+            if (newRemaining <= 0) {
+                globalTimer.remaining = 0;
+                globalTimer.running = false;
+                globalTimer.expired = true;
+                clearInterval(globalTimer.interval);
+                globalTimer.interval = null;
+                startBeeping();
+                updateFloatingTimer();
+                if (document.getElementById('tmDisplay')) {
+                    document.getElementById('tmDisplay').textContent = '00:00:00';
+                    document.getElementById('tmStart').textContent = '▶ Start';
+                    document.getElementById('tmPause').disabled = true;
+                }
+                return;
+            }
+            globalTimer.remaining = newRemaining;
+            if (floatingTimerEl.style.display !== 'none') {
+                floatingTimerEl.textContent = '⏳ ' + formatTimeMS(newRemaining);
+                floatingTimerEl.classList.remove('expired');
+            }
+            if (document.getElementById('tmDisplay')) {
+                document.getElementById('tmDisplay').textContent = formatTimeMS(newRemaining);
+            }
+        }
+
+        function startGlobalTimer(durationMs) {
+            stopGlobalTimer(false);
+            globalTimer.total = durationMs;
+            globalTimer.remaining = durationMs;
+            globalTimer.pausedRemaining = durationMs;
+            globalTimer.running = true;
+            globalTimer.expired = false;
+            globalTimer.startTime = performance.now();
+            stopBeeping();
+            globalTimer.interval = setInterval(updateGlobalTimerDisplay, 200);
+            updateFloatingTimer();
+        }
+
+        function pauseGlobalTimer() {
+            if (!globalTimer.running) return;
+            const now = performance.now();
+            globalTimer.pausedRemaining = globalTimer.remaining - (now - globalTimer.startTime);
+            if (globalTimer.pausedRemaining < 0) globalTimer.pausedRemaining = 0;
+            globalTimer.running = false;
+            globalTimer.remaining = globalTimer.pausedRemaining;
+            clearInterval(globalTimer.interval);
+            globalTimer.interval = null;
+            stopBeeping();
+            updateFloatingTimer();
+        }
+
+        function resumeGlobalTimer() {
+            if (globalTimer.running || globalTimer.expired || globalTimer.remaining <= 0) return;
+            globalTimer.running = true;
+            globalTimer.startTime = performance.now();
+            globalTimer.pausedRemaining = globalTimer.remaining;
+            stopBeeping();
+            globalTimer.interval = setInterval(updateGlobalTimerDisplay, 200);
+            updateFloatingTimer();
+        }
+
+        function stopGlobalTimer(reset = true) {
+            globalTimer.running = false;
+            clearInterval(globalTimer.interval);
+            globalTimer.interval = null;
+            stopBeeping();
+            if (reset) {
+                globalTimer.remaining = 0;
+                globalTimer.total = 0;
+                globalTimer.expired = false;
+                globalTimer.pausedRemaining = 0;
+            }
+            updateFloatingTimer();
+        }
+
+        function formatTimeMS(ms) {
+            if (ms < 0) ms = 0;
+            const totalSec = Math.ceil(ms / 1000);
+            const hrs = Math.floor(totalSec / 3600),
+                mins = Math.floor((totalSec % 3600) / 60),
+                secs = totalSec % 60;
+            return `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+        }
+
+        function updateFloatingTimer() {
+            const currentViewIsTimer = document.getElementById('tmDisplay') !== null;
+            if (globalTimer.running || globalTimer.expired) {
+                if (!currentViewIsTimer) {
+                    floatingTimerEl.style.display = 'block';
+                    const timeStr = globalTimer.expired ? '00:00:00' : formatTimeMS(globalTimer.remaining);
+                    floatingTimerEl.textContent = (globalTimer.expired ? '🔔 ' : '⏳ ') + timeStr;
+                    floatingTimerEl.classList.toggle('expired', globalTimer.expired);
+                } else {
+                    floatingTimerEl.style.display = 'none';
+                }
+            } else {
+                floatingTimerEl.style.display = 'none';
+            }
+        }
+        floatingTimerEl.addEventListener('click', () => {
+            renderTool('utilities', 'stopwatch');
+            updateFloatingTimer();
+        });
+
         const categories = [
-            { id: 'text', icon: '🔤', name: 'Text & Encode', desc: 'Encode, decode, generate text' },
-            { id: 'design', icon: '🎨', name: 'CSS & Design', desc: 'Gradients, shadows, colors, flexbox' },
+            { id: 'text', icon: '📝', name: 'Text & Encode', desc: 'Encode, decode, generate text' },
+            { id: 'design', icon: '🎨', name: 'CSS & Design',
+            desc: 'Gradients, shadows, colors, flexbox' },
             { id: 'code', icon: '💻', name: 'Code Tools', desc: 'JSON, minifiers, regex, diff' },
             { id: 'security', icon: '🔐', name: 'Security', desc: 'Passwords, hashing' },
-            { id: 'qrbarcode', icon: '📱', name: 'QR & Barcode', desc: 'Generate and read QR codes & barcodes' }
+            { id: 'qrbarcode', icon: '📷', name: 'QR & Barcode',
+                desc: 'Generate and read QR codes & barcodes' },
+            { id: 'utilities', icon: '🔧', name: 'Utilities',
+                desc: 'Speed test, stopwatch, notes, TTS, converter' }
         ];
         const tools = {
             text: [
-                { id: 'base64', emoji: '🔣', title: 'Base64 Encoder/Decoder' },
+                { id: 'base64', emoji: '🔐', title: 'Base64 Encoder/Decoder' },
                 { id: 'urlencode', emoji: '🔗', title: 'URL Encoder/Decoder' },
-                { id: 'wordcounter', emoji: '📝', title: 'Word & Character Counter' },
+                { id: 'wordcounter', emoji: '📊', title: 'Word & Character Counter' },
                 { id: 'lorem', emoji: '📄', title: 'Lorem Ipsum Generator' },
                 { id: 'uuid', emoji: '🆔', title: 'UUID Generator' }
             ],
             design: [
                 { id: 'gradient', emoji: '🌈', title: 'Gradient Generator' },
-                { id: 'boxshadow', emoji: '🔲', title: 'Box Shadow Generator' },
+                { id: 'boxshadow', emoji: '📦', title: 'Box Shadow Generator' },
                 { id: 'colorpicker', emoji: '🎯', title: 'Color Picker & Convert' },
                 { id: 'contrast', emoji: '⚫', title: 'Contrast Checker' },
-                { id: 'flexbox', emoji: '🧱', title: 'Flexbox Playground' },
+                { id: 'flexbox', emoji: '📐', title: 'Flexbox Playground' },
                 { id: 'colorplate', emoji: '🎨', title: 'Colour Plate' },
                 { id: 'textformat', emoji: '✨', title: 'Text Format Chooser' }
             ],
@@ -374,10 +712,17 @@
                 { id: 'hash', emoji: '#️⃣', title: 'Hash Generator' }
             ],
             qrbarcode: [
-                { id: 'qrgenerator', emoji: '🔳', title: 'QR Code Generator' },
-                { id: 'qrreader', emoji: '📷', title: 'QR Code Reader' },
-                { id: 'barcodemaker', emoji: '🖨️', title: 'Barcode Maker' },
+                { id: 'qrgenerator', emoji: '📱', title: 'QR Code Generator' },
+                { id: 'qrreader', emoji: '📸', title: 'QR Code Reader' },
+                { id: 'barcodemaker', emoji: '🛒', title: 'Barcode Maker' },
                 { id: 'barcodereader', emoji: '🔎', title: 'Barcode Reader' }
+            ],
+            utilities: [
+                { id: 'speedtest', emoji: '🚀', title: 'Internet Speed Checker' },
+                { id: 'stopwatch', emoji: '⏱️', title: 'Stopwatch & Timer' },
+                { id: 'notes', emoji: '📝', title: 'Notes' },
+                { id: 'tts', emoji: '🔊', title: 'Text to Speech' },
+                { id: 'unitconverter', emoji: '📐', title: 'Unit Converter' }
             ]
         };
 
@@ -386,60 +731,45 @@
             t.className = 'toast';
             t.textContent = msg;
             document.getElementById('toastContainer').appendChild(t);
-            setTimeout(() => t.remove(), 2000);
+            setTimeout(() => t.remove(), 2500);
         }
 
         function copyText(text) {
+            if (!text || text.trim() === '') {
+                showToast('⚠️ Nothing to copy');
+                return;
+            }
             navigator.clipboard.writeText(text).then(() => showToast('📋 Copied!'));
         }
 
-        // RENDER HOME
         function renderHome() {
             app.innerHTML = `
-                <h1 style="font-size:2.5rem; text-shadow:0 0 20px var(--neon-cyan); margin-bottom:10px;">🚀 DevToolKit Pro</h1>
+                <h1 style="font-size:2.5rem; text-shadow:0 0 20px var(--neon-cyan);">🛠️ DevToolKit Pro</h1>
                 <p style="color:#aaa; margin-bottom:30px;">Professional developer utilities</p>
                 <div class="category-grid">
-                    ${categories.map(c => `
-                        <div class="cat-card" data-cat="${c.id}">
-                            <div class="icon">${c.icon}</div>
-                            <h2>${c.name}</h2>
-                            <p>${c.desc}</p>
-                        </div>
-                    `).join('')}
+                    ${categories.map(c => `<div class="cat-card" data-cat="${c.id}"><div class="icon">${c.icon}</div><h2>${c.name}</h2><p>${c.desc}</p></div>`).join('')}
                 </div>`;
-            document.querySelectorAll('.cat-card').forEach(card => {
-                card.addEventListener('click', () => renderCategory(card.dataset.cat));
-            });
+            document.querySelectorAll('.cat-card').forEach(card => card.addEventListener('click', () => renderCategory(card
+                .dataset.cat)));
         }
 
-        // RENDER CATEGORY
         function renderCategory(catId) {
             const cat = categories.find(c => c.id === catId);
-            const toolList = tools[catId];
             app.innerHTML = `
                 <button class="back-btn" id="backHomeBtn">⬅ Back to Categories</button>
-                <h2 style="font-size:1.8rem; text-shadow:0 0 12px var(--neon-magenta); margin-bottom:20px;">${cat.icon} ${cat.name}</h2>
-                <div class="tool-grid">
-                    ${toolList.map(t => `
-                        <div class="tool-item" data-tool="${t.id}">
-                            <div class="emoji">${t.emoji}</div>
-                            <h3>${t.title}</h3>
-                        </div>
-                    `).join('')}
-                </div>`;
+                <h2 style="font-size:1.8rem; text-shadow:0 0 12px var(--neon-magenta);">${cat.icon} ${cat.name}</h2>
+                <div class="tool-grid">${tools[catId].map(t => `<div class="tool-item" data-tool="${t.id}"><div class="emoji">${t.emoji}</div><h3>${t.title}</h3></div>`).join('')}</div>`;
             document.getElementById('backHomeBtn').addEventListener('click', renderHome);
-            document.querySelectorAll('.tool-item').forEach(item => {
-                item.addEventListener('click', () => renderTool(catId, item.dataset.tool));
-            });
+            document.querySelectorAll('.tool-item').forEach(item => item.addEventListener('click', () => renderTool(catId,
+                item.dataset.tool)));
         }
 
-        // RENDER TOOL
         function renderTool(catId, toolId) {
             const cat = categories.find(c => c.id === catId);
             const tool = tools[catId].find(t => t.id === toolId);
             app.innerHTML = `
                 <button class="back-btn" id="backCatBtn">⬅ Back to ${cat.name}</button>
-                <h2 style="font-size:1.5rem; text-shadow:0 0 10px var(--neon-lime); margin-bottom:15px;">${tool.emoji} ${tool.title}</h2>
+                <h2 style="font-size:1.5rem; text-shadow:0 0 10px var(--neon-lime);">${tool.emoji} ${tool.title}</h2>
                 <div class="detail-card" id="toolContainer"></div>`;
             document.getElementById('backCatBtn').addEventListener('click', () => renderCategory(catId));
             loadTool(toolId);
@@ -448,699 +778,713 @@
         function loadTool(toolId) {
             const container = document.getElementById('toolContainer');
             switch (toolId) {
-                case 'base64': base64Tool(container); break;
-                case 'urlencode': urlTool(container); break;
-                case 'wordcounter': wordCounterTool(container); break;
-                case 'lorem': loremTool(container); break;
-                case 'uuid': uuidTool(container); break;
-                case 'gradient': gradientTool(container); break;
-                case 'boxshadow': boxShadowTool(container); break;
-                case 'colorpicker': colorPickerTool(container); break;
-                case 'contrast': contrastTool(container); break;
-                case 'flexbox': flexboxTool(container); break;
-                case 'colorplate': colorPlateTool(container); break;
-                case 'textformat': textFormatTool(container); break;
-                case 'jsonfmt': jsonTool(container); break;
-                case 'cssmin': cssMinTool(container); break;
-                case 'jsmin': jsMinTool(container); break;
-                case 'regex': regexTool(container); break;
-                case 'diff': diffTool(container); break;
-                case 'password': passwordTool(container); break;
-                case 'hash': hashTool(container); break;
-                case 'qrgenerator': qrGeneratorTool(container); break;
-                case 'qrreader': qrReaderTool(container); break;
-                case 'barcodemaker': barcodeMakerTool(container); break;
-                case 'barcodereader': barcodeReaderTool(container); break;
+                case 'speedtest':
+                    speedTestTool(container);
+                    break;
+                case 'stopwatch':
+                    stopwatchTimerTool(container);
+                    break;
+                case 'notes':
+                    notesTool(container);
+                    break;
+                case 'tts':
+                    ttsTool(container);
+                    break;
+                case 'unitconverter':
+                    unitConverterTool(container);
+                    break;
+                default:
+                    container.innerHTML =
+                        `<p style="text-align:center;color:#888;padding:40px;">🔧 Tool "${toolId}" coming soon...</p>`;
             }
         }
 
-        // ---------- EXISTING TOOL FUNCTIONS (unchanged) ----------
-        function base64Tool(c) {
+        // ==================== RELIABLE SPEED TEST (FIXED) ====================
+        function speedTestTool(c) {
             c.innerHTML = `
-                <label>Input Text</label>
-                <textarea id="b64In" placeholder="Enter text to encode or Base64 string to decode..."></textarea>
-                <div class="row">
-                    <button id="b64Encode">🔒 Encode</button>
-                    <button id="b64Decode" class="outline-btn">🔓 Decode</button>
-                    <button id="b64Clear" class="outline-btn">Clear</button>
+                <p style="text-align:center;color:#aaa;">Measure your internet connection speed</p>
+                <div class="meter-container" style="margin:10px auto;">
+                    <svg viewBox="0 0 160 160" style="transform:rotate(-90deg);">
+                        <circle class="meter-bg" cx="80" cy="80" r="68" stroke-dasharray="427.3" stroke-dashoffset="0"/>
+                        <circle id="meterFill" class="meter-fill" cx="80" cy="80" r="68" stroke-dasharray="427.3" stroke-dashoffset="427.3"/>
+                    </svg>
+                    <div class="meter-center-text" id="meterCenter">--</div>
                 </div>
-                <label>Output</label>
-                <div class="output-box" id="b64Out"></div>
-                <button class="outline-btn" id="b64Copy">📋 Copy</button>`;
-            document.getElementById('b64Encode').onclick = () => {
-                try { document.getElementById('b64Out').textContent = btoa(unescape(encodeURIComponent(document.getElementById('b64In').value))); } 
-                catch (e) { document.getElementById('b64Out').textContent = 'Error: ' + e.message; }
-            };
-            document.getElementById('b64Decode').onclick = () => {
-                try { document.getElementById('b64Out').textContent = decodeURIComponent(escape(atob(document.getElementById('b64In').value.trim()))); } 
-                catch (e) { document.getElementById('b64Out').textContent = 'Error: Invalid Base64'; }
-            };
-            document.getElementById('b64Clear').onclick = () => { document.getElementById('b64In').value = ''; document.getElementById('b64Out').textContent = ''; };
-            document.getElementById('b64Copy').onclick = () => copyText(document.getElementById('b64Out').textContent);
-        }
-
-        function urlTool(c) {
-            c.innerHTML = `
-                <label>Input Text</label>
-                <textarea id="urlIn" placeholder="Enter text or URL to encode/decode..."></textarea>
-                <div class="row">
-                    <button id="urlEncode">🔗 Encode URL</button>
-                    <button id="urlDecode" class="outline-btn">🔓 Decode URL</button>
+                <div class="speed-gauge" id="speedGauge">--</div>
+                <p style="text-align:center;color:#888;font-size:0.8rem;" id="speedStatus">Ready</p>
+                <div class="row" style="margin:12px 0;">
+                    <div class="speed-metric"><div class="val" id="pingVal">--</div><div class="lbl">Ping (ms)</div></div>
+                    <div class="speed-metric"><div class="val" id="dlVal">--</div><div class="lbl">Download (Mbps)</div></div>
+                    <div class="speed-metric"><div class="val" id="ulVal">--</div><div class="lbl">Upload (Mbps)</div></div>
                 </div>
-                <label>Output</label>
-                <div class="output-box" id="urlOut"></div>
-                <button class="outline-btn" id="urlCopy">📋 Copy</button>`;
-            document.getElementById('urlEncode').onclick = () => document.getElementById('urlOut').textContent = encodeURIComponent(document.getElementById('urlIn').value);
-            document.getElementById('urlDecode').onclick = () => {
-                try { document.getElementById('urlOut').textContent = decodeURIComponent(document.getElementById('urlIn').value); } 
-                catch (e) { document.getElementById('urlOut').textContent = 'Error: Invalid URL encoding'; }
-            };
-            document.getElementById('urlCopy').onclick = () => copyText(document.getElementById('urlOut').textContent);
-        }
-
-        function wordCounterTool(c) {
-            c.innerHTML = `
-                <label>Your Text</label>
-                <textarea id="wcIn" placeholder="Type or paste your text here..."></textarea>
-                <div class="row" style="margin-top:10px;">
-                    <div><strong id="wcWords">0</strong> Words</div>
-                    <div><strong id="wcChars">0</strong> Characters</div>
-                    <div><strong id="wcCharsNoSpace">0</strong> Chars (no spaces)</div>
-                    <div><strong id="wcLines">0</strong> Lines</div>
-                    <div><strong id="wcSentences">0</strong> Sentences</div>
-                </div>`;
-            document.getElementById('wcIn').addEventListener('input', () => {
-                const text = document.getElementById('wcIn').value;
-                document.getElementById('wcChars').textContent = text.length;
-                document.getElementById('wcCharsNoSpace').textContent = text.replace(/\s/g, '').length;
-                document.getElementById('wcWords').textContent = text.trim() ? text.trim().split(/\s+/).length : 0;
-                document.getElementById('wcLines').textContent = text.split(/\n/).length;
-                document.getElementById('wcSentences').textContent = text.split(/[.!?]+/).filter(Boolean).length;
-            });
-        }
-
-        function loremTool(c) {
-            c.innerHTML = `
-                <div class="row">
-                    <div><label>Paragraphs</label><input type="number" id="loremCount" value="3" min="1" max="20"></div>
-                    <div><label>Type</label><select id="loremType"><option value="paragraphs">Paragraphs</option><option value="sentences">Sentences</option><option value="words">Words</option></select></div>
+                <div style="text-align:center;">
+                    <button id="startSpeedTest">🚀 Start Speed Test</button>
                 </div>
-                <button id="loremGen">Generate</button>
-                <div class="output-box" id="loremOut"></div>
-                <button class="outline-btn" id="loremCopy">📋 Copy</button>`;
-            const words = "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum".split(' ');
-            function generate() {
-                const count = +document.getElementById('loremCount').value || 3;
-                const type = document.getElementById('loremType').value;
-                let res = '';
-                if (type === 'paragraphs') {
-                    for (let i = 0; i < count; i++) {
-                        const p = [...words].sort(() => Math.random() - 0.5).slice(0, 30 + Math.floor(Math.random() * 40));
-                        res += p.join(' ').charAt(0).toUpperCase() + p.join(' ').slice(1) + '.\n\n';
-                    }
-                } else if (type === 'sentences') {
-                    for (let i = 0; i < count; i++) {
-                        const s = [...words].sort(() => Math.random() - 0.5).slice(0, 8 + Math.floor(Math.random() * 12));
-                        res += s.join(' ').charAt(0).toUpperCase() + s.join(' ').slice(1) + '. ';
-                    }
-                } else {
-                    res = [...words].sort(() => Math.random() - 0.5).slice(0, count).join(' ');
-                }
-                document.getElementById('loremOut').textContent = res.trim();
-            }
-            document.getElementById('loremGen').onclick = generate;
-            document.getElementById('loremCopy').onclick = () => copyText(document.getElementById('loremOut').textContent);
-            generate();
-        }
-
-        function uuidTool(c) {
-            c.innerHTML = `
-                <button id="uuidGen">🎲 Generate UUIDs</button>
-                <label>Count</label>
-                <input type="number" id="uuidCount" value="5" min="1" max="50" style="width:100px;">
-                <div class="output-box" id="uuidOut"></div>
-                <button class="outline-btn" id="uuidCopy">📋 Copy All</button>`;
-            function generate() {
-                const count = +document.getElementById('uuidCount').value || 5;
-                let res = '';
-                for (let i = 0; i < count; i++) {
-                    res += 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-                        const r = Math.random() * 16 | 0;
-                        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-                    }) + '\n';
-                }
-                document.getElementById('uuidOut').textContent = res.trim();
-            }
-            document.getElementById('uuidGen').onclick = generate;
-            document.getElementById('uuidCopy').onclick = () => copyText(document.getElementById('uuidOut').textContent);
-            generate();
-        }
-
-        function gradientTool(c) {
-            c.innerHTML = `
-                <div class="output-box" id="gradPreview" style="height:100px;"></div>
-                <div class="row">
-                    <div><label>Color 1</label><input type="color" id="gc1" value="#ff00ff"></div>
-                    <div><label>Color 2</label><input type="color" id="gc2" value="#00ffff"></div>
-                    <div><label>Direction</label><select id="gdir">
-                        <option value="to right">➡ Right</option><option value="to left">⬅ Left</option>
-                        <option value="to bottom">⬇ Bottom</option><option value="to top">⬆ Top</option>
-                        <option value="to bottom right">↘ Bottom Right</option>
-                        <option value="135deg">135°</option><option value="45deg">45°</option><option value="90deg">90°</option>
-                    </select></div>
-                </div>
-                <label>CSS</label>
-                <div class="output-box" id="gradCSS"></div>
-                <button class="outline-btn" id="gradCopy">📋 Copy</button>`;
-            function update() {
-                const c1 = document.getElementById('gc1').value, c2 = document.getElementById('gc2').value, dir = document.getElementById('gdir').value;
-                const css = `background: linear-gradient(${dir}, ${c1}, ${c2});`;
-                document.getElementById('gradPreview').style.background = `linear-gradient(${dir}, ${c1}, ${c2})`;
-                document.getElementById('gradCSS').textContent = css;
-            }
-            ['gc1','gc2','gdir'].forEach(id => document.getElementById(id).addEventListener('input', update));
-            document.getElementById('gradCopy').onclick = () => copyText(document.getElementById('gradCSS').textContent);
-            update();
-        }
-
-        function boxShadowTool(c) {
-            c.innerHTML = `
-                <div style="display:flex; gap:20px; align-items:center;">
-                    <div id="shadowPrev" style="width:120px;height:120px;background:white;border-radius:12px;"></div>
-                    <div style="flex:1;">
-                        <label>X</label><input type="range" id="bsX" min="-50" max="50" value="5">
-                        <label>Y</label><input type="range" id="bsY" min="-50" max="50" value="10">
-                        <label>Blur</label><input type="range" id="bsBlur" min="0" max="60" value="20">
-                        <label>Spread</label><input type="range" id="bsSpread" min="-20" max="30" value="0">
-                        <label>Color</label><input type="color" id="bsColor" value="#ff00ff">
-                        <label><input type="checkbox" id="bsInset"> Inset</label>
-                    </div>
-                </div>
-                <label>CSS</label>
-                <div class="output-box" id="shadowCSS"></div>
-                <button class="outline-btn" id="shadowCopy">📋 Copy</button>`;
-            function update() {
-                const x = document.getElementById('bsX').value, y = document.getElementById('bsY').value;
-                const blur = document.getElementById('bsBlur').value, spread = document.getElementById('bsSpread').value;
-                const color = document.getElementById('bsColor').value, inset = document.getElementById('bsInset').checked ? 'inset ' : '';
-                const css = `box-shadow: ${inset}${x}px ${y}px ${blur}px ${spread}px ${color};`;
-                document.getElementById('shadowPrev').style.boxShadow = css;
-                document.getElementById('shadowCSS').textContent = css;
-            }
-            ['bsX','bsY','bsBlur','bsSpread','bsColor','bsInset'].forEach(id => document.getElementById(id).oninput = update);
-            document.getElementById('shadowCopy').onclick = () => copyText(document.getElementById('shadowCSS').textContent);
-            update();
-        }
-
-        function colorPickerTool(c) {
-            c.innerHTML = `
-                <div class="row">
-                    <div><label>Pick</label><input type="color" id="cpColor" value="#00ffff"></div>
-                    <div><label>HEX</label><input type="text" id="cpHex" value="#00ffff"></div>
-                    <div><label>RGB</label><input type="text" id="cpRGB" readonly></div>
-                    <div><label>HSL</label><input type="text" id="cpHSL" readonly></div>
-                </div>`;
-            function update() {
-                const hex = document.getElementById('cpColor').value;
-                document.getElementById('cpHex').value = hex;
-                const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-                document.getElementById('cpRGB').value = `rgb(${r}, ${g}, ${b})`;
-                const [h,s,l] = rgbToHsl(r,g,b);
-                document.getElementById('cpHSL').value = `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
-            }
-            function rgbToHsl(r,g,b){ r/=255;g/=255;b/=255; const max=Math.max(r,g,b),min=Math.min(r,g,b); let h,s,l=(max+min)/2; if(max===min)h=s=0; else{ const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min); switch(max){ case r: h=((g-b)/d+(g<b?6:0))/6; break; case g: h=((b-r)/d+2)/6; break; case b: h=((r-g)/d+4)/6; break; } } return [h*360,s*100,l*100]; }
-            document.getElementById('cpColor').oninput = update;
-            document.getElementById('cpHex').oninput = function(){ if(/^#[0-9a-fA-F]{6}$/.test(this.value)){ document.getElementById('cpColor').value = this.value; update(); } };
-            update();
-        }
-
-        function contrastTool(c) {
-            c.innerHTML = `
-                <div class="row">
-                    <div><label>Text</label><input type="color" id="ccText" value="#ffffff"></div>
-                    <div><label>Background</label><input type="color" id="ccBg" value="#000000"></div>
-                </div>
-                <div id="ccPreview" style="padding:30px;border-radius:10px;text-align:center;font-size:1.5rem;font-weight:bold;margin:10px 0;">Sample Text</div>
-                <div class="row">
-                    <div><strong id="ccRatio">-</strong> Ratio</div>
-                    <div><strong id="ccAA">-</strong> AA</div>
-                    <div><strong id="ccAAA">-</strong> AAA</div>
-                </div>`;
-            function update() {
-                const tc = document.getElementById('ccText').value, bg = document.getElementById('ccBg').value;
-                document.getElementById('ccPreview').style.color = tc; document.getElementById('ccPreview').style.background = bg;
-                const ratio = getContrastRatio(tc, bg);
-                document.getElementById('ccRatio').textContent = ratio.toFixed(2)+':1';
-                document.getElementById('ccAA').textContent = ratio>=4.5 ? '✅ Pass' : '❌ Fail';
-                document.getElementById('ccAAA').textContent = ratio>=7 ? '✅ Pass' : '❌ Fail';
-            }
-            function getContrastRatio(c1,c2){ const l1=getLuminance(c1),l2=getLuminance(c2); return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05); }
-            function getLuminance(hex){ const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255; const toLin=c=>c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4); return 0.2126*toLin(r)+0.7152*toLin(g)+0.0722*toLin(b); }
-            document.getElementById('ccText').oninput = update; document.getElementById('ccBg').oninput = update; update();
-        }
-
-        function flexboxTool(c) {
-            c.innerHTML = `
-                <div class="row">
-                    <div><label>Justify</label><select id="fbj"><option>flex-start</option><option>center</option><option>flex-end</option><option>space-between</option><option>space-around</option></select></div>
-                    <div><label>Align</label><select id="fba"><option>stretch</option><option>center</option><option>flex-start</option><option>flex-end</option></select></div>
-                    <div><label>Direction</label><select id="fbd"><option>row</option><option>column</option></select></div>
-                    <div><label>Wrap</label><select id="fbw"><option>nowrap</option><option>wrap</option></select></div>
-                </div>
-                <div id="fbContainer" style="display:flex;gap:8px;background:rgba(255,255,255,0.1);border-radius:10px;padding:16px;min-height:120px;margin-top:10px;">
-                    <div style="background:#ff00ff;padding:12px;">1</div><div style="background:#00ffff;padding:12px;">2</div><div style="background:#39ff14;padding:12px;">3</div>
-                </div>
-                <label>CSS</label>
-                <div class="output-box" id="fbCSS"></div>
-                <button class="outline-btn" id="fbCopy">📋 Copy</button>`;
-            function update() {
-                const j = document.getElementById('fbj').value, a = document.getElementById('fba').value, d = document.getElementById('fbd').value, w = document.getElementById('fbw').value;
-                const box = document.getElementById('fbContainer');
-                box.style.justifyContent = j; box.style.alignItems = a; box.style.flexDirection = d; box.style.flexWrap = w;
-                document.getElementById('fbCSS').textContent = `display: flex;\njustify-content: ${j};\nalign-items: ${a};\nflex-direction: ${d};\nflex-wrap: ${w};`;
-            }
-            ['fbj','fba','fbd','fbw'].forEach(id => document.getElementById(id).onchange = update);
-            document.getElementById('fbCopy').onclick = () => copyText(document.getElementById('fbCSS').textContent);
-            update();
-        }
-
-        function jsonTool(c) {
-            c.innerHTML = `
-                <textarea id="jsonIn" placeholder="Paste JSON here..."></textarea>
-                <div class="row">
-                    <button id="jsonFormat">🌲 Format</button>
-                    <button id="jsonMinify" class="outline-btn">🗜️ Minify</button>
-                    <button id="jsonClear" class="outline-btn">Clear</button>
-                </div>
-                <div class="output-box" id="jsonOut"></div>
-                <button class="outline-btn" id="jsonCopy">📋 Copy</button>`;
-            document.getElementById('jsonFormat').onclick = () => {
-                try { document.getElementById('jsonOut').textContent = JSON.stringify(JSON.parse(document.getElementById('jsonIn').value), null, 2); } 
-                catch (e) { document.getElementById('jsonOut').textContent = '❌ Invalid JSON'; }
-            };
-            document.getElementById('jsonMinify').onclick = () => {
-                try { document.getElementById('jsonOut').textContent = JSON.stringify(JSON.parse(document.getElementById('jsonIn').value)); } 
-                catch (e) { document.getElementById('jsonOut').textContent = '❌ Invalid JSON'; }
-            };
-            document.getElementById('jsonClear').onclick = () => { document.getElementById('jsonIn').value = ''; document.getElementById('jsonOut').textContent = ''; };
-            document.getElementById('jsonCopy').onclick = () => copyText(document.getElementById('jsonOut').textContent);
-        }
-
-        function cssMinTool(c) {
-            c.innerHTML = `
-                <textarea id="cssIn" placeholder="Paste CSS code..."></textarea>
-                <button id="cssMinify">🗜️ Minify</button>
-                <div class="output-box" id="cssOut"></div>
-                <button class="outline-btn" id="cssCopy">📋 Copy</button>`;
-            document.getElementById('cssMinify').onclick = () => {
-                let css = document.getElementById('cssIn').value;
-                css = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g,' ').replace(/\s*([{};:,>+~])\s*/g,'$1').replace(/;}/g,'}').trim();
-                document.getElementById('cssOut').textContent = css;
-                showToast('🗜️ Minified');
-            };
-            document.getElementById('cssCopy').onclick = () => copyText(document.getElementById('cssOut').textContent);
-        }
-
-        function jsMinTool(c) {
-            c.innerHTML = `
-                <textarea id="jsIn" placeholder="Paste JavaScript code..."></textarea>
-                <button id="jsMinify">⚡ Minify</button>
-                <div class="output-box" id="jsOut"></div>
-                <button class="outline-btn" id="jsCopy">📋 Copy</button>`;
-            document.getElementById('jsMinify').onclick = () => {
-                let js = document.getElementById('jsIn').value;
-                js = js.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g,' ').replace(/\s*([{}();,:])\s*/g,'$1').trim();
-                document.getElementById('jsOut').textContent = js;
-                showToast('⚡ Minified');
-            };
-            document.getElementById('jsCopy').onclick = () => copyText(document.getElementById('jsOut').textContent);
-        }
-
-        function regexTool(c) {
-            c.innerHTML = `
-                <div class="row">
-                    <div><label>Pattern</label><input type="text" id="regexPat" placeholder="Example: \\d{3}-\\d{4}"></div>
-                    <div><label>Flags</label><select id="regexFlags"><option value="">None</option><option value="g">g</option><option value="gi">gi</option></select></div>
-                </div>
-                <label>Test String</label>
-                <textarea id="regexStr" placeholder="Enter text to test..."></textarea>
-                <div class="output-box" id="regexOut"></div>
-                <div><strong id="regexCount">0</strong> matches</div>`;
-            function test() {
-                const p = document.getElementById('regexPat').value, f = document.getElementById('regexFlags').value, s = document.getElementById('regexStr').value;
-                if (!p) { document.getElementById('regexOut').textContent = 'Enter a pattern'; return; }
-                try {
-                    const r = new RegExp(p, f);
-                    const m = s.match(r);
-                    document.getElementById('regexCount').textContent = m ? m.length : 0;
-                    document.getElementById('regexOut').textContent = m ? m.map((x,i) => `Match ${i+1}: "${x}"`).join('\n') : 'No matches';
-                } catch (e) { document.getElementById('regexOut').textContent = '❌ Invalid regex'; }
-            }
-            document.getElementById('regexPat').oninput = test; document.getElementById('regexFlags').onchange = test; document.getElementById('regexStr').oninput = test;
-        }
-
-        function diffTool(c) {
-            c.innerHTML = `
-                <div class="row">
-                    <div><label>Original</label><textarea id="diffOrig" placeholder="Original text..."></textarea></div>
-                    <div><label>Modified</label><textarea id="diffMod" placeholder="Modified text..."></textarea></div>
-                </div>
-                <div class="output-box" id="diffOut"></div>`;
-            function run() {
-                const o = document.getElementById('diffOrig').value, m = document.getElementById('diffMod').value;
-                const oL = o.split('\n'), mL = m.split('\n');
-                let r = '';
-                for (let i = 0; i < Math.max(oL.length, mL.length); i++) {
-                    const a = oL[i]||'', b = mL[i]||'';
-                    if (a === b) r += `  ${a}\n`;
-                    else { if (a) r += `- ${a}\n`; if (b) r += `+ ${b}\n`; }
-                }
-                document.getElementById('diffOut').innerHTML = r.split('\n').map(l => {
-                    if (l.startsWith('- ')) return `<span style="color:#ff073a;">${l}</span>`;
-                    if (l.startsWith('+ ')) return `<span style="color:#39ff14;">${l}</span>`;
-                    return l;
-                }).join('\n');
-            }
-            document.getElementById('diffOrig').oninput = run; document.getElementById('diffMod').oninput = run;
-        }
-
-        function passwordTool(c) {
-            c.innerHTML = `
-                <div class="row">
-                    <div><label>Length</label><input type="number" id="pwLen" value="16" min="4" max="128"></div>
-                    <div><button id="pwGen">🎲 Generate</button></div>
-                </div>
-                <label><input type="checkbox" id="pwUpper" checked> Uppercase</label>
-                <label><input type="checkbox" id="pwLower" checked> Lowercase</label>
-                <label><input type="checkbox" id="pwDigits" checked> Digits</label>
-                <label><input type="checkbox" id="pwSymbols" checked> Symbols</label>
-                <div class="output-box" id="pwOut" style="text-align:center;font-size:1.2rem;letter-spacing:2px;"></div>
-                <button class="outline-btn" id="pwCopy">📋 Copy</button>
-                <div><strong id="pwStrength">-</strong></div>`;
-            function generate() {
-                const len = +document.getElementById('pwLen').value || 16;
-                let chars = '';
-                if (document.getElementById('pwUpper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                if (document.getElementById('pwLower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
-                if (document.getElementById('pwDigits').checked) chars += '0123456789';
-                if (document.getElementById('pwSymbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-                if (!chars) chars = 'abcdefghijklmnopqrstuvwxyz';
-                let pw = '';
-                const arr = new Uint32Array(len);
-                crypto.getRandomValues(arr);
-                for (let i = 0; i < len; i++) pw += chars[arr[i] % chars.length];
-                document.getElementById('pwOut').textContent = pw;
-                document.getElementById('pwStrength').textContent = len >= 16 && chars.length > 60 ? '🛡️ Strong' : len >= 10 ? '⚠️ Medium' : '💀 Weak';
-            }
-            document.getElementById('pwGen').onclick = generate;
-            document.getElementById('pwCopy').onclick = () => copyText(document.getElementById('pwOut').textContent);
-            generate();
-        }
-
-        function hashTool(c) {
-            c.innerHTML = `
-                <textarea id="hashIn" placeholder="Enter text to hash..."></textarea>
-                <div class="row">
-                    <button id="hashSha256">SHA-256</button>
-                    <button id="hashSha1" class="outline-btn">SHA-1</button>
-                    <button id="hashMd5" class="outline-btn">MD5</button>
-                </div>
-                <label id="hashLabel">SHA-256 Hash</label>
-                <div class="output-box" id="hashOut"></div>
-                <button class="outline-btn" id="hashCopy">📋 Copy</button>`;
-            async function generate(algo) {
-                const input = document.getElementById('hashIn').value;
-                document.getElementById('hashLabel').textContent = algo + ' Hash';
-                if (!input) { document.getElementById('hashOut').textContent = 'Enter some text first'; return; }
-                if (algo === 'MD5') { document.getElementById('hashOut').textContent = '⚠️ MD5 not available in browser (use SHA-256)'; return; }
-                try {
-                    const data = new TextEncoder().encode(input);
-                    const hashBuffer = await crypto.subtle.digest(algo, data);
-                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
-                    document.getElementById('hashOut').textContent = hashHex;
-                } catch (e) { document.getElementById('hashOut').textContent = 'Error: ' + e.message; }
-            }
-            document.getElementById('hashSha256').onclick = () => generate('SHA-256');
-            document.getElementById('hashSha1').onclick = () => generate('SHA-1');
-            document.getElementById('hashMd5').onclick = () => generate('MD5');
-            document.getElementById('hashCopy').onclick = () => copyText(document.getElementById('hashOut').textContent);
-            document.getElementById('hashIn').value = 'Hello, World!';
-            generate('SHA-256');
-        }
-
-        // ---------- FIXED BARCODE MAKER (standard black-on-white) ----------
-        function barcodeMakerTool(c) {
-            c.innerHTML = `
-                <label>Barcode text</label>
-                <input type="text" id="barcodeText" placeholder="Enter text or numbers" value="1234567890">
-                <label>Barcode type</label>
-                <select id="barcodeType">
-                    <option value="CODE128">CODE128</option>
-                    <option value="EAN13">EAN13</option>
-                    <option value="UPC">UPC</option>
-                    <option value="CODE39">CODE39</option>
-                    <option value="ITF">ITF</option>
-                    <option value="MSI">MSI</option>
-                    <option value="pharmacode">Pharmacode</option>
-                </select>
-                <button id="barcodeGenBtn">Generate Barcode</button>
-                <div id="barcodeCanvasContainer" style="text-align:center; margin:10px; background:#fff; padding:10px; border-radius:8px;">
-                    <canvas id="barcodeCanvas"></canvas>
-                </div>
-                <div id="barcodeError" style="color:#ff073a; margin-top:8px;"></div>
-                <button id="barcodeDownload" class="outline-btn" style="display:none;">Download Barcode</button>
-                <p style="color:#aaa; font-size:0.7rem; margin-top:6px;">* Barcode is generated with standard black-on-white colors for reliable scanning.</p>
+                <div id="speedError" style="color:#ff073a;text-align:center;margin-top:8px;display:none;"></div>
+                <p style="color:#555;font-size:0.65rem;text-align:center;margin-top:8px;">
+                    Uses Cloudflare & multiple fallback CDNs for reliable results.
+                </p>
             `;
 
-            const genBtn = document.getElementById('barcodeGenBtn');
-            const textInput = document.getElementById('barcodeText');
-            const typeSelect = document.getElementById('barcodeType');
-            const canvas = document.getElementById('barcodeCanvas');
-            const errorDiv = document.getElementById('barcodeError');
-            const downloadBtn = document.getElementById('barcodeDownload');
+            const gauge = document.getElementById('speedGauge');
+            const status = document.getElementById('speedStatus');
+            const pingEl = document.getElementById('pingVal');
+            const dlEl = document.getElementById('dlVal');
+            const ulEl = document.getElementById('ulVal');
+            const meterFill = document.getElementById('meterFill');
+            const meterCenter = document.getElementById('meterCenter');
+            const btn = document.getElementById('startSpeedTest');
+            const errorDiv = document.getElementById('speedError');
+            const MAX_SPEED = 150;
+            const circumference = 2 * Math.PI * 68;
 
-            function generateBarcode() {
-                const text = textInput.value.trim();
-                const type = typeSelect.value;
-                errorDiv.textContent = '';
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                downloadBtn.style.display = 'none';
-                
-                if (!text) {
-                    errorDiv.textContent = 'Please enter text or numbers.';
+            function setMeter(speedMbps) {
+                const percent = Math.min(Math.max(speedMbps / MAX_SPEED, 0), 1);
+                meterFill.style.strokeDashoffset = circumference * (1 - percent);
+                meterCenter.textContent = speedMbps ? speedMbps.toFixed(1) : '--';
+            }
+
+            function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
+                const controller = new AbortController();
+                const id = setTimeout(() => controller.abort(), timeoutMs);
+                const fetchOptions = { ...options, signal: controller.signal };
+                return fetch(url, fetchOptions).then(resp => {
+                    clearTimeout(id);
+                    return resp;
+                }).catch(err => {
+                    clearTimeout(id);
+                    throw err;
+                });
+            }
+
+            // Multiple download test URLs in order of preference
+            const DOWNLOAD_URLS = [
+                { url: 'https://speed.cloudflare.com/__down?bytes=500000', size: 500000,
+                    name: 'Cloudflare' },
+                { url: 'https://httpbin.org/bytes/524288', size: 524288, name: 'httpbin' },
+                { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/JPEG_example_flower_500px.jpg/500px-JPEG_example_flower_500px.jpg',
+                    size: null, name: 'Wikimedia' },
+                { url: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+                    size: null, name: 'Google CDN' },
+            ];
+
+            // Multiple ping test URLs
+            const PING_URLS = [
+                'https://speed.cloudflare.com/__down?bytes=0',
+                'https://httpbin.org/delay/0',
+                'https://www.google.com/favicon.ico',
+            ];
+
+            // Multiple upload test URLs
+            const UPLOAD_URLS = [
+                { url: 'https://speed.cloudflare.com/__up', name: 'Cloudflare' },
+                { url: 'https://httpbin.org/post', name: 'httpbin' },
+            ];
+
+            btn.addEventListener('click', async () => {
+                btn.disabled = true;
+                btn.textContent = '⏳ Testing...';
+                gauge.textContent = '...';
+                gauge.style.color = 'var(--neon-yellow)';
+                status.textContent = 'Checking connectivity...';
+                pingEl.textContent = '...';
+                dlEl.textContent = '...';
+                ulEl.textContent = '...';
+                setMeter(0);
+                errorDiv.style.display = 'none';
+
+                // ---- Step 1: Connectivity check ----
+                let online = false;
+                for (const pingUrl of PING_URLS) {
+                    try {
+                        await fetchWithTimeout(pingUrl, { method: 'HEAD', cache: 'no-store' }, 5000);
+                        online = true;
+                        break;
+                    } catch (e) {
+                        continue;
+                    }
+                }
+                if (!online) {
+                    errorDiv.textContent =
+                        '❌ No internet connection detected. All test servers are unreachable.';
+                    errorDiv.style.display = 'block';
+                    status.textContent = 'Failed';
+                    gauge.textContent = 'ERR';
+                    gauge.style.color = '#ff073a';
+                    btn.disabled = false;
+                    btn.textContent = '🚀 Retry';
                     return;
                 }
-                try {
-                    JsBarcode(canvas, text, {
-                        format: type,
-                        lineColor: "#000000",    // standard black bars
-                        background: "#ffffff",   // white background
-                        width: 2,
-                        height: 100,
-                        displayValue: true,
-                        font: "monospace",
-                        textMargin: 10
-                    });
-                    downloadBtn.style.display = 'inline-block';
-                } catch (err) {
-                    errorDiv.textContent = 'Error: ' + err.message;
-                }
-            }
 
-            genBtn.addEventListener('click', generateBarcode);
-
-            downloadBtn.addEventListener('click', () => {
-                const dataUrl = canvas.toDataURL('image/png');
-                const a = document.createElement('a');
-                a.href = dataUrl;
-                a.download = 'barcode.png';
-                a.click();
-            });
-
-            // Auto-generate on first load
-            generateBarcode();
-        }
-
-        // ---------- QR TOOLS (unchanged) ----------
-        function qrGeneratorTool(c) {
-            c.innerHTML = `
-                <label>Enter text or URL</label>
-                <input type="text" id="qrText" placeholder="https://example.com" value="https://example.com">
-                <button id="qrGenBtn">Generate QR</button>
-                <div id="qrResult" style="text-align:center; margin:10px;"></div>
-                <button id="qrDownload" class="outline-btn" style="display:none;">Download QR</button>
-            `;
-            document.getElementById('qrGenBtn').addEventListener('click', async () => {
-                const text = document.getElementById('qrText').value;
-                if (!text) return;
-                const resultDiv = document.getElementById('qrResult');
-                resultDiv.innerHTML = '';
-                try {
-                    const dataUrl = await QRCode.toDataURL(text, { width: 256, margin: 2 });
-                    const img = document.createElement('img');
-                    img.src = dataUrl;
-                    img.style.maxWidth = '100%';
-                    resultDiv.appendChild(img);
-                    const downloadBtn = document.getElementById('qrDownload');
-                    downloadBtn.style.display = 'inline-block';
-                    downloadBtn.onclick = () => {
-                        const a = document.createElement('a');
-                        a.href = dataUrl;
-                        a.download = 'qrcode.png';
-                        a.click();
-                    };
-                } catch (err) {
-                    resultDiv.textContent = 'Error generating QR: ' + err.message;
-                }
-            });
-        }
-
-        function qrReaderTool(c) {
-            c.innerHTML = `
-                <label>Select an image containing a QR code</label>
-                <input type="file" id="qrFileInput" accept="image/*">
-                <div id="qrReaderCanvasContainer" style="display:none; margin:10px 0;">
-                    <canvas id="qrReaderCanvas"></canvas>
-                </div>
-                <div class="output-box" id="qrReaderResult">Result will appear here</div>
-            `;
-            document.getElementById('qrFileInput').addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.getElementById('qrReaderCanvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
-                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    const code = jsQR(imageData.data, canvas.width, canvas.height);
-                    document.getElementById('qrReaderResult').textContent = code ? code.data : 'No QR code found.';
-                    document.getElementById('qrReaderCanvasContainer').style.display = 'block';
-                };
-                img.src = URL.createObjectURL(file);
-            });
-        }
-
-        // ---------- BARCODE READER (unchanged, works with standard colors) ----------
-        function barcodeReaderTool(c) {
-            c.innerHTML = `
-                <label>Select an image containing a barcode</label>
-                <input type="file" id="barcodeFileInput" accept="image/*">
-                <div class="output-box" id="barcodeReaderResult">Result will appear here</div>
-            `;
-            document.getElementById('barcodeFileInput').addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                Quagga.decodeSingle({
-                    src: URL.createObjectURL(file),
-                    numOfWorkers: 0,
-                    decoder: {
-                        readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader", "code_39_vin_reader", "codabar_reader", "upc_reader", "upc_e_reader", "i2of5_reader"]
-                    },
-                }, function(result) {
-                    if (result && result.codeResult) {
-                        document.getElementById('barcodeReaderResult').textContent = 'Decoded: ' + result.codeResult.code;
-                    } else {
-                        document.getElementById('barcodeReaderResult').textContent = 'No barcode found.';
+                // ---- Step 2: Ping test ----
+                status.textContent = 'Measuring ping...';
+                let totalPing = 0;
+                let pingCount = 0;
+                for (const pingUrl of PING_URLS) {
+                    for (let attempt = 0; attempt < 2; attempt++) {
+                        try {
+                            const start = performance.now();
+                            await fetchWithTimeout(pingUrl, { method: 'HEAD', cache: 'no-store' },
+                            5000);
+                            totalPing += performance.now() - start;
+                            pingCount++;
+                            if (pingCount >= 4) break;
+                        } catch (e) {
+                            continue;
+                        }
                     }
-                });
-            });
-        }
-
-        // Colour Plate and Text Format tools (unchanged)
-        function colorPlateTool(c) {
-            function generatePalette() {
-                const paletteTypes = ['warm','cool','pastel','vibrant','earthy','monochromatic','complementary','analogous','triadic','random-harmonious'];
-                const type = paletteTypes[Math.floor(Math.random()*paletteTypes.length)];
-                const colors = [];
-                const baseHue = Math.floor(Math.random()*360);
-                switch(type) {
-                    case 'warm': for(let i=0;i<5;i++){ const h=(baseHue%60)+(i*12)+10; const s=55+Math.floor(Math.random()*35); const l=35+Math.floor(Math.random()*30); colors.push(hslToHex(h%360,s,l)); } break;
-                    case 'cool': for(let i=0;i<5;i++){ const h=180+(i*18)%120; const s=50+Math.floor(Math.random()*40); const l=30+Math.floor(Math.random()*35); colors.push(hslToHex(h%360,s,l)); } break;
-                    case 'pastel': for(let i=0;i<5;i++){ const h=(baseHue+i*55)%360; const s=25+Math.floor(Math.random()*25); const l=65+Math.floor(Math.random()*20); colors.push(hslToHex(h,s,l)); } break;
-                    case 'vibrant': for(let i=0;i<5;i++){ const h=(baseHue+i*42)%360; const s=75+Math.floor(Math.random()*25); const l=40+Math.floor(Math.random()*20); colors.push(hslToHex(h,s,l)); } break;
-                    case 'earthy': const earthyHues=[20,30,40,80,120,160,200,25,45,100]; for(let i=0;i<5;i++){ const h=earthyHues[Math.floor(Math.random()*earthyHues.length)]; const s=20+Math.floor(Math.random()*30); const l=25+Math.floor(Math.random()*30); colors.push(hslToHex(h,s,l)); } break;
-                    case 'monochromatic': const monoHue=baseHue; for(let i=0;i<5;i++){ const s=30+Math.floor(Math.random()*50); const l=20+i*14; colors.push(hslToHex(monoHue,s,Math.min(l,85))); } break;
-                    case 'complementary': const compHue1=baseHue; const compHue2=(baseHue+180)%360; colors.push(hslToHex(compHue1,70,45)); colors.push(hslToHex(compHue1,55,55)); colors.push(hslToHex(compHue2,70,45)); colors.push(hslToHex(compHue2,55,55)); colors.push(hslToHex(compHue1,40,65)); break;
-                    case 'analogous': for(let i=0;i<5;i++){ const h=(baseHue+i*18-36)%360; const s=55+Math.floor(Math.random()*30); const l=35+Math.floor(Math.random()*30); colors.push(hslToHex(h<0?h+360:h,s,l)); } break;
-                    case 'triadic': for(let i=0;i<3;i++){ const h=(baseHue+i*120)%360; colors.push(hslToHex(h,65,42)); if(colors.length<5) colors.push(hslToHex(h,45,58)); } colors.splice(5); break;
-                    default: for(let i=0;i<5;i++){ const h=(baseHue+i*28+Math.floor(Math.random()*20))%360; const s=40+Math.floor(Math.random()*50); const l=30+Math.floor(Math.random()*35); colors.push(hslToHex(h,s,l)); } break;
+                    if (pingCount >= 4) break;
                 }
-                return {type, colors: colors.slice(0,5)};
-            }
-            function hslToHex(h,s,l){ s/=100;l/=100; const a=s*Math.min(l,1-l); const f=n=>{ const k=(n+h/30)%12; const color=l-a*Math.max(Math.min(k-3,9-k,1),-1); return Math.round(255*color).toString(16).padStart(2,'0'); }; return `#${f(0)}${f(8)}${f(4)}`; }
-            const paletteTypeNames = { warm:'Warm Tones', cool:'Cool Blues & Purples', pastel:'Pastel Dreams', vibrant:'Vibrant Pop', earthy:'Earthy Natural', monochromatic:'Monochromatic Depth', complementary:'Complementary Contrast', analogous:'Analogous Harmony', triadic:'Triadic Balance', 'random-harmonious':'Random Harmony' };
-            let currentPalette = generatePalette();
-            function renderPalette() {
-                const paletteContainer = document.getElementById('paletteContainer');
-                const typeLabel = document.getElementById('paletteTypeLabel');
-                typeLabel.textContent = '🎨 ' + (paletteTypeNames[currentPalette.type] || currentPalette.type);
-                paletteContainer.innerHTML = currentPalette.colors.map(color => `<div class="color-square" style="background:${color};" data-color="${color}" title="Click to copy ${color}"><span class="hex-label">${color}</span></div>`).join('');
-                paletteContainer.querySelectorAll('.color-square').forEach(sq => sq.addEventListener('click', () => copyText(sq.dataset.color)));
-            }
-            c.innerHTML = `
-                <p class="palette-type-label" id="paletteTypeLabel">🎨 Palette</p>
-                <div class="color-squares-row" id="paletteContainer"></div>
-                <div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-top:16px;flex-wrap:wrap;">
-                    <button id="paletteCopyBtn" class="outline-btn">📋 Copy All Colors</button>
-                    <button id="paletteRefreshBtn">🔄 Refresh</button>
-                </div>
-                <div class="output-box" id="paletteCodeOut" style="margin-top:12px;text-align:center;"></div>
-                <button class="outline-btn" id="paletteCopyCSS" style="display:block;margin:8px auto;">📋 Copy as CSS Variables</button>
-            `;
-            renderPalette();
-            function updatePaletteOutput() {
-                const codeOut = document.getElementById('paletteCodeOut');
-                const hexList = currentPalette.colors.join(', ');
-                const cssVars = currentPalette.colors.map((c,i) => `--color-${i+1}: ${c};`).join('\n');
-                codeOut.innerHTML = `<strong>HEX:</strong> ${hexList}<br><br><strong>CSS Variables:</strong><br>${cssVars}`;
-            }
-            updatePaletteOutput();
-            document.getElementById('paletteRefreshBtn').onclick = () => { currentPalette = generatePalette(); renderPalette(); updatePaletteOutput(); showToast('🎨 New palette generated!'); };
-            document.getElementById('paletteCopyBtn').onclick = () => copyText(currentPalette.colors.join(', '));
-            document.getElementById('paletteCopyCSS').onclick = () => copyText(currentPalette.colors.map((c,i) => `--color-${i+1}: ${c};`).join('\n'));
-        }
+                if (pingCount > 0) {
+                    pingEl.textContent = Math.round(totalPing / pingCount);
+                } else {
+                    pingEl.textContent = 'N/A';
+                }
 
-        function textFormatTool(c) {
-            const textStyles = [
-                { id:'neon-glow', name:'Neon Glow', bestFor:'Headings & Hero Text', headingCSS:'color: #fff; text-shadow: 0 0 7px #00ffff, 0 0 10px #00ffff, 0 0 21px #00ffff, 0 0 42px #00ffff, 0 0 82px #00ffff, 0 0 92px #00ffff; font-weight: 700; letter-spacing: 2px;', bodyCSS:'color: #e0f7fa; text-shadow: 0 0 4px rgba(0,255,255,0.5); font-weight: 400;', headingPreview:'NEON DREAMS', bodyPreview:'A radiant glow that cuts through the dark, perfect for futuristic interfaces.' },
-                { id:'gradient-clip', name:'Gradient Clip', bestFor:'Headings & Brand Text', headingCSS:'background: linear-gradient(135deg, #ff00ff, #00ffff, #ff6600); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; letter-spacing: 1px;', bodyCSS:'background: linear-gradient(135deg, #ff00ff, #00ffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 600;', headingPreview:'Gradient Magic', bodyPreview:'Smooth color transitions clipped right into your text, giving it a vibrant modern look.' },
-                { id:'three-d-block', name:'3D Block Shadow', bestFor:'Headings & Posters', headingCSS:'color: #fff; text-shadow: 1px 1px 0 #ff00ff, 2px 2px 0 #ff00ff, 3px 3px 0 #ff00ff, 4px 4px 0 #ff00ff, 5px 5px 0 #ff00ff, 6px 6px 10px rgba(0,0,0,0.5); font-weight: 900; letter-spacing: 3px; text-transform: uppercase;', bodyCSS:'color: #ddd; text-shadow: 1px 1px 2px rgba(255,0,255,0.4); font-weight: 500;', headingPreview:'BOLD IMPACT', bodyPreview:'A heavy 3D extrusion effect that makes your headings jump off the page.' },
-                { id:'minimal-elegant', name:'Minimal Elegant', bestFor:'Body Text & Paragraphs', headingCSS:'color: #f0f0f0; font-weight: 300; letter-spacing: 6px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 8px; display: inline-block;', bodyCSS:'color: #c0c0d0; font-weight: 300; line-height: 1.8; letter-spacing: 0.5px;', headingPreview:'ELEGANCE', bodyPreview:'Clean, airy, and sophisticated. This style speaks softly but carries immense refinement.' },
-                { id:'retro-typewriter', name:'Retro Typewriter', bestFor:'Blog Text & Vintage UI', headingCSS:"font-family: 'Courier New', Courier, monospace; color: #f5deb3; text-shadow: 2px 2px 0 rgba(0,0,0,0.6); letter-spacing: 2px; font-weight: 700; background: rgba(30,20,10,0.4); padding: 6px 14px; border-radius: 4px; display: inline-block;", bodyCSS:"font-family: 'Courier New', Courier, monospace; color: #d4c5a9; line-height: 1.7; letter-spacing: 1px;", headingPreview:'VINTAGE TYPE', bodyPreview:'Warm paper-like tones and monospace charm bring the nostalgic feel of old typewriters.' },
-                { id:'outline-pop', name:'Outline Stroke Pop', bestFor:'Headings & Callouts', headingCSS:'color: transparent; -webkit-text-stroke: 2px #ff00ff; text-stroke: 2px #ff00ff; font-weight: 900; letter-spacing: 4px; text-transform: uppercase;', bodyCSS:'color: #ddd; -webkit-text-stroke: 0.5px rgba(255,0,255,0.3); font-weight: 500;', headingPreview:'OUTLINED', bodyPreview:'Bold outlined text that creates a striking visual with its hollow, graphic-design feel.' },
-                { id:'soft-shadow-modern', name:'Soft Shadow Modern', bestFor:'Card Headings & UI Text', headingCSS:'color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.15); font-weight: 600; letter-spacing: 1px;', bodyCSS:'color: #bbb; text-shadow: 0 1px 3px rgba(0,0,0,0.4); font-weight: 400; line-height: 1.6;', headingPreview:'Smooth & Soft', bodyPreview:'Gentle shadows add depth without distraction, ideal for modern card-based layouts.' },
-                { id:'vibrant-highlight', name:'Vibrant Highlight', bestFor:'Emphasis & Annotations', headingCSS:'color: #1a1a2e; background: linear-gradient(120deg, #39ff14 0%, #39ff14 100%); background-repeat: no-repeat; background-size: 100% 55%; background-position: 0 85%; padding: 0 8px; font-weight: 700; display: inline-block;', bodyCSS:'color: #e0e0ff; background: linear-gradient(120deg, rgba(57,255,20,0.25) 0%, rgba(57,255,20,0.15) 100%); background-repeat: no-repeat; background-size: 100% 30%; background-position: 0 90%; padding: 0 4px; display: inline;', headingPreview:'HIGHLIGHTED', bodyPreview:'A vibrant highlighter effect that draws the eye, perfect for emphasizing key phrases.' }
-            ];
-            c.innerHTML = `
-                <p style="color:#aaa;margin-bottom:4px;text-align:center;">✨ Unique text formatting styles for headings & body text</p>
-                <p style="color:#666;font-size:0.7rem;text-align:center;margin-bottom:16px;">Each card shows a live preview — click <strong>Copy CSS</strong> to grab the style code</p>
-                <div class="text-format-grid">
-                    ${textStyles.map((style,index) => `
-                        <div class="text-format-card">
-                            <div class="style-name">✨ ${style.name} <span style="color:#888;font-size:0.65rem;">— ${style.bestFor}</span></div>
-                            <div class="preview-heading" style="${style.headingCSS.replace(/\n/g,' ')}">${style.headingPreview}</div>
-                            <div class="preview-body" style="${style.bodyCSS.replace(/\n/g,' ')}">${style.bodyPreview}</div>
-                            <button class="copy-style-btn outline-btn" data-index="${index}">📋 Copy CSS</button>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            c.querySelectorAll('.copy-style-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const idx = parseInt(btn.dataset.index);
-                    const style = textStyles[idx];
-                    const fullCSS = `/* ${style.name} — ${style.bestFor} */\n/* Heading Style */\n.heading {\n    ${style.headingCSS.trim().replace(/\n/g,'\n    ')}\n}\n\n/* Body Text Style */\n.body-text {\n    ${style.bodyCSS.trim().replace(/\n/g,'\n    ')}\n}`;
-                    copyText(fullCSS);
-                    showToast(`📋 ${style.name} CSS copied!`);
-                });
+                // ---- Step 3: Download test ----
+                status.textContent = 'Testing download...';
+                let dlMbps = null;
+                let dlSourceUsed = '';
+                for (const dlSource of DOWNLOAD_URLS) {
+                    try {
+                        status.textContent = `Download test (${dlSource.name})...`;
+                        const dlStart = performance.now();
+                        const response = await fetchWithTimeout(dlSource.url, { cache: 'no-store' },
+                        20000);
+                        const data = await response.arrayBuffer();
+                        const dlEnd = performance.now();
+                        const actualSize = data.byteLength;
+                        if (actualSize < 1000) {
+                            throw new Error('Downloaded data too small: ' + actualSize + ' bytes');
+                        }
+                        dlMbps = (actualSize * 8) / ((dlEnd - dlStart) / 1000) / 1000000;
+                        dlSourceUsed = dlSource.name;
+                        break;
+                    } catch (e) {
+                        console.warn(`Download source ${dlSource.name} failed:`, e.message);
+                        continue;
+                    }
+                }
+                if (dlMbps !== null) {
+                    dlEl.textContent = dlMbps.toFixed(2);
+                    gauge.textContent = dlMbps.toFixed(1);
+                    gauge.style.color = 'var(--neon-lime)';
+                    setMeter(dlMbps);
+                    status.textContent = `✅ Download: ${dlSourceUsed}`;
+                } else {
+                    dlEl.textContent = 'N/A';
+                    gauge.textContent = 'ERR';
+                    gauge.style.color = '#ff073a';
+                    setMeter(0);
+                    status.textContent = 'Download failed';
+                    errorDiv.textContent =
+                        '⚠️ Download test failed on all servers. Upload test may still work.';
+                    errorDiv.style.display = 'block';
+                }
+
+                // ---- Step 4: Upload test ----
+                status.textContent = 'Testing upload...';
+                let ulMbps = null;
+                let ulSourceUsed = '';
+                const payloadSize = 50 * 1024; // 50KB
+                const payload = new Uint8Array(payloadSize);
+                crypto.getRandomValues(payload);
+                const blob = new Blob([payload]);
+                for (const ulSource of UPLOAD_URLS) {
+                    try {
+                        status.textContent = `Upload test (${ulSource.name})...`;
+                        const ulStart = performance.now();
+                        await fetchWithTimeout(ulSource.url, {
+                            method: 'POST',
+                            body: blob,
+                            cache: 'no-store',
+                        }, 20000);
+                        const ulEnd = performance.now();
+                        ulMbps = (payloadSize * 8) / ((ulEnd - ulStart) / 1000) / 1000000;
+                        ulSourceUsed = ulSource.name;
+                        break;
+                    } catch (e) {
+                        console.warn(`Upload source ${ulSource.name} failed:`, e.message);
+                        continue;
+                    }
+                }
+                if (ulMbps !== null) {
+                    ulEl.textContent = ulMbps.toFixed(2);
+                    if (dlMbps === null) {
+                        status.textContent = `✅ Upload: ${ulSourceUsed} (download failed)`;
+                    } else {
+                        status.textContent = `✅ Complete (DL:${dlSourceUsed} UL:${ulSourceUsed})`;
+                    }
+                } else {
+                    ulEl.textContent = 'N/A';
+                    if (dlMbps === null) {
+                        status.textContent = 'All tests failed';
+                    }
+                }
+
+                // ---- Finalize ----
+                if (dlMbps === null && ulMbps === null) {
+                    errorDiv.textContent =
+                        '❌ All speed tests failed. Try again later or check your firewall/VPN settings.';
+                    errorDiv.style.display = 'block';
+                    gauge.textContent = 'ERR';
+                    gauge.style.color = '#ff073a';
+                }
+                btn.disabled = false;
+                btn.textContent = '🚀 Start Speed Test';
             });
         }
 
-        // Start application
+        // ---------- STOPWATCH & TIMER ----------
+        function stopwatchTimerTool(c) {
+            c.innerHTML = `
+                <div class="tab-bar"><button class="tab-btn active" data-tab="sw">⏱️ Stopwatch</button><button class="tab-btn" data-tab="tm">⏰ Timer</button></div>
+                <div id="swPanel">
+                    <div class="time-display" id="swDisplay">00:00:00.00</div>
+                    <div class="row" style="justify-content:center;"><button id="swStart">▶ Start</button><button id="swLap" class="outline-btn" disabled>🏁 Lap</button><button id="swReset" class="outline-btn">↺ Reset</button></div>
+                    <div class="lap-list" id="lapList"></div>
+                </div>
+                <div id="tmPanel" style="display:none;">
+                    <div class="time-display" id="tmDisplay">00:00:00</div>
+                    <div class="row" style="justify-content:center;"><div><label>Hr</label><input type="number" id="tmHr" value="0" min="0" max="99" style="text-align:center;"></div><div><label>Min</label><input type="number" id="tmMin" value="5" min="0" max="59" style="text-align:center;"></div><div><label>Sec</label><input type="number" id="tmSec" value="0" min="0" max="59" style="text-align:center;"></div></div>
+                    <div class="row" style="justify-content:center;margin-top:10px;"><button id="tmStart">▶ Start</button><button id="tmPause" class="outline-btn" disabled>⏸ Pause</button><button id="tmReset" class="outline-btn">↺ Reset</button></div>
+                </div>`;
+            c.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+                c.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('swPanel').style.display = btn.dataset.tab === 'sw' ? 'block' :
+                    'none';
+                document.getElementById('tmPanel').style.display = btn.dataset.tab === 'tm' ? 'block' :
+                    'none';
+            }));
+            let swInterval = null,
+                swRunning = false,
+                swStartTime = 0,
+                swElapsed = 0,
+                lapCount = 0;
+            const swDisplay = document.getElementById('swDisplay'),
+                lapList = document.getElementById('lapList');
+            const swStartBtn = document.getElementById('swStart'),
+                swLapBtn = document.getElementById('swLap'),
+                swResetBtn = document.getElementById('swReset');
+
+            function formatSW(ms) {
+                const cs = Math.floor(ms / 10) % 100,
+                    s = Math.floor(ms / 1000) % 60,
+                    m = Math.floor(ms / 60000) % 60,
+                    h = Math.floor(ms / 3600000);
+                return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${String(cs).padStart(2,'0')}`;
+            }
+
+            function updateSW() {
+                const total = swElapsed + (swRunning ? performance.now() - swStartTime : 0);
+                swDisplay.textContent = formatSW(total);
+                swDisplay.classList.toggle('paused', !swRunning);
+            }
+            swStartBtn.addEventListener('click', () => {
+                if (!swRunning) {
+                    swRunning = true;
+                    swStartTime = performance.now();
+                    swStartBtn.textContent = '⏸ Stop';
+                    swStartBtn.style.background = 'linear-gradient(135deg, #ff6600, #ff00ff)';
+                    swLapBtn.disabled = false;
+                    swInterval = setInterval(updateSW, 16);
+                } else {
+                    swRunning = false;
+                    swElapsed += performance.now() - swStartTime;
+                    swStartBtn.textContent = '▶ Start';
+                    swStartBtn.style.background =
+                        'linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta))';
+                    swLapBtn.disabled = true;
+                    clearInterval(swInterval);
+                    swInterval = null;
+                    updateSW();
+                }
+            });
+            swLapBtn.addEventListener('click', () => {
+                lapCount++;
+                const total = swElapsed + (swRunning ? performance.now() - swStartTime : 0);
+                const div = document.createElement('div');
+                div.className = 'lap-item';
+                div.innerHTML = `<span>Lap ${lapCount}</span><span>${formatSW(total)}</span>`;
+                lapList.insertBefore(div, lapList.firstChild);
+            });
+            swResetBtn.addEventListener('click', () => {
+                swRunning = false;
+                swElapsed = 0;
+                swStartTime = 0;
+                lapCount = 0;
+                clearInterval(swInterval);
+                swInterval = null;
+                swDisplay.textContent = '00:00:00.00';
+                swDisplay.classList.remove('paused');
+                swStartBtn.textContent = '▶ Start';
+                swStartBtn.style.background =
+                    'linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta))';
+                swLapBtn.disabled = true;
+                lapList.innerHTML = '';
+            });
+            const tmDisplay = document.getElementById('tmDisplay'),
+                tmStartBtn = document.getElementById('tmStart');
+            const tmPauseBtn = document.getElementById('tmPause'),
+                tmResetBtn = document.getElementById('tmReset');
+            const tmHr = document.getElementById('tmHr'),
+                tmMin = document.getElementById('tmMin'),
+                tmSec = document.getElementById('tmSec');
+
+            function getTimerInputMs() {
+                return ((parseInt(tmHr.value) || 0) * 3600 + (parseInt(tmMin.value) || 0) * 60 + (parseInt(tmSec
+                    .value) || 0)) * 1000;
+            }
+
+            function updateTimerUI() {
+                const rem = globalTimer.remaining;
+                tmDisplay.textContent = formatTimeMS(rem);
+                if (globalTimer.expired) {
+                    tmDisplay.style.color = '#ff073a';
+                    tmStartBtn.textContent = '▶ Start';
+                    tmPauseBtn.disabled = true;
+                } else if (globalTimer.running) {
+                    tmDisplay.style.color = rem < 10000 ? '#ff6600' : 'var(--neon-lime)';
+                    tmStartBtn.textContent = '⏸ Stop';
+                    tmStartBtn.style.background = 'linear-gradient(135deg, #ff6600, #ff00ff)';
+                    tmPauseBtn.disabled = false;
+                } else {
+                    tmDisplay.style.color = rem <= 0 ? 'var(--neon-lime)' : (rem < 10000 ? '#ff6600' :
+                        'var(--neon-lime)');
+                    tmStartBtn.textContent = '▶ Start';
+                    tmStartBtn.style.background =
+                        'linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta))';
+                    tmPauseBtn.disabled = true;
+                }
+            }
+            if (!globalTimer.running && !globalTimer.expired && globalTimer.remaining <= 0) {
+                const ms = getTimerInputMs();
+                globalTimer.remaining = ms;
+                globalTimer.total = ms;
+            }
+            updateTimerUI();
+            tmStartBtn.addEventListener('click', () => {
+                if (globalTimer.running) { pauseGlobalTimer(); } else if (globalTimer.expired) {
+                    stopGlobalTimer(true);
+                    const ms = getTimerInputMs();
+                    startGlobalTimer(ms);
+                } else {
+                    if (globalTimer.remaining <= 0) {
+                        const ms = getTimerInputMs();
+                        if (ms <= 0) { showToast('⚠️ Set a time'); return; }
+                        startGlobalTimer(ms);
+                    } else { resumeGlobalTimer(); }
+                }
+                updateTimerUI();
+            });
+            tmPauseBtn.addEventListener('click', () => { pauseGlobalTimer();
+                updateTimerUI(); });
+            tmResetBtn.addEventListener('click', () => {
+                stopGlobalTimer(true);
+                const ms = getTimerInputMs();
+                globalTimer.remaining = ms;
+                globalTimer.total = ms;
+                globalTimer.expired = false;
+                tmDisplay.textContent = formatTimeMS(ms);
+                tmDisplay.style.color = 'var(--neon-lime)';
+                tmStartBtn.textContent = '▶ Start';
+                tmStartBtn.style.background =
+                    'linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta))';
+                tmPauseBtn.disabled = true;
+                updateFloatingTimer();
+            });
+            ['tmHr', 'tmMin', 'tmSec'].forEach(id => document.getElementById(id).addEventListener('input', () => {
+                if (!globalTimer.running && !globalTimer.expired) {
+                    const ms = getTimerInputMs();
+                    globalTimer.remaining = ms;
+                    globalTimer.total = ms;
+                    tmDisplay.textContent = formatTimeMS(ms);
+                }
+            }));
+            let syncInterval = setInterval(() => {
+                if (document.getElementById('tmDisplay')) updateTimerUI();
+                else clearInterval(syncInterval);
+            }, 500);
+        }
+
+        // ---------- NOTES ----------
+        function notesTool(c) {
+            function getNotes() {
+                try { return JSON.parse(localStorage.getItem('devtoolkit_notes') || '[]'); } catch (e) { return []; }
+            }
+
+            function saveNotes(notes) { localStorage.setItem('devtoolkit_notes', JSON.stringify(notes)); }
+            let notes = getNotes(),
+                selectedId = null;
+
+            function renderUI() {
+                const list = document.getElementById('notesList'),
+                    editor = document.getElementById('noteEditor');
+                const title = document.getElementById('noteTitle'),
+                    content = document.getElementById('noteContent');
+                const date = document.getElementById('noteDate'),
+                    del = document.getElementById('noteDelete');
+                list.innerHTML = notes.length ? notes.sort((a, b) => b.updatedAt - a.updatedAt).map(n =>
+                    `<div class="note-card ${n.id===selectedId?'selected':''}" data-id="${n.id}"><h4>${n.title||'Untitled'}</h4><div class="note-date">${new Date(n.updatedAt).toLocaleString()}</div><div class="note-preview">${n.content?n.content.slice(0,60):'Empty...'}</div></div>`
+                ).join('') : '<p style="color:#666;padding:20px;">No notes yet.</p>';
+                if (selectedId && notes.find(n => n.id === selectedId)) {
+                    const n = notes.find(n => n.id === selectedId);
+                    title.value = n.title;
+                    content.value = n.content;
+                    date.textContent = 'Updated: ' + new Date(n.updatedAt).toLocaleString();
+                    editor.style.display = 'block';
+                    del.style.display = 'inline-block';
+                } else {
+                    title.value = '';
+                    content.value = '';
+                    date.textContent = '';
+                    editor.style.display = 'none';
+                    del.style.display = 'none';
+                }
+            }
+            c.innerHTML =
+                `<div class="row"><button id="newNoteBtn">＋ New Note</button><button id="noteDelete" class="danger-btn" style="display:none;">🗑 Delete</button></div><div class="notes-list" id="notesList"></div><div id="noteEditor" style="display:none;"><label>Title</label><input id="noteTitle" placeholder="Title..."><label>Content</label><textarea id="noteContent" style="min-height:150px;"></textarea><p id="noteDate" style="color:#666;font-size:0.7rem;"></p><p style="color:#444;font-size:0.65rem;">✏️ Auto-saves</p></div>`;
+            document.getElementById('newNoteBtn').onclick = () => {
+                const newN = {
+                    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+                    title: '',
+                    content: '',
+                    createdAt: Date.now(),
+                    updatedAt: Date.now()
+                };
+                notes.push(newN);
+                selectedId = newN.id;
+                saveNotes(notes);
+                renderUI();
+                document.getElementById('noteTitle').focus();
+            };
+            document.getElementById('noteDelete').onclick = () => {
+                if (selectedId && confirm('Delete?')) {
+                    notes = notes.filter(n => n.id !== selectedId);
+                    selectedId = notes.length ? notes[notes.length - 1].id : null;
+                    saveNotes(notes);
+                    renderUI();
+                }
+            };
+            document.getElementById('notesList').addEventListener('click', e => {
+                const card = e.target.closest('.note-card');
+                if (card) { selectedId = card.dataset.id;
+                    renderUI(); }
+            });
+            document.getElementById('noteTitle').addEventListener('input', () => {
+                const n = notes.find(n => n.id === selectedId);
+                if (n) { n.title = document.getElementById('noteTitle').value;
+                    n.updatedAt = Date.now();
+                    saveNotes(notes); }
+            });
+            document.getElementById('noteContent').addEventListener('input', () => {
+                const n = notes.find(n => n.id === selectedId);
+                if (n) { n.content = document.getElementById('noteContent').value;
+                    n.updatedAt = Date.now();
+                    saveNotes(notes); }
+            });
+            if (notes.length && !selectedId) selectedId = notes.sort((a, b) => b.updatedAt - a.updatedAt)[0].id;
+            renderUI();
+        }
+
+        // ---------- TTS ----------
+        function ttsTool(c) {
+            c.innerHTML = `
+                <label>Text to speak</label>
+                <textarea id="ttsText" style="min-height:130px;">Hello! This is the DevToolKit Pro text to speech tool.</textarea>
+                <div class="row"><div><label>Voice</label><select id="ttsVoice"></select></div></div>
+                <div class="row"><div><label>Rate: <span id="ttsRateVal">1.0</span>x</label><input type="range" id="ttsRate" min="0.1" max="3" step="0.1" value="1"></div><div><label>Pitch: <span id="ttsPitchVal">1.0</span></label><input type="range" id="ttsPitch" min="0.1" max="2" step="0.1" value="1"></div></div>
+                <div class="row" style="justify-content:center;margin-top:10px;"><button id="ttsSpeak">🔊 Speak</button><button id="ttsPause" class="outline-btn">⏸ Pause</button><button id="ttsStop" class="outline-btn">⏹ Stop</button><button id="ttsDownloadText" class="outline-btn">📥 Download Text</button></div>
+                <div class="tts-note">⚠️ <strong>Audio download is not possible</strong> using the browser's built-in speech synthesis. The Web Speech API does not provide a way to capture the audio stream. You can download the spoken text as a .txt file, or use a screen recorder to capture the audio.</div>`;
+            const synth = window.speechSynthesis;
+            const voiceSelect = document.getElementById('ttsVoice');
+
+            function populateVoices() {
+                const voices = synth.getVoices();
+                voiceSelect.innerHTML = voices.map(v =>
+                    `<option value="${v.name}">${v.name} (${v.lang})</option>`).join('');
+                if (voices.length && !voiceSelect.value) {
+                    const en = voices.find(v => v.lang.startsWith('en'));
+                    if (en) voiceSelect.value = en.name;
+                }
+            }
+            populateVoices();
+            synth.onvoiceschanged = populateVoices;
+            document.getElementById('ttsRate').addEventListener('input', e => document.getElementById('ttsRateVal')
+                .textContent = parseFloat(e.target.value).toFixed(1));
+            document.getElementById('ttsPitch').addEventListener('input', e => document.getElementById('ttsPitchVal')
+                .textContent = parseFloat(e.target.value).toFixed(1));
+            document.getElementById('ttsSpeak').addEventListener('click', () => {
+                const text = document.getElementById('ttsText').value.trim();
+                if (!text) return showToast('⚠️ Enter text');
+                synth.cancel();
+                const u = new SpeechSynthesisUtterance(text);
+                const voice = synth.getVoices().find(v => v.name === voiceSelect.value);
+                if (voice) u.voice = voice;
+                u.rate = parseFloat(document.getElementById('ttsRate').value);
+                u.pitch = parseFloat(document.getElementById('ttsPitch').value);
+                synth.speak(u);
+                showToast('🔊 Speaking...');
+            });
+            document.getElementById('ttsPause').addEventListener('click', () => {
+                if (synth.speaking && !synth.paused) { synth.pause();
+                    showToast('⏸ Paused'); } else if (synth.paused) { synth.resume();
+                    showToast('▶ Resumed'); }
+            });
+            document.getElementById('ttsStop').addEventListener('click', () => { synth.cancel();
+                showToast('⏹ Stopped'); });
+            document.getElementById('ttsDownloadText').addEventListener('click', () => {
+                const text = document.getElementById('ttsText').value;
+                const blob = new Blob([text], { type: 'text/plain' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'speech.txt';
+                a.click();
+                showToast('📥 Text downloaded');
+            });
+        }
+
+        // ---------- UNIT CONVERTER ----------
+        function unitConverterTool(c) {
+            const categories = {
+                length: {
+                    name: '📏 Length',
+                    units: [
+                        { id: 'meter', name: 'Meter (m)', factor: 1 }, { id: 'kilometer',
+                            name: 'Kilometer (km)', factor: 1000 }, { id: 'centimeter',
+                            name: 'Centimeter (cm)', factor: 0.01 }, { id: 'millimeter',
+                            name: 'Millimeter (mm)', factor: 0.001 }, { id: 'mile',
+                            name: 'Mile (mi)', factor: 1609.344 }, { id: 'yard',
+                            name: 'Yard (yd)', factor: 0.9144 }, { id: 'foot', name: 'Foot (ft)',
+                            factor: 0.3048 }, { id: 'inch', name: 'Inch (in)', factor: 0.0254 }
+                    ]
+                },
+                weight: {
+                    name: '⚖️ Weight',
+                    units: [
+                        { id: 'kilogram', name: 'Kilogram (kg)', factor: 1 }, { id: 'gram',
+                            name: 'Gram (g)', factor: 0.001 }, { id: 'milligram',
+                            name: 'Milligram (mg)', factor: 0.000001 }, { id: 'pound',
+                            name: 'Pound (lb)', factor: 0.453592 }, { id: 'ounce',
+                            name: 'Ounce (oz)', factor: 0.0283495 }, { id: 'ton', name: 'Ton (t)',
+                            factor: 1000 }
+                    ]
+                },
+                temperature: {
+                    name: '🌡️ Temperature',
+                    units: [
+                        { id: 'celsius', name: 'Celsius (°C)', factor: null }, { id: 'fahrenheit',
+                            name: 'Fahrenheit (°F)', factor: null }, { id: 'kelvin',
+                            name: 'Kelvin (K)', factor: null }
+                    ]
+                },
+                volume: {
+                    name: '🧪 Volume',
+                    units: [
+                        { id: 'liter', name: 'Liter (L)', factor: 1 }, { id: 'milliliter',
+                            name: 'Milliliter (mL)', factor: 0.001 }, { id: 'gallon',
+                            name: 'Gallon (gal)', factor: 3.78541 }, { id: 'quart',
+                            name: 'Quart (qt)', factor: 0.946353 }, { id: 'pint',
+                            name: 'Pint (pt)', factor: 0.473176 }, { id: 'cup', name: 'Cup',
+                            factor: 0.236588 }
+                    ]
+                },
+                area: {
+                    name: '📐 Area',
+                    units: [
+                        { id: 'sqmeter', name: 'Square Meter (m²)', factor: 1 },
+                        { id: 'sqkilometer', name: 'Square Kilometer (km²)', factor: 1000000 },
+                        { id: 'sqmile', name: 'Square Mile (mi²)', factor: 2589988 },
+                        { id: 'sqfoot', name: 'Square Foot (ft²)', factor: 0.092903 },
+                        { id: 'acre', name: 'Acre', factor: 4046.86 }, { id: 'hectare',
+                            name: 'Hectare (ha)', factor: 10000 }
+                    ]
+                },
+                speed: {
+                    name: '💨 Speed',
+                    units: [
+                        { id: 'mps', name: 'Meter/sec (m/s)', factor: 1 }, { id: 'kph',
+                            name: 'Kilometer/hour (km/h)', factor: 0.277778 }, { id: 'mph',
+                            name: 'Mile/hour (mph)', factor: 0.44704 }, { id: 'knot',
+                            name: 'Knot (kn)', factor: 0.514444 }
+                    ]
+                }
+            };
+
+            function convertTemperature(value, from, to) {
+                let c = value;
+                if (from === 'fahrenheit') c = (value - 32) * 5 / 9;
+                if (from === 'kelvin') c = value - 273.15;
+                if (to === 'fahrenheit') return c * 9 / 5 + 32;
+                if (to === 'kelvin') return c + 273.15;
+                return c;
+            }
+
+            function convert(value, fromUnit, toUnit, catKey) {
+                if (catKey === 'temperature') return convertTemperature(value, fromUnit, toUnit);
+                const cat = categories[catKey],
+                    from = cat.units.find(u => u.id === fromUnit),
+                    to = cat.units.find(u => u.id === toUnit);
+                return (from && to) ? (value * from.factor) / to.factor : value;
+            }
+            c.innerHTML =
+                `<div class="row"><div><label>Category</label><select id="ucCategory"></select></div></div><div class="converter-row"><div><label>Value</label><input type="number" id="ucInput" value="1" step="any"></div><div><label>From</label><select id="ucFrom"></select></div><div class="swap-icon" id="ucSwap">🔄</div><div><label>To</label><select id="ucTo"></select></div></div><div class="result-badge" id="ucResult">--</div><button class="outline-btn" id="ucCopy" style="display:block;margin:0 auto;">📋 Copy Result</button>`;
+            const catSel = document.getElementById('ucCategory'),
+                fromSel = document.getElementById('ucFrom'),
+                toSel = document.getElementById('ucTo');
+            const inputEl = document.getElementById('ucInput'),
+                resultEl = document.getElementById('ucResult');
+
+            function populateCat() {
+                catSel.innerHTML = Object.entries(categories).map(([k, v]) =>
+                    `<option value="${k}">${v.name}</option>`).join('');
+                populateUnits();
+            }
+
+            function populateUnits() {
+                const cat = categories[catSel.value],
+                    opts = cat.units.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+                fromSel.innerHTML = opts;
+                toSel.innerHTML = opts;
+                if (cat.units.length >= 2) { fromSel.value = cat.units[0].id;
+                    toSel.value = cat.units[cat.units.length - 1].id; }
+                updateResult();
+            }
+
+            function updateResult() {
+                const val = parseFloat(inputEl.value);
+                if (isNaN(val)) { resultEl.textContent = '--'; return; }
+                const res = convert(val, fromSel.value, toSel.value, catSel.value);
+                resultEl.textContent = (res === null || isNaN(res)) ? '--' : parseFloat(res.toPrecision(12)) +
+                    ' ' + (categories[catSel.value].units.find(u => u.id === toSel.value)?.name.split(' ')[0] ||
+                        '');
+            }
+            catSel.addEventListener('change', populateUnits);
+            fromSel.addEventListener('change', updateResult);
+            toSel.addEventListener('change', updateResult);
+            inputEl.addEventListener('input', updateResult);
+            document.getElementById('ucSwap').addEventListener('click', () => {
+                const t = fromSel.value;
+                fromSel.value = toSel.value;
+                toSel.value = t;
+                updateResult();
+            });
+            document.getElementById('ucCopy').addEventListener('click', () => copyText(resultEl.textContent));
+            populateCat();
+        }
+
+        // Wrap render functions to update floating timer
+        const _renderCategory = renderCategory;
+        renderCategory = function(catId) { _renderCategory(catId);
+            updateFloatingTimer(); };
+        const _renderHome = renderHome;
+        renderHome = function() { _renderHome();
+            updateFloatingTimer(); };
+        const _renderTool = renderTool;
+        renderTool = function(catId, toolId) { _renderTool(catId, toolId);
+            updateFloatingTimer(); };
+
         renderHome();
     </script>
 </body>
