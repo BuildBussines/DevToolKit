@@ -575,6 +575,65 @@
             max-width: 100%;
             border-radius: 12px;
         }
+        .prompt-template-card {
+            background: rgba(20, 20, 45, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+        .prompt-template-card:hover {
+            border-color: var(--neon-lime);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+        }
+        .prompt-template-card.selected {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        .prompt-template-card h4 {
+            margin: 0 0 4px;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        .prompt-template-card .prompt-category {
+            font-size: 0.7rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .prompt-template-card .prompt-preview {
+            font-size: 0.78rem;
+            color: #999;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 4px;
+        }
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 0, 255, 0.2);
+            border: 1px solid var(--neon-magenta);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            color: var(--neon-magenta);
+            margin: 2px 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            user-select: none;
+        }
+        .badge-tag:hover {
+            background: rgba(255, 0, 255, 0.4);
+            box-shadow: 0 0 10px var(--neon-magenta);
+        }
+        .badge-tag.active {
+            background: rgba(255, 0, 255, 0.5);
+            box-shadow: 0 0 15px var(--neon-magenta);
+            color: #fff;
+        }
         @media (max-width:600px) {
             .time-display {
                 font-size: 2.2rem;
@@ -762,55 +821,57 @@
 
         const categories = [
             { id: 'text', icon: '📝', name: 'Text & Encode', desc: 'Encode, decode, generate text' },
-            { id: 'design', icon: '🎨', name: 'CSS & Design',
-            desc: 'Gradients, shadows, colors, flexbox' },
+            { id: 'design', icon: '🎨', name: 'CSS & Design', desc: 'Gradients, shadows, colors, flexbox' },
             { id: 'code', icon: '💻', name: 'Code Tools', desc: 'JSON, minifiers, regex, diff' },
             { id: 'security', icon: '🔐', name: 'Security', desc: 'Passwords, hashing' },
-            { id: 'qrbarcode', icon: '📱', name: 'QR & Barcode',
-                desc: 'Generate and read QR codes & barcodes' },
-            { id: 'utilities', icon: '🛠️', name: 'Utilities',
-                desc: 'Speed test, stopwatch, notes, TTS, converter' }
+            { id: 'qrbarcode', icon: '📱', name: 'QR & Barcode', desc: 'Generate and read QR codes & barcodes' },
+            { id: 'prompt', icon: '🤖', name: 'Prompt Tools', desc: 'AI prompt generator & creator' },
+            { id: 'utilities', icon: '🧰', name: 'Utilities', desc: 'Speed test, stopwatch, notes, TTS, converter' }
         ];
         const tools = {
             text: [
-                { id: 'base64', emoji: '🔤', title: 'Base64 Encoder/Decoder' },
+                { id: 'base64', emoji: '🔣', title: 'Base64 Encoder/Decoder' },
                 { id: 'urlencode', emoji: '🔗', title: 'URL Encoder/Decoder' },
                 { id: 'wordcounter', emoji: '📊', title: 'Word & Character Counter' },
-                { id: 'lorem', emoji: '📜', title: 'Lorem Ipsum Generator' },
+                { id: 'lorem', emoji: '📄', title: 'Lorem Ipsum Generator' },
                 { id: 'uuid', emoji: '🆔', title: 'UUID Generator' }
             ],
             design: [
                 { id: 'gradient', emoji: '🌈', title: 'Gradient Generator' },
-                { id: 'boxshadow', emoji: '📦', title: 'Box Shadow Generator' },
+                { id: 'boxshadow', emoji: '⬛', title: 'Box Shadow Generator' },
                 { id: 'colorpicker', emoji: '🎯', title: 'Color Picker & Convert' },
                 { id: 'contrast', emoji: '👁️', title: 'Contrast Checker' },
                 { id: 'flexbox', emoji: '📐', title: 'Flexbox Playground' },
                 { id: 'colorplate', emoji: '🎨', title: 'Colour Plate' },
-                { id: 'textformat', emoji: '🔠', title: 'Text Format Chooser' }
+                { id: 'textformat', emoji: '🔤', title: 'Text Format Chooser' }
             ],
             code: [
-                { id: 'jsonfmt', emoji: '🔄', title: 'JSON Formatter' },
+                { id: 'jsonfmt', emoji: '📋', title: 'JSON Formatter' },
                 { id: 'cssmin', emoji: '🗜️', title: 'CSS Minifier' },
                 { id: 'jsmin', emoji: '⚡', title: 'JavaScript Minifier' },
                 { id: 'regex', emoji: '🔍', title: 'Regex Tester' },
-                { id: 'diff', emoji: '📋', title: 'Code Diff Checker' }
+                { id: 'diff', emoji: '🔄', title: 'Code Diff Checker' }
             ],
             security: [
                 { id: 'password', emoji: '🔑', title: 'Password Generator' },
                 { id: 'hash', emoji: '#️⃣', title: 'Hash Generator' }
             ],
             qrbarcode: [
-                { id: 'qrgenerator', emoji: '📱', title: 'QR Code Generator' },
-                { id: 'qrreader', emoji: '📷', title: 'QR Code Reader' },
-                { id: 'barcodemaker', emoji: '📊', title: 'Barcode Maker' },
+                { id: 'qrgenerator', emoji: '📷', title: 'QR Code Generator' },
+                { id: 'qrreader', emoji: '📸', title: 'QR Code Reader' },
+                { id: 'barcodemaker', emoji: '🛒', title: 'Barcode Maker' },
                 { id: 'barcodereader', emoji: '🔎', title: 'Barcode Reader' }
+            ],
+            prompt: [
+                { id: 'promptgenerator', emoji: '✨', title: 'Prompt Generator' },
+                { id: 'promptcreator', emoji: '📝', title: 'Prompt Creator' }
             ],
             utilities: [
                 { id: 'speedtest', emoji: '🚀', title: 'Internet Speed Checker' },
                 { id: 'stopwatch', emoji: '⏱️', title: 'Stopwatch & Timer' },
-                { id: 'notes', emoji: '📝', title: 'Notes' },
+                { id: 'notes', emoji: '📒', title: 'Notes' },
                 { id: 'tts', emoji: '🔊', title: 'Text to Speech' },
-                { id: 'unitconverter', emoji: '🔄', title: 'Unit Converter' }
+                { id: 'unitconverter', emoji: '⚖️', title: 'Unit Converter' }
             ]
         };
 
@@ -824,18 +885,17 @@
 
         function copyText(text) {
             if (!text || text.trim() === '') { showToast('⚠️ Nothing to copy'); return; }
-            navigator.clipboard.writeText(text).then(() => showToast('✅ Copied!'));
+            navigator.clipboard.writeText(text).then(() => showToast('📋 Copied!'));
         }
 
         function renderHome() {
             app.innerHTML = `
-                <h1 style="font-size:2.5rem; text-shadow:0 0 20px var(--neon-cyan);">⚡🛠️ DevToolKit Pro</h1>
+                <h1 style="font-size:2.5rem; text-shadow:0 0 20px var(--neon-cyan);">⚡🚀 DevToolKit Pro</h1>
                 <p style="color:#aaa; margin-bottom:30px;">Professional developer utilities</p>
                 <div class="category-grid">
                     ${categories.map(c => `<div class="cat-card" data-cat="${c.id}"><div class="icon">${c.icon}</div><h2>${c.name}</h2><p>${c.desc}</p></div>`).join('')}
                 </div>`;
-            document.querySelectorAll('.cat-card').forEach(card => card.addEventListener('click', () => renderCategory(card
-                .dataset.cat)));
+            document.querySelectorAll('.cat-card').forEach(card => card.addEventListener('click', () => renderCategory(card.dataset.cat)));
         }
 
         function renderCategory(catId) {
@@ -845,8 +905,7 @@
                 <h2 style="font-size:1.8rem; text-shadow:0 0 12px var(--neon-magenta);">${cat.icon} ${cat.name}</h2>
                 <div class="tool-grid">${tools[catId].map(t => `<div class="tool-item" data-tool="${t.id}"><div class="emoji">${t.emoji}</div><h3>${t.title}</h3></div>`).join('')}</div>`;
             document.getElementById('backHomeBtn').addEventListener('click', renderHome);
-            document.querySelectorAll('.tool-item').forEach(item => item.addEventListener('click', () => renderTool(catId,
-                item.dataset.tool)));
+            document.querySelectorAll('.tool-item').forEach(item => item.addEventListener('click', () => renderTool(catId, item.dataset.tool)));
         }
 
         function renderTool(catId, toolId) {
@@ -863,1402 +922,631 @@
         function loadTool(toolId) {
             const container = document.getElementById('toolContainer');
             switch (toolId) {
-                case 'speedtest':
-                    speedTestTool(container);
-                    break;
-                case 'stopwatch':
-                    stopwatchTimerTool(container);
-                    break;
-                case 'notes':
-                    notesTool(container);
-                    break;
-                case 'tts':
-                    ttsTool(container);
-                    break;
-                case 'unitconverter':
-                    unitConverterTool(container);
-                    break;
-                case 'base64':
-                    base64Tool(container);
-                    break;
-                case 'urlencode':
-                    urlEncodeTool(container);
-                    break;
-                case 'wordcounter':
-                    wordCounterTool(container);
-                    break;
-                case 'lorem':
-                    loremTool(container);
-                    break;
-                case 'uuid':
-                    uuidTool(container);
-                    break;
-                case 'gradient':
-                    gradientTool(container);
-                    break;
-                case 'boxshadow':
-                    boxShadowTool(container);
-                    break;
-                case 'colorpicker':
-                    colorPickerTool(container);
-                    break;
-                case 'contrast':
-                    contrastTool(container);
-                    break;
-                case 'flexbox':
-                    flexboxTool(container);
-                    break;
-                case 'colorplate':
-                    colorPlateTool(container);
-                    break;
-                case 'textformat':
-                    textFormatTool(container);
-                    break;
-                case 'jsonfmt':
-                    jsonFmtTool(container);
-                    break;
-                case 'cssmin':
-                    cssMinTool(container);
-                    break;
-                case 'jsmin':
-                    jsMinTool(container);
-                    break;
-                case 'regex':
-                    regexTool(container);
-                    break;
-                case 'diff':
-                    diffTool(container);
-                    break;
-                case 'password':
-                    passwordTool(container);
-                    break;
-                case 'hash':
-                    hashTool(container);
-                    break;
-                case 'qrgenerator':
-                    qrGeneratorTool(container);
-                    break;
-                case 'qrreader':
-                    qrReaderTool(container);
-                    break;
-                case 'barcodemaker':
-                    barcodeMakerTool(container);
-                    break;
-                case 'barcodereader':
-                    barcodeReaderTool(container);
-                    break;
-                default:
-                    container.innerHTML =
-                        `<p style="text-align:center;color:#888;padding:40px;">🚧 Tool "${toolId}" coming soon...</p>`;
+                case 'speedtest': speedTestTool(container); break;
+                case 'stopwatch': stopwatchTimerTool(container); break;
+                case 'notes': notesTool(container); break;
+                case 'tts': ttsTool(container); break;
+                case 'unitconverter': unitConverterTool(container); break;
+                case 'base64': base64Tool(container); break;
+                case 'urlencode': urlEncodeTool(container); break;
+                case 'wordcounter': wordCounterTool(container); break;
+                case 'lorem': loremTool(container); break;
+                case 'uuid': uuidTool(container); break;
+                case 'gradient': gradientTool(container); break;
+                case 'boxshadow': boxShadowTool(container); break;
+                case 'colorpicker': colorPickerTool(container); break;
+                case 'contrast': contrastTool(container); break;
+                case 'flexbox': flexboxTool(container); break;
+                case 'colorplate': colorPlateTool(container); break;
+                case 'textformat': textFormatTool(container); break;
+                case 'jsonfmt': jsonFmtTool(container); break;
+                case 'cssmin': cssMinTool(container); break;
+                case 'jsmin': jsMinTool(container); break;
+                case 'regex': regexTool(container); break;
+                case 'diff': diffTool(container); break;
+                case 'password': passwordTool(container); break;
+                case 'hash': hashTool(container); break;
+                case 'qrgenerator': qrGeneratorTool(container); break;
+                case 'qrreader': qrReaderTool(container); break;
+                case 'barcodemaker': barcodeMakerTool(container); break;
+                case 'barcodereader': barcodeReaderTool(container); break;
+                case 'promptgenerator': promptGeneratorTool(container); break;
+                case 'promptcreator': promptCreatorTool(container); break;
+                default: container.innerHTML = `<p style="text-align:center;color:#888;padding:40px;">🚧 Tool "${toolId}" coming soon...</p>`;
             }
+        }
+
+        // ==================== SIMPLE PROMPT GENERATOR ====================
+        function promptGeneratorTool(c) {
+            c.innerHTML = `
+                <p style="color:#aaa;text-align:center;font-size:0.85rem;">Type any word or topic – get a complete AI prompt instantly.</p>
+                <label>🎯 Your Topic</label>
+                <input type="text" id="pgTopic" value="hello" placeholder="e.g. hello, quantum physics, write a poem...">
+                <button id="pgGenerate" style="width:100%;margin-top:10px;">✨ Generate Prompt</button>
+                <label>📤 Generated Prompt</label>
+                <div class="output-box" id="pgOutput" style="min-height:100px;max-height:350px;"></div>
+                <div style="text-align:center;margin-top:8px;">
+                    <button class="outline-btn" id="pgCopy">📋 Copy Prompt</button>
+                    <button class="outline-btn" id="pgClear">🗑️ Clear</button>
+                </div>`;
+
+            const topicInput = document.getElementById('pgTopic');
+            const output = document.getElementById('pgOutput');
+            const generateBtn = document.getElementById('pgGenerate');
+
+            function generatePrompt() {
+                const topic = topicInput.value.trim();
+                if (!topic) {
+                    output.textContent = '⚠️ Please enter a topic.';
+                    return;
+                }
+                const prompt = `You are a highly knowledgeable assistant. Provide a clear, thoughtful response about the following topic.
+
+Topic: ${topic}
+
+Guidelines:
+- Use a professional and helpful tone.
+- Structure the answer with well‑organized paragraphs and headings if needed.
+- Provide accurate information, examples, and explanations.
+- If the topic is a question, answer it directly and completely.
+- If it is a creative request, deliver original and engaging content.
+- Avoid unnecessary introductions or meta‑commentary.
+
+Now, please respond.`;
+                output.textContent = prompt;
+                showToast('✨ Prompt generated!');
+            }
+
+            generateBtn.addEventListener('click', generatePrompt);
+            topicInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') generatePrompt();
+            });
+
+            document.getElementById('pgCopy').addEventListener('click', () => copyText(output.textContent));
+            document.getElementById('pgClear').addEventListener('click', () => {
+                topicInput.value = '';
+                output.textContent = 'Your prompt will appear here...';
+                showToast('🗑️ Cleared');
+            });
+
+            // Generate sample on load
+            generatePrompt();
+        }
+
+        // ==================== PROMPT CREATOR (unchanged) ====================
+        function promptCreatorTool(c) {
+            const defaultTemplates = [
+                { id: 'tpl_code_review', category: '💻 Code', title: 'Code Review', template: 'Review the following {language} code for bugs, performance issues, and best practices:\n\n```{language}\n{code}\n```\n\nFocus on: {focus_areas}', placeholders: ['language', 'code', 'focus_areas'] },
+                { id: 'tpl_blog_post', category: '✍️ Writing', title: 'Blog Post', template: 'Write a blog post titled "{title}" targeting {audience}.\n\nTopic: {topic}\nKey points to cover:\n- {key_points}\n\nTone: {tone}\nLength: {length} words', placeholders: ['title', 'audience', 'topic', 'key_points', 'tone', 'length'] },
+                { id: 'tpl_email', category: '📧 Communication', title: 'Professional Email', template: 'Write a {tone} email to {recipient} about {subject}.\n\nContext: {context}\n\nCall to action: {cta}', placeholders: ['tone', 'recipient', 'subject', 'context', 'cta'] },
+                { id: 'tpl_analysis', category: '📊 Analysis', title: 'Data Analysis', template: 'Analyze the following data and provide insights:\n\nData:\n{data}\n\nAnalysis focus: {focus}\n\nDesired output format: {format}', placeholders: ['data', 'focus', 'format'] },
+                { id: 'tpl_social', category: '📱 Social Media', title: 'Social Media Post', template: 'Create a {platform} post about {topic}.\n\nGoal: {goal}\nTarget audience: {audience}\nInclude: {include_elements}\nTone: {tone}\nMax length: {max_length}', placeholders: ['platform', 'topic', 'goal', 'audience', 'include_elements', 'tone', 'max_length'] },
+                { id: 'tpl_interview', category: '🎤 HR & Interviews', title: 'Interview Questions', template: 'Generate {num_questions} interview questions for a {role} position.\n\nFocus areas: {focus_areas}\nDifficulty level: {difficulty}\nInclude: behavioral, technical, and situational questions.', placeholders: ['num_questions', 'role', 'focus_areas', 'difficulty'] },
+                { id: 'tpl_summary', category: '📝 Summarization', title: 'Text Summarizer Prompt', template: 'Summarize the following text in {num_paragraphs} paragraph(s).\n\nFocus on: {focus}\nTone: {tone}\n\nText:\n"""\n{text}\n"""', placeholders: ['num_paragraphs', 'focus', 'tone', 'text'] },
+                { id: 'tpl_creative', category: '🎨 Creative', title: 'Creative Story', template: 'Write a {genre} story about {premise}.\n\nMain character: {character}\nSetting: {setting}\nMood: {mood}\nApproximate length: {length} words', placeholders: ['genre', 'premise', 'character', 'setting', 'mood', 'length'] }
+            ];
+
+            function getSavedTemplates() { try { return JSON.parse(localStorage.getItem('devtoolkit_prompt_templates') || '[]'); } catch(e) { return []; } }
+            function saveTemplates(tpls) { localStorage.setItem('devtoolkit_prompt_templates', JSON.stringify(tpls)); }
+
+            let savedTemplates = getSavedTemplates();
+            let allTemplates = [...defaultTemplates, ...savedTemplates];
+            let selectedTemplateId = null;
+
+            function renderUI() {
+                const tplList = document.getElementById('pcTemplateList');
+                const editorPanel = document.getElementById('pcEditorPanel');
+                const categories = [...new Set(allTemplates.map(t => t.category))];
+                let listHTML = '';
+                categories.forEach(cat => {
+                    listHTML += `<p style="color:var(--neon-cyan);font-size:0.75rem;margin:10px 0 4px;text-transform:uppercase;letter-spacing:1px;">${cat}</p>`;
+                    allTemplates.filter(t => t.category === cat).forEach(t => {
+                        const sel = t.id === selectedTemplateId ? ' selected' : '';
+                        listHTML += `<div class="prompt-template-card${sel}" data-tpl-id="${t.id}"><h4>${t.title} ${savedTemplates.some(s=>s.id===t.id)?'<span style="color:var(--neon-lime);font-size:0.6rem;">[SAVED]</span>':''}</h4><div class="prompt-category">${t.category}</div><div class="prompt-preview">${t.template.slice(0,80)}...</div></div>`;
+                    });
+                });
+                if (!allTemplates.length) listHTML = '<p style="color:#666;padding:20px;">No templates.</p>';
+                tplList.innerHTML = listHTML;
+
+                if (selectedTemplateId && allTemplates.find(t => t.id === selectedTemplateId)) {
+                    const tpl = allTemplates.find(t => t.id === selectedTemplateId);
+                    editorPanel.style.display = 'block';
+                    document.getElementById('pcTemplateTitle').textContent = '📝 Editing: ' + tpl.title;
+                    document.getElementById('pcTemplateEditor').value = tpl.template;
+                    document.getElementById('pcCategory').value = tpl.category;
+                    highlightPlaceholders();
+                    const delBtn = document.getElementById('pcDeleteTpl');
+                    delBtn.style.display = savedTemplates.some(s => s.id === tpl.id) ? 'inline-block' : 'none';
+                } else {
+                    editorPanel.style.display = 'none';
+                }
+                updateQuickInsertBtns();
+            }
+
+            function highlightPlaceholders() {
+                const editor = document.getElementById('pcTemplateEditor');
+                if (!editor) return;
+                const text = editor.value;
+                document.getElementById('pcHighlightPreview').innerHTML = text.replace(/\{(\w+)\}/g, '<mark style="background:rgba(255,0,255,0.3);color:#fff;border-radius:3px;padding:1px 4px;">{$1}</mark>') || '<span style="color:#555;">No placeholders detected.</span>';
+            }
+
+            function updateQuickInsertBtns() {
+                const container = document.getElementById('pcQuickInsertBtns');
+                if (!container) return;
+                const editor = document.getElementById('pcTemplateEditor');
+                if (!editor) return;
+                const placeholders = [...new Set([...editor.value.matchAll(/\{(\w+)\}/g)].map(m => m[1]))];
+                container.innerHTML = placeholders.map(p => `<span class="badge-tag" data-ph="${p}">{${p}}</span>`).join('') || '<span style="color:#555;font-size:0.7rem;">No placeholders</span>';
+                container.querySelectorAll('.badge-tag').forEach(badge => {
+                    badge.addEventListener('click', () => {
+                        const val = prompt(`Enter value for "${badge.dataset.ph}":`, '');
+                        if (val !== null) {
+                            const ed = document.getElementById('pcTemplateEditor');
+                            ed.value = ed.value.replace(new RegExp('\\{' + badge.dataset.ph + '\\}', 'g'), val);
+                            highlightPlaceholders();
+                            updateQuickInsertBtns();
+                            showToast(`✅ Replaced {${badge.dataset.ph}}`);
+                        }
+                    });
+                });
+            }
+
+            c.innerHTML = `
+                <div class="row" style="align-items:flex-start;">
+                    <div style="flex:1;min-width:200px;max-width:280px;">
+                        <label>📚 Templates</label>
+                        <div id="pcTemplateList" style="max-height:420px;overflow-y:auto;border:1px solid var(--border);border-radius:12px;padding:8px;background:rgba(0,0,0,0.2);"></div>
+                        <button id="pcNewTpl" class="outline-btn" style="width:100%;margin-top:8px;">➕ New Custom Template</button>
+                    </div>
+                    <div style="flex:2;min-width:300px;">
+                        <div id="pcEditorPanel" style="display:none;">
+                            <h4 id="pcTemplateTitle" style="color:#fff;margin-bottom:8px;"></h4>
+                            <label>✏️ Edit Prompt Template</label>
+                            <textarea id="pcTemplateEditor" style="min-height:180px;font-family:monospace;"></textarea>
+                            <div id="pcHighlightPreview" style="background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:8px;padding:10px;min-height:40px;margin:8px 0;font-family:monospace;font-size:0.85rem;color:#ccc;white-space:pre-wrap;"></div>
+                            <p style="font-size:0.65rem;color:#888;">Use {"{placeholder_name}"} for fillable fields. Click badges below to fill them.</p>
+                            <div id="pcQuickInsertBtns" style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0;"></div>
+                            <div class="row"><div><label>Category</label><input type="text" id="pcCategory" value="📝 Custom" placeholder="e.g. 📝 Custom"></div></div>
+                            <div style="text-align:center;margin-top:10px;">
+                                <button id="pcSaveTpl">💾 Save Template</button>
+                                <button id="pcDeleteTpl" class="danger-btn" style="display:none;">🗑️ Delete</button>
+                                <button id="pcUsePrompt" class="outline-btn">📤 Use This Prompt</button>
+                            </div>
+                        </div>
+                        <div id="pcNoSelection" style="text-align:center;color:#666;padding:60px 20px;">
+                            <p style="font-size:2rem;">📝</p>
+                            <p>Select a template from the list<br>or create a new one to get started.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="output-box" id="pcFinalOutput" style="min-height:80px;max-height:300px;margin-top:12px;">Fill in all placeholders and click "Use This Prompt" to see the final prompt here...</div>
+                <div style="text-align:center;">
+                    <button class="outline-btn" id="pcCopyFinal">📋 Copy Final Prompt</button>
+                    <button class="outline-btn" id="pcExportAll">📥 Export All Templates</button>
+                </div>`;
+
+            document.getElementById('pcTemplateList').addEventListener('click', (e) => {
+                const card = e.target.closest('.prompt-template-card');
+                if (!card) return;
+                selectedTemplateId = card.dataset.tplId;
+                renderUI();
+                document.getElementById('pcNoSelection').style.display = 'none';
+            });
+
+            document.getElementById('pcNewTpl').addEventListener('click', () => {
+                const newId = 'custom_' + Date.now().toString(36);
+                savedTemplates.push({ id: newId, category: '📝 Custom', title: 'New Template', template: 'You are a {role}. {task}. Tone: {tone}. Output format: {format}.', placeholders: ['role', 'task', 'tone', 'format'] });
+                saveTemplates(savedTemplates);
+                allTemplates = [...defaultTemplates, ...savedTemplates];
+                selectedTemplateId = newId;
+                renderUI();
+                document.getElementById('pcNoSelection').style.display = 'none';
+                showToast('➕ New template created');
+            });
+
+            document.getElementById('pcSaveTpl').addEventListener('click', () => {
+                if (!selectedTemplateId) return;
+                const editor = document.getElementById('pcTemplateEditor');
+                const category = document.getElementById('pcCategory').value || '📝 Custom';
+                const templateText = editor.value;
+                const placeholders = [...new Set([...templateText.matchAll(/\{(\w+)\}/g)].map(m => m[1]))];
+                const savedIdx = savedTemplates.findIndex(t => t.id === selectedTemplateId);
+                if (savedIdx >= 0) {
+                    savedTemplates[savedIdx].template = templateText;
+                    savedTemplates[savedIdx].category = category;
+                    savedTemplates[savedIdx].placeholders = placeholders;
+                } else {
+                    const defaultTpl = defaultTemplates.find(t => t.id === selectedTemplateId);
+                    if (defaultTpl) {
+                        savedTemplates.push({ ...defaultTpl, template: templateText, category: category, placeholders: placeholders, id: 'saved_' + defaultTpl.id });
+                        selectedTemplateId = 'saved_' + defaultTpl.id;
+                    }
+                }
+                saveTemplates(savedTemplates);
+                allTemplates = [...defaultTemplates, ...savedTemplates];
+                renderUI();
+                showToast('💾 Template saved!');
+            });
+
+            document.getElementById('pcDeleteTpl').addEventListener('click', () => {
+                if (!selectedTemplateId) return;
+                if (!confirm('Delete this saved template?')) return;
+                savedTemplates = savedTemplates.filter(t => t.id !== selectedTemplateId);
+                saveTemplates(savedTemplates);
+                allTemplates = [...defaultTemplates, ...savedTemplates];
+                selectedTemplateId = allTemplates.length ? allTemplates[0].id : null;
+                renderUI();
+                if (!selectedTemplateId) document.getElementById('pcEditorPanel').style.display = 'none';
+                showToast('🗑️ Template deleted');
+            });
+
+            document.getElementById('pcUsePrompt').addEventListener('click', () => {
+                const editor = document.getElementById('pcTemplateEditor');
+                let text = editor.value;
+                const remainingPH = [...new Set([...text.matchAll(/\{(\w+)\}/g)].map(m => m[1]))];
+                if (remainingPH.length > 0) {
+                    document.getElementById('pcFinalOutput').textContent = '⚠️ Unfilled placeholders: ' + remainingPH.map(p => '{' + p + '}').join(', ');
+                    return;
+                }
+                document.getElementById('pcFinalOutput').textContent = text;
+                showToast('✅ Prompt ready!');
+            });
+
+            document.getElementById('pcCopyFinal').addEventListener('click', () => copyText(document.getElementById('pcFinalOutput').textContent));
+            document.getElementById('pcExportAll').addEventListener('click', () => {
+                const blob = new Blob([JSON.stringify({ savedTemplates, exportDate: new Date().toISOString() }, null, 2)], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'prompt_templates_backup.json';
+                a.click();
+                showToast('📥 Templates exported!');
+            });
+
+            if (allTemplates.length && !selectedTemplateId) selectedTemplateId = allTemplates[0].id;
+            renderUI();
+            if (selectedTemplateId) document.getElementById('pcNoSelection').style.display = 'none';
         }
 
         // ==================== BASE64 ====================
         function base64Tool(c) {
-            c.innerHTML = `
-                <label>Input</label><textarea id="b64Input" placeholder="Enter text to encode/decode..."></textarea>
+            c.innerHTML = `<label>Input</label><textarea id="b64Input" placeholder="Enter text to encode/decode..."></textarea>
                 <div class="row" style="justify-content:center;"><button id="b64Encode">🔒 Encode</button><button id="b64Decode" class="outline-btn">🔓 Decode</button><button id="b64Copy" class="outline-btn">📋 Copy Output</button></div>
                 <label>Output</label><div class="output-box" id="b64Output"></div>`;
-            const inp = document.getElementById('b64Input'),
-                out = document.getElementById('b64Output');
-            document.getElementById('b64Encode').addEventListener('click', () => {
-                try {
-                    out.textContent = btoa(unescape(encodeURIComponent(inp.value)));
-                    showToast('✅ Encoded');
-                } catch (e) { out.textContent = 'Error: ' + e.message;
-                    showToast('❌ Encoding failed'); }
-            });
-            document.getElementById('b64Decode').addEventListener('click', () => {
-                try {
-                    out.textContent = decodeURIComponent(escape(atob(inp.value.trim())));
-                    showToast('✅ Decoded');
-                } catch (e) { out.textContent = 'Error: Invalid Base64';
-                    showToast('❌ Decoding failed'); }
-            });
+            const inp = document.getElementById('b64Input'), out = document.getElementById('b64Output');
+            document.getElementById('b64Encode').addEventListener('click', () => { try { out.textContent = btoa(unescape(encodeURIComponent(inp.value))); showToast('🔒 Encoded'); } catch(e) { out.textContent = 'Error: ' + e.message; } });
+            document.getElementById('b64Decode').addEventListener('click', () => { try { out.textContent = decodeURIComponent(escape(atob(inp.value.trim()))); showToast('🔓 Decoded'); } catch(e) { out.textContent = 'Error: Invalid Base64'; } });
             document.getElementById('b64Copy').addEventListener('click', () => copyText(out.textContent));
         }
 
         // ==================== URL ENCODE ====================
         function urlEncodeTool(c) {
-            c.innerHTML = `
-                <label>Input</label><textarea id="urlInput" placeholder="Enter text or URL..."></textarea>
-                <div class="row" style="justify-content:center;"><button id="urlEncode">🔒 Encode</button><button id="urlDecode" class="outline-btn">🔓 Decode</button><button id="urlCopy" class="outline-btn">📋 Copy</button></div>
+            c.innerHTML = `<label>Input</label><textarea id="urlInput" placeholder="Enter text or URL..."></textarea>
+                <div class="row" style="justify-content:center;"><button id="urlEncode">🔗 Encode</button><button id="urlDecode" class="outline-btn">🔓 Decode</button><button id="urlCopy" class="outline-btn">📋 Copy</button></div>
                 <label>Output</label><div class="output-box" id="urlOutput"></div>`;
-            const inp = document.getElementById('urlInput'),
-                out = document.getElementById('urlOutput');
-            document.getElementById('urlEncode').addEventListener('click', () => {
-                out.textContent = encodeURIComponent(inp.value);
-                showToast('✅ URL Encoded');
-            });
-            document.getElementById('urlDecode').addEventListener('click', () => {
-                try {
-                    out.textContent = decodeURIComponent(inp.value);
-                    showToast('✅ URL Decoded');
-                } catch (e) { out.textContent = 'Error: Invalid URL encoding';
-                    showToast('❌ Failed'); }
-            });
+            const inp = document.getElementById('urlInput'), out = document.getElementById('urlOutput');
+            document.getElementById('urlEncode').addEventListener('click', () => { out.textContent = encodeURIComponent(inp.value); showToast('🔗 URL Encoded'); });
+            document.getElementById('urlDecode').addEventListener('click', () => { try { out.textContent = decodeURIComponent(inp.value); } catch(e) { out.textContent = 'Error: Invalid URL encoding'; } });
             document.getElementById('urlCopy').addEventListener('click', () => copyText(out.textContent));
         }
 
         // ==================== WORD COUNTER ====================
         function wordCounterTool(c) {
-            c.innerHTML = `
-                <label>Paste your text</label><textarea id="wcInput" placeholder="Type or paste here..." style="min-height:180px;"></textarea>
+            c.innerHTML = `<label>Paste your text</label><textarea id="wcInput" placeholder="Type or paste here..." style="min-height:180px;"></textarea>
                 <div class="row"><div class="speed-metric"><div class="val" id="wcWords">0</div><div class="lbl">Words</div></div><div class="speed-metric"><div class="val" id="wcChars">0</div><div class="lbl">Characters</div></div><div class="speed-metric"><div class="val" id="wcCharsNS">0</div><div class="lbl">Chars (no spaces)</div></div><div class="speed-metric"><div class="val" id="wcLines">0</div><div class="lbl">Lines</div></div></div>
                 <button class="outline-btn" id="wcCopy">📋 Copy Stats</button>`;
             const inp = document.getElementById('wcInput');
-            const update = () => {
-                const text = inp.value;
-                document.getElementById('wcWords').textContent = text.trim() ? text.trim().split(/\s+/).length :
-                    0;
-                document.getElementById('wcChars').textContent = text.length;
-                document.getElementById('wcCharsNS').textContent = text.replace(/\s/g, '').length;
-                document.getElementById('wcLines').textContent = text ? text.split(/\n/).length : 0;
-            };
+            const update = () => { const text = inp.value; document.getElementById('wcWords').textContent = text.trim() ? text.trim().split(/\s+/).length : 0; document.getElementById('wcChars').textContent = text.length; document.getElementById('wcCharsNS').textContent = text.replace(/\s/g, '').length; document.getElementById('wcLines').textContent = text ? text.split(/\n/).length : 0; };
             inp.addEventListener('input', update);
-            document.getElementById('wcCopy').addEventListener('click', () => {
-                const w = document.getElementById('wcWords').textContent;
-                const c = document.getElementById('wcChars').textContent;
-                copyText(`Words: ${w} | Characters: ${c} | Chars (no spaces): ${document.getElementById('wcCharsNS').textContent} | Lines: ${document.getElementById('wcLines').textContent}`);
-            });
+            document.getElementById('wcCopy').addEventListener('click', () => copyText(`Words: ${document.getElementById('wcWords').textContent} | Characters: ${document.getElementById('wcChars').textContent}`));
         }
 
         // ==================== LOREM IPSUM ====================
         function loremTool(c) {
-            const loremText =
-                "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.";
-            const words = loremText.split(' ');
-            c.innerHTML = `
-                <div class="row"><div><label>Type</label><select id="loremType"><option value="paragraphs">Paragraphs</option><option value="sentences">Sentences</option><option value="words">Words</option></select></div><div><label>Count</label><input type="number" id="loremCount" value="3" min="1" max="100"></div></div>
-                <button id="loremGen">📜 Generate</button>
-                <div class="output-box" id="loremOutput" style="min-height:100px;"></div>
-                <button class="outline-btn" id="loremCopy">📋 Copy</button>`;
+            const words = "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.".split(' ');
+            c.innerHTML = `<div class="row"><div><label>Type</label><select id="loremType"><option value="paragraphs">Paragraphs</option><option value="sentences">Sentences</option><option value="words">Words</option></select></div><div><label>Count</label><input type="number" id="loremCount" value="3" min="1" max="100"></div></div>
+                <button id="loremGen">📄 Generate</button><div class="output-box" id="loremOutput" style="min-height:100px;"></div><button class="outline-btn" id="loremCopy">📋 Copy</button>`;
             document.getElementById('loremGen').addEventListener('click', () => {
-                const type = document.getElementById('loremType').value;
-                const count = parseInt(document.getElementById('loremCount').value) || 3;
+                const type = document.getElementById('loremType').value, count = parseInt(document.getElementById('loremCount').value) || 3;
                 let result = '';
-                if (type === 'words') {
-                    const picked = [];
-                    for (let i = 0; i < count; i++) picked.push(words[i % words.length]);
-                    result = picked.join(' ') + '.';
-                } else if (type === 'sentences') {
-                    for (let i = 0; i < count; i++) {
-                        const start = (i * 12) % words.length;
-                        const sentenceWords = words.slice(start, start + 8 + (i % 6));
-                        result += sentenceWords.join(' ') + '. ';
-                    }
-                } else {
-                    for (let i = 0; i < count; i++) {
-                        const start = (i * 40) % words.length;
-                        const paraWords = words.slice(start, start + 30 + (i % 20));
-                        result += paraWords.join(' ') + '.\n\n';
-                    }
-                }
+                if (type === 'words') { for (let i = 0; i < count; i++) result += words[i % words.length] + ' '; }
+                else if (type === 'sentences') { for (let i = 0; i < count; i++) result += words.slice((i*12)%words.length, (i*12)%words.length+8+(i%6)).join(' ') + '. '; }
+                else { for (let i = 0; i < count; i++) result += words.slice((i*40)%words.length, (i*40)%words.length+30+(i%20)).join(' ') + '.\n\n'; }
                 document.getElementById('loremOutput').textContent = result.trim();
-                showToast('✅ Generated');
             });
-            document.getElementById('loremCopy').addEventListener('click', () => copyText(document.getElementById(
-                'loremOutput').textContent));
+            document.getElementById('loremCopy').addEventListener('click', () => copyText(document.getElementById('loremOutput').textContent));
             document.getElementById('loremGen').click();
         }
 
         // ==================== UUID GENERATOR ====================
         function uuidTool(c) {
-            c.innerHTML = `
-                <div class="row"><div><label>Count</label><input type="number" id="uuidCount" value="1" min="1" max="50"></div></div>
-                <button id="uuidGen">🆔 Generate UUIDs</button>
-                <div class="output-box" id="uuidOutput" style="min-height:80px;"></div>
-                <button class="outline-btn" id="uuidCopy">📋 Copy All</button>`;
+            c.innerHTML = `<div class="row"><div><label>Count</label><input type="number" id="uuidCount" value="1" min="1" max="50"></div></div>
+                <button id="uuidGen">🆔 Generate UUIDs</button><div class="output-box" id="uuidOutput" style="min-height:80px;"></div><button class="outline-btn" id="uuidCopy">📋 Copy All</button>`;
             document.getElementById('uuidGen').addEventListener('click', () => {
                 const count = parseInt(document.getElementById('uuidCount').value) || 1;
                 const uuids = [];
-                for (let i = 0; i < count; i++) {
-                    uuids.push(crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-                        .replace(/[xy]/g, c => { const r = Math.random() * 16 | 0,
-                            v = c === 'x' ? r : (r & 0x3 | 0x8); return v.toString(
-                            16); }));
-                }
+                for (let i = 0; i < count; i++) uuids.push(crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random()*16|0; return (c==='x'?r:(r&0x3|0x8)).toString(16); }));
                 document.getElementById('uuidOutput').textContent = uuids.join('\n');
-                showToast(`✅ ${count} UUID${count>1?'s':''} generated`);
+                showToast(`🆔 ${count} UUID${count>1?'s':''} generated`);
             });
-            document.getElementById('uuidCopy').addEventListener('click', () => copyText(document.getElementById(
-                'uuidOutput').textContent));
+            document.getElementById('uuidCopy').addEventListener('click', () => copyText(document.getElementById('uuidOutput').textContent));
             document.getElementById('uuidGen').click();
         }
 
         // ==================== GRADIENT GENERATOR ====================
         function gradientTool(c) {
-            c.innerHTML = `
-                <div class="gradient-preview" id="gradPreview" style="background:linear-gradient(135deg, #ff00ff, #00ffff);"></div>
+            c.innerHTML = `<div class="gradient-preview" id="gradPreview" style="background:linear-gradient(135deg,#ff00ff,#00ffff);"></div>
                 <div class="row"><div><label>Color 1</label><input type="color" id="gradColor1" value="#ff00ff"></div><div><label>Color 2</label><input type="color" id="gradColor2" value="#00ffff"></div></div>
-                <div class="row"><div><label>Direction</label><select id="gradDir"><option value="135deg">Diagonal (135°)</option><option value="to right">Left to Right</option><option value="to bottom">Top to Bottom</option><option value="45deg">Diagonal (45°)</option><option value="to bottom right">Top-Left to Bottom-Right</option><option value="0deg">Bottom to Top</option><option value="90deg">Left to Right (90°)</option><option value="180deg">Top to Bottom (180°)</option><option value="270deg">Right to Left (270°)</option></select></div></div>
-                <label>CSS Code</label><div class="output-box" id="gradCSS"></div>
-                <button class="outline-btn" id="gradCopy">📋 Copy CSS</button>`;
-            const update = () => {
-                const c1 = document.getElementById('gradColor1').value;
-                const c2 = document.getElementById('gradColor2').value;
-                const dir = document.getElementById('gradDir').value;
-                const css = `background: linear-gradient(${dir}, ${c1}, ${c2});`;
-                document.getElementById('gradPreview').style.background = `linear-gradient(${dir}, ${c1}, ${c2})`;
-                document.getElementById('gradCSS').textContent = css;
-            };
-            ['gradColor1', 'gradColor2', 'gradDir'].forEach(id => document.getElementById(id).addEventListener(
-                'input', update));
-            document.getElementById('gradCopy').addEventListener('click', () => copyText(document.getElementById(
-                'gradCSS').textContent));
+                <div class="row"><div><label>Direction</label><select id="gradDir"><option value="135deg">Diagonal (135°)</option><option value="to right">Left to Right</option><option value="to bottom">Top to Bottom</option><option value="45deg">Diagonal (45°)</option><option value="to bottom right">Top-Left to Bottom-Right</option></select></div></div>
+                <label>CSS Code</label><div class="output-box" id="gradCSS"></div><button class="outline-btn" id="gradCopy">📋 Copy CSS</button>`;
+            const update = () => { const css = `background: linear-gradient(${document.getElementById('gradDir').value}, ${document.getElementById('gradColor1').value}, ${document.getElementById('gradColor2').value});`; document.getElementById('gradPreview').style.background = css.replace('background: ', ''); document.getElementById('gradCSS').textContent = css; };
+            ['gradColor1','gradColor2','gradDir'].forEach(id => document.getElementById(id).addEventListener('input', update));
+            document.getElementById('gradCopy').addEventListener('click', () => copyText(document.getElementById('gradCSS').textContent));
             update();
         }
 
         // ==================== BOX SHADOW GENERATOR ====================
         function boxShadowTool(c) {
-            c.innerHTML = `
-                <div class="shadow-preview" id="shadowPreview"></div>
-                <div class="row"><div><label>Offset X (px)</label><input type="range" id="shX" min="-30" max="30" value="5"></div><div><label>Offset Y (px)</label><input type="range" id="shY" min="-30" max="30" value="5"></div></div>
-                <div class="row"><div><label>Blur (px)</label><input type="range" id="shBlur" min="0" max="50" value="15"></div><div><label>Spread (px)</label><input type="range" id="shSpread" min="-20" max="20" value="0"></div></div>
-                <div class="row"><div><label>Shadow Color</label><input type="color" id="shColor" value="#000000"></div><div><label>Opacity</label><input type="range" id="shOpacity" min="0" max="1" step="0.05" value="0.4"></div></div>
-                <label>CSS Code</label><div class="output-box" id="shCSS"></div>
-                <button class="outline-btn" id="shCopy">📋 Copy CSS</button>`;
-            const update = () => {
-                const x = document.getElementById('shX').value;
-                const y = document.getElementById('shY').value;
-                const blur = document.getElementById('shBlur').value;
-                const spread = document.getElementById('shSpread').value;
-                const color = document.getElementById('shColor').value;
-                const opacity = document.getElementById('shOpacity').value;
-                const rgba = hexToRgba(color, opacity);
-                const css = `box-shadow: ${x}px ${y}px ${blur}px ${spread}px ${rgba};`;
-                document.getElementById('shadowPreview').style.boxShadow = css.replace('box-shadow: ', '');
-                document.getElementById('shCSS').textContent = css;
-            };
-            ['shX', 'shY', 'shBlur', 'shSpread', 'shColor', 'shOpacity'].forEach(id => document.getElementById(id)
-                .addEventListener('input', update));
-            document.getElementById('shCopy').addEventListener('click', () => copyText(document.getElementById('shCSS')
-                .textContent));
+            c.innerHTML = `<div class="shadow-preview" id="shadowPreview"></div>
+                <div class="row"><div><label>Offset X</label><input type="range" id="shX" min="-30" max="30" value="5"></div><div><label>Offset Y</label><input type="range" id="shY" min="-30" max="30" value="5"></div></div>
+                <div class="row"><div><label>Blur</label><input type="range" id="shBlur" min="0" max="50" value="15"></div><div><label>Spread</label><input type="range" id="shSpread" min="-20" max="20" value="0"></div></div>
+                <div class="row"><div><label>Color</label><input type="color" id="shColor" value="#000000"></div><div><label>Opacity</label><input type="range" id="shOpacity" min="0" max="1" step="0.05" value="0.4"></div></div>
+                <label>CSS Code</label><div class="output-box" id="shCSS"></div><button class="outline-btn" id="shCopy">📋 Copy CSS</button>`;
+            const update = () => { const rgba = `rgba(${parseInt(document.getElementById('shColor').value.slice(1,3),16)},${parseInt(document.getElementById('shColor').value.slice(3,5),16)},${parseInt(document.getElementById('shColor').value.slice(5,7),16)},${document.getElementById('shOpacity').value})`; const css = `box-shadow: ${document.getElementById('shX').value}px ${document.getElementById('shY').value}px ${document.getElementById('shBlur').value}px ${document.getElementById('shSpread').value}px ${rgba};`; document.getElementById('shadowPreview').style.boxShadow = css.replace('box-shadow: ', ''); document.getElementById('shCSS').textContent = css; };
+            ['shX','shY','shBlur','shSpread','shColor','shOpacity'].forEach(id => document.getElementById(id).addEventListener('input', update));
+            document.getElementById('shCopy').addEventListener('click', () => copyText(document.getElementById('shCSS').textContent));
             update();
-        }
-
-        function hexToRgba(hex, alpha) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
         // ==================== COLOR PICKER ====================
         function colorPickerTool(c) {
-            c.innerHTML = `
-                <div style="text-align:center;"><input type="color" id="cpColor" value="#ff00ff" style="width:100px;height:60px;cursor:pointer;border-radius:12px;"></div>
-                <div class="row" style="margin-top:12px;"><div class="speed-metric"><div class="val" id="cpHex">#ff00ff</div><div class="lbl">HEX</div></div><div class="speed-metric"><div class="val" id="cpRgb">rgb(255,0,255)</div><div class="lbl">RGB</div></div><div class="speed-metric"><div class="val" id="cpHsl">hsl(300,100%,50%)</div><div class="lbl">HSL</div></div></div>
+            c.innerHTML = `<div style="text-align:center;"><input type="color" id="cpColor" value="#ff00ff" style="width:100px;height:60px;cursor:pointer;border-radius:12px;"></div>
+                <div class="row"><div class="speed-metric"><div class="val" id="cpHex">#ff00ff</div><div class="lbl">HEX</div></div><div class="speed-metric"><div class="val" id="cpRgb">rgb(255,0,255)</div><div class="lbl">RGB</div></div><div class="speed-metric"><div class="val" id="cpHsl">hsl(300,100%,50%)</div><div class="lbl">HSL</div></div></div>
                 <button class="outline-btn" id="cpCopyHex">📋 Copy HEX</button><button class="outline-btn" id="cpCopyRgb">📋 Copy RGB</button>`;
-            const update = () => {
-                const hex = document.getElementById('cpColor').value;
-                const r = parseInt(hex.slice(1, 3), 16);
-                const g = parseInt(hex.slice(3, 5), 16);
-                const b = parseInt(hex.slice(5, 7), 16);
-                document.getElementById('cpHex').textContent = hex;
-                document.getElementById('cpRgb').textContent = `rgb(${r},${g},${b})`;
-                const hsl = rgbToHsl(r, g, b);
-                document.getElementById('cpHsl').textContent =
-                    `hsl(${hsl[0]},${hsl[1]}%,${hsl[2]}%)`;
-            };
+            const update = () => { const hex = document.getElementById('cpColor').value; const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16); document.getElementById('cpHex').textContent=hex; document.getElementById('cpRgb').textContent=`rgb(${r},${g},${b})`; const hsl=rgbToHsl(r,g,b); document.getElementById('cpHsl').textContent=`hsl(${hsl[0]},${hsl[1]}%,${hsl[2]}%)`; };
             document.getElementById('cpColor').addEventListener('input', update);
-            document.getElementById('cpCopyHex').addEventListener('click', () => copyText(document.getElementById(
-                'cpHex').textContent));
-            document.getElementById('cpCopyRgb').addEventListener('click', () => copyText(document.getElementById('cpRgb')
-                .textContent));
+            document.getElementById('cpCopyHex').addEventListener('click', () => copyText(document.getElementById('cpHex').textContent));
+            document.getElementById('cpCopyRgb').addEventListener('click', () => copyText(document.getElementById('cpRgb').textContent));
             update();
         }
 
-        function rgbToHsl(r, g, b) {
-            r /= 255;
-            g /= 255;
-            b /= 255;
-            const max = Math.max(r, g, b),
-                min = Math.min(r, g, b);
-            let h, s, l = (max + min) / 2;
-            if (max === min) { h = s = 0; } else {
-                const d = max - min;
-                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-                switch (max) {
-                    case r:
-                        h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-                        break;
-                    case g:
-                        h = ((b - r) / d + 2) / 6;
-                        break;
-                    case b:
-                        h = ((r - g) / d + 4) / 6;
-                        break;
-                }
-            }
-            return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
-        }
+        function rgbToHsl(r,g,b){ r/=255;g/=255;b/=255; const max=Math.max(r,g,b),min=Math.min(r,g,b); let h,s,l=(max+min)/2; if(max===min){h=s=0;}else{const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min); switch(max){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6;break;}} return[Math.round(h*360),Math.round(s*100),Math.round(l*100)]; }
 
         // ==================== CONTRAST CHECKER ====================
         function contrastTool(c) {
-            c.innerHTML = `
-                <div class="row"><div><label>Text Color</label><input type="color" id="ctText" value="#ffffff"></div><div><label>Background Color</label><input type="color" id="ctBg" value="#050510"></div></div>
-                <div class="contrast-result" id="ctResult" style="margin:10px 0;"></div>
-                <div class="speed-metric"><div class="val" id="ctRatio">--</div><div class="lbl">Contrast Ratio</div></div>
-                <p style="font-size:0.7rem;color:#888;margin-top:8px;">WCAG AA: 4.5:1 (normal), 3:1 (large). WCAG AAA: 7:1 (normal), 4.5:1 (large).</p>`;
-            const update = () => {
-                const tc = document.getElementById('ctText').value;
-                const bg = document.getElementById('ctBg').value;
-                const ratio = getContrastRatio(tc, bg);
-                document.getElementById('ctRatio').textContent = ratio.toFixed(2) + ':1';
-                const res = document.getElementById('ctResult');
-                if (ratio >= 7) { res.textContent = '✅ AAA Pass';
-                    res.className = 'contrast-result contrast-pass'; } else if (ratio >= 4.5) { res.textContent =
-                        '✅ AA Pass (normal text)';
-                    res.className = 'contrast-result contrast-pass'; } else if (ratio >= 3) { res.textContent =
-                        '⚠️ AA Large Text Only';
-                    res.className = 'contrast-result contrast-fail'; } else { res.textContent =
-                        '❌ Fail – insufficient contrast';
-                    res.className = 'contrast-result contrast-fail'; }
-                document.getElementById('ctResult').style.color = tc;
-                document.getElementById('ctResult').style.backgroundColor = bg;
-            };
-            ['ctText', 'ctBg'].forEach(id => document.getElementById(id).addEventListener('input', update));
+            c.innerHTML = `<div class="row"><div><label>Text Color</label><input type="color" id="ctText" value="#ffffff"></div><div><label>Background</label><input type="color" id="ctBg" value="#050510"></div></div>
+                <div class="contrast-result" id="ctResult"></div><div class="speed-metric"><div class="val" id="ctRatio">--</div><div class="lbl">Contrast Ratio</div></div>`;
+            const update = () => { const ratio = getContrastRatio(document.getElementById('ctText').value, document.getElementById('ctBg').value); document.getElementById('ctRatio').textContent = ratio.toFixed(2)+':1'; const res=document.getElementById('ctResult'); res.textContent = ratio>=7?'✅ AAA Pass':ratio>=4.5?'✅ AA Pass':ratio>=3?'⚠️ AA Large Only':'❌ Fail'; res.className = 'contrast-result '+(ratio>=3?'contrast-pass':'contrast-fail'); res.style.color=document.getElementById('ctText').value; res.style.backgroundColor=document.getElementById('ctBg').value; };
+            ['ctText','ctBg'].forEach(id => document.getElementById(id).addEventListener('input', update));
             update();
         }
-
-        function getLuminance(hex) {
-            const r = parseInt(hex.slice(1, 3), 16) / 255;
-            const g = parseInt(hex.slice(3, 5), 16) / 255;
-            const b = parseInt(hex.slice(5, 7), 16) / 255;
-            const toLin = (c) => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-            return 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b);
-        }
-
-        function getContrastRatio(c1, c2) {
-            const l1 = getLuminance(c1),
-                l2 = getLuminance(c2);
-            const lighter = Math.max(l1, l2),
-                darker = Math.min(l1, l2);
-            return (lighter + 0.05) / (darker + 0.05);
-        }
+        function getLuminance(hex){ const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255; const toLin=c=>c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4); return 0.2126*toLin(r)+0.7152*toLin(g)+0.0722*toLin(b); }
+        function getContrastRatio(c1,c2){ const l1=getLuminance(c1),l2=getLuminance(c2); return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05); }
 
         // ==================== FLEXBOX PLAYGROUND ====================
         function flexboxTool(c) {
-            c.innerHTML = `
-                <div class="flex-demo" id="flexDemo"><div class="flex-child">1</div><div class="flex-child">2</div><div class="flex-child">3</div><div class="flex-child">4</div></div>
-                <div class="row"><div><label>Direction</label><select id="fxDir"><option value="row">Row</option><option value="column">Column</option><option value="row-reverse">Row Reverse</option><option value="column-reverse">Column Reverse</option></select></div><div><label>Justify</label><select id="fxJustify"><option value="flex-start">Start</option><option value="center">Center</option><option value="flex-end">End</option><option value="space-between">Space Between</option><option value="space-around">Space Around</option><option value="space-evenly">Space Evenly</option></select></div></div>
+            c.innerHTML = `<div class="flex-demo" id="flexDemo"><div class="flex-child">1</div><div class="flex-child">2</div><div class="flex-child">3</div><div class="flex-child">4</div></div>
+                <div class="row"><div><label>Direction</label><select id="fxDir"><option value="row">Row</option><option value="column">Column</option><option value="row-reverse">Row Reverse</option><option value="column-reverse">Column Reverse</option></select></div><div><label>Justify</label><select id="fxJustify"><option value="flex-start">Start</option><option value="center">Center</option><option value="flex-end">End</option><option value="space-between">Space Between</option><option value="space-around">Space Around</option></select></div></div>
                 <div class="row"><div><label>Align</label><select id="fxAlign"><option value="stretch">Stretch</option><option value="flex-start">Start</option><option value="center">Center</option><option value="flex-end">End</option></select></div><div><label>Wrap</label><select id="fxWrap"><option value="nowrap">No Wrap</option><option value="wrap">Wrap</option></select></div></div>
-                <label>CSS Code</label><div class="output-box" id="fxCSS"></div>
-                <button class="outline-btn" id="fxCopy">📋 Copy CSS</button>`;
-            const update = () => {
-                const dir = document.getElementById('fxDir').value;
-                const justify = document.getElementById('fxJustify').value;
-                const align = document.getElementById('fxAlign').value;
-                const wrap = document.getElementById('fxWrap').value;
-                const demo = document.getElementById('flexDemo');
-                demo.style.flexDirection = dir;
-                demo.style.justifyContent = justify;
-                demo.style.alignItems = align;
-                demo.style.flexWrap = wrap;
-                const css =
-                    `display: flex;\nflex-direction: ${dir};\njustify-content: ${justify};\nalign-items: ${align};\nflex-wrap: ${wrap};`;
-                document.getElementById('fxCSS').textContent = css;
-            };
-            ['fxDir', 'fxJustify', 'fxAlign', 'fxWrap'].forEach(id => document.getElementById(id).addEventListener(
-                'change', update));
-            document.getElementById('fxCopy').addEventListener('click', () => copyText(document.getElementById('fxCSS')
-                .textContent));
+                <label>CSS Code</label><div class="output-box" id="fxCSS"></div><button class="outline-btn" id="fxCopy">📋 Copy CSS</button>`;
+            const update = () => { const demo=document.getElementById('flexDemo'); demo.style.flexDirection=document.getElementById('fxDir').value; demo.style.justifyContent=document.getElementById('fxJustify').value; demo.style.alignItems=document.getElementById('fxAlign').value; demo.style.flexWrap=document.getElementById('fxWrap').value; document.getElementById('fxCSS').textContent = `display: flex;\nflex-direction: ${document.getElementById('fxDir').value};\njustify-content: ${document.getElementById('fxJustify').value};\nalign-items: ${document.getElementById('fxAlign').value};\nflex-wrap: ${document.getElementById('fxWrap').value};`; };
+            ['fxDir','fxJustify','fxAlign','fxWrap'].forEach(id => document.getElementById(id).addEventListener('change', update));
+            document.getElementById('fxCopy').addEventListener('click', () => copyText(document.getElementById('fxCSS').textContent));
             update();
         }
 
         // ==================== COLOUR PLATE ====================
         function colorPlateTool(c) {
-            c.innerHTML = `
-                <div style="text-align:center;"><input type="color" id="cpBase" value="#ff00ff" style="width:80px;height:50px;cursor:pointer;border-radius:12px;"></div>
-                <p style="text-align:center;color:#aaa;font-size:0.8rem;">Harmonies based on your base color</p>
-                <div id="cpSwatches" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0;"></div>
-                <button class="outline-btn" id="cpCopyAll">📋 Copy All HEX</button>`;
-            const update = () => {
-                const base = document.getElementById('cpBase').value;
-                const harmonies = generateHarmonies(base);
-                const swatchDiv = document.getElementById('cpSwatches');
-                swatchDiv.innerHTML = harmonies.map(h =>
-                    `<div style="text-align:center;"><div class="color-swatch" style="background:${h};width:50px;height:50px;" data-hex="${h}"></div><span style="font-size:0.65rem;display:block;color:#aaa;">${h}</span></div>`
-                    ).join('');
-                swatchDiv.querySelectorAll('.color-swatch').forEach(s => s.addEventListener('click', () => {
-                    copyText(s.dataset.hex);
-                    showToast('📋 Copied ' + s.dataset.hex);
-                }));
-            };
+            c.innerHTML = `<div style="text-align:center;"><input type="color" id="cpBase" value="#ff00ff"></div><div id="cpSwatches" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0;"></div><button class="outline-btn" id="cpCopyAll">📋 Copy All HEX</button>`;
+            const update = () => { const base=document.getElementById('cpBase').value; const hsl=rgbToHsl(parseInt(base.slice(1,3),16),parseInt(base.slice(3,5),16),parseInt(base.slice(5,7),16)); const harmonies=[base]; [180,30,330,120,240].forEach(d => harmonies.push(hslToHex((hsl[0]+d)%360,hsl[1],hsl[2]))); harmonies.push(hslToHex(hsl[0],hsl[1],Math.min(100,hsl[2]+25)),hslToHex(hsl[0],hsl[1],Math.max(0,hsl[2]-25))); const swatchDiv=document.getElementById('cpSwatches'); swatchDiv.innerHTML=[...new Set(harmonies)].map(h=>`<div style="text-align:center;"><div class="color-swatch" style="background:${h};width:50px;height:50px;" data-hex="${h}"></div><span style="font-size:0.65rem;color:#aaa;">${h}</span></div>`).join(''); swatchDiv.querySelectorAll('.color-swatch').forEach(s=>s.addEventListener('click',()=>{copyText(s.dataset.hex);showToast('🎨 Copied '+s.dataset.hex);})); };
             document.getElementById('cpBase').addEventListener('input', update);
-            document.getElementById('cpCopyAll').addEventListener('click', () => {
-                const hexes = [...document.getElementById('cpSwatches').querySelectorAll('.color-swatch')].map(s =>
-                    s.dataset.hex).join(', ');
-                copyText(hexes);
-            });
+            document.getElementById('cpCopyAll').addEventListener('click', () => copyText([...document.getElementById('cpSwatches').querySelectorAll('.color-swatch')].map(s=>s.dataset.hex).join(', ')));
             update();
         }
-
-        function generateHarmonies(baseHex) {
-            const r = parseInt(baseHex.slice(1, 3), 16);
-            const g = parseInt(baseHex.slice(3, 5), 16);
-            const b = parseInt(baseHex.slice(5, 7), 16);
-            const hsl = rgbToHsl(r, g, b);
-            const results = [baseHex];
-            // Complementary
-            results.push(hslToHex((hsl[0] + 180) % 360, hsl[1], hsl[2]));
-            // Analogous
-            results.push(hslToHex((hsl[0] + 30) % 360, hsl[1], hsl[2]));
-            results.push(hslToHex((hsl[0] + 330) % 360, hsl[1], hsl[2]));
-            // Triadic
-            results.push(hslToHex((hsl[0] + 120) % 360, hsl[1], hsl[2]));
-            results.push(hslToHex((hsl[0] + 240) % 360, hsl[1], hsl[2]));
-            // Lighter & darker
-            results.push(hslToHex(hsl[0], hsl[1], Math.min(100, hsl[2] + 25)));
-            results.push(hslToHex(hsl[0], hsl[1], Math.max(0, hsl[2] - 25)));
-            return [...new Set(results)];
-        }
-
-        function hslToHex(h, s, l) {
-            s /= 100;
-            l /= 100;
-            const a = s * Math.min(l, 1 - l);
-            const f = n => { const k = (n + h / 30) % 12; return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); };
-            const toHex = x => Math.round(x * 255).toString(16).padStart(2, '0');
-            return '#' + toHex(f(0)) + toHex(f(8)) + toHex(f(4));
-        }
+        function hslToHex(h,s,l){ s/=100;l/=100; const a=s*Math.min(l,1-l); const f=n=>{const k=(n+h/30)%12;return l-a*Math.max(Math.min(k-3,9-k,1),-1);}; const toHex=x=>Math.round(x*255).toString(16).padStart(2,'0'); return '#'+toHex(f(0))+toHex(f(8))+toHex(f(4)); }
 
         // ==================== TEXT FORMAT ====================
         function textFormatTool(c) {
-            c.innerHTML = `
-                <label>Input Text</label><textarea id="tfInput" placeholder="Type here..." style="min-height:100px;"></textarea>
+            c.innerHTML = `<label>Input Text</label><textarea id="tfInput" placeholder="Type here..." style="min-height:100px;"></textarea>
                 <div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;"><button class="outline-btn tf-btn" data-action="upper">UPPERCASE</button><button class="outline-btn tf-btn" data-action="lower">lowercase</button><button class="outline-btn tf-btn" data-action="title">Title Case</button><button class="outline-btn tf-btn" data-action="sentence">Sentence case</button><button class="outline-btn tf-btn" data-action="camel">camelCase</button><button class="outline-btn tf-btn" data-action="pascal">PascalCase</button><button class="outline-btn tf-btn" data-action="snake">snake_case</button><button class="outline-btn tf-btn" data-action="kebab">kebab-case</button><button class="outline-btn tf-btn" data-action="reverse">esreveR</button></div>
-                <label>Output</label><div class="output-box" id="tfOutput"></div>
-                <button class="outline-btn" id="tfCopy">📋 Copy</button>`;
-            const inp = document.getElementById('tfInput'),
-                out = document.getElementById('tfOutput');
-            document.querySelectorAll('.tf-btn').forEach(btn => btn.addEventListener('click', () => {
-                const action = btn.dataset.action;
-                const text = inp.value;
-                let result = '';
-                switch (action) {
-                    case 'upper':
-                        result = text.toUpperCase();
-                        break;
-                    case 'lower':
-                        result = text.toLowerCase();
-                        break;
-                    case 'title':
-                        result = text.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1)
-                            .toLowerCase());
-                        break;
-                    case 'sentence':
-                        result = text.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g, m => m.toUpperCase());
-                        break;
-                    case 'camel':
-                        result = text.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase());
-                        break;
-                    case 'pascal':
-                        result = text.toLowerCase().replace(/(?:^|[^a-zA-Z0-9]+)(.)/g, (_, c) => c.toUpperCase());
-                        break;
-                    case 'snake':
-                        result = text.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
-                        break;
-                    case 'kebab':
-                        result = text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-                        break;
-                    case 'reverse':
-                        result = text.split('').reverse().join('');
-                        break;
-                }
-                out.textContent = result;
-                showToast('✅ Formatted');
-            }));
-            document.getElementById('tfCopy').addEventListener('click', () => copyText(out.textContent));
-            inp.addEventListener('input', () => { if (out.textContent) out.textContent = ''; });
+                <label>Output</label><div class="output-box" id="tfOutput"></div><button class="outline-btn" id="tfCopy">📋 Copy</button>`;
+            const inp=document.getElementById('tfInput'),out=document.getElementById('tfOutput');
+            document.querySelectorAll('.tf-btn').forEach(btn=>btn.addEventListener('click',()=>{const text=inp.value;let r='';switch(btn.dataset.action){case'upper':r=text.toUpperCase();break;case'lower':r=text.toLowerCase();break;case'title':r=text.replace(/\w\S*/g,w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase());break;case'sentence':r=text.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g,m=>m.toUpperCase());break;case'camel':r=text.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g,(_,c)=>c.toUpperCase());break;case'pascal':r=text.toLowerCase().replace(/(?:^|[^a-zA-Z0-9]+)(.)/g,(_,c)=>c.toUpperCase());break;case'snake':r=text.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');break;case'kebab':r=text.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');break;case'reverse':r=text.split('').reverse().join('');break;}out.textContent=r;}));
+            document.getElementById('tfCopy').addEventListener('click',()=>copyText(out.textContent));
         }
 
         // ==================== JSON FORMATTER ====================
         function jsonFmtTool(c) {
-            c.innerHTML = `
-                <label>Paste JSON</label><textarea id="jsonInput" placeholder='{"key":"value"}' style="min-height:130px;"></textarea>
-                <div class="row" style="justify-content:center;"><button id="jsonFormat">✨ Format</button><button id="jsonMinify" class="outline-btn">🗜️ Minify</button><button id="jsonValidate" class="outline-btn">✅ Validate</button><button id="jsonCopy" class="outline-btn">📋 Copy</button></div>
-                <label>Output</label><div class="output-box" id="jsonOutput"></div>
-                <p id="jsonMsg" style="text-align:center;font-size:0.8rem;margin-top:4px;"></p>`;
-            const inp = document.getElementById('jsonInput'),
-                out = document.getElementById('jsonOutput'),
-                msg = document.getElementById('jsonMsg');
-            document.getElementById('jsonFormat').addEventListener('click', () => {
-                try {
-                    const obj = JSON.parse(inp.value);
-                    out.textContent = JSON.stringify(obj, null, 2);
-                    msg.textContent = '✅ Valid JSON';
-                    msg.style.color = 'var(--neon-lime)';
-                } catch (e) { msg.textContent = '❌ ' + e.message;
-                    msg.style.color = '#ff073a'; }
-            });
-            document.getElementById('jsonMinify').addEventListener('click', () => {
-                try {
-                    out.textContent = JSON.stringify(JSON.parse(inp.value));
-                    msg.textContent = '✅ Minified';
-                    msg.style.color = 'var(--neon-lime)';
-                } catch (e) { msg.textContent = '❌ ' + e.message;
-                    msg.style.color = '#ff073a'; }
-            });
-            document.getElementById('jsonValidate').addEventListener('click', () => {
-                try {
-                    JSON.parse(inp.value);
-                    msg.textContent = '✅ Valid JSON!';
-                    msg.style.color = 'var(--neon-lime)';
-                    showToast('✅ Valid JSON');
-                } catch (e) { msg.textContent = '❌ Invalid: ' + e.message;
-                    msg.style.color = '#ff073a'; }
-            });
-            document.getElementById('jsonCopy').addEventListener('click', () => copyText(out.textContent));
+            c.innerHTML = `<label>Paste JSON</label><textarea id="jsonInput" placeholder='{"key":"value"}' style="min-height:130px;"></textarea>
+                <div class="row"><button id="jsonFormat">✨ Format</button><button id="jsonMinify" class="outline-btn">🗜️ Minify</button><button id="jsonValidate" class="outline-btn">✅ Validate</button><button id="jsonCopy" class="outline-btn">📋 Copy</button></div>
+                <label>Output</label><div class="output-box" id="jsonOutput"></div><p id="jsonMsg" style="text-align:center;font-size:0.8rem;"></p>`;
+            const inp=document.getElementById('jsonInput'),out=document.getElementById('jsonOutput'),msg=document.getElementById('jsonMsg');
+            document.getElementById('jsonFormat').addEventListener('click',()=>{try{out.textContent=JSON.stringify(JSON.parse(inp.value),null,2);msg.textContent='✅ Valid JSON';}catch(e){msg.textContent='❌ '+e.message;}});
+            document.getElementById('jsonMinify').addEventListener('click',()=>{try{out.textContent=JSON.stringify(JSON.parse(inp.value));}catch(e){msg.textContent='❌ '+e.message;}});
+            document.getElementById('jsonValidate').addEventListener('click',()=>{try{JSON.parse(inp.value);msg.textContent='✅ Valid JSON!';}catch(e){msg.textContent='❌ Invalid';}});
+            document.getElementById('jsonCopy').addEventListener('click',()=>copyText(out.textContent));
         }
 
         // ==================== CSS MINIFIER ====================
         function cssMinTool(c) {
-            c.innerHTML = `
-                <label>Paste CSS</label><textarea id="cssInput" placeholder="body { color: red; }" style="min-height:130px;"></textarea>
-                <button id="cssMinify">🗜️ Minify CSS</button>
-                <label>Output</label><div class="output-box" id="cssOutput"></div>
+            c.innerHTML = `<label>Paste CSS</label><textarea id="cssInput" placeholder="body { color: red; }" style="min-height:130px;"></textarea>
+                <button id="cssMinify">🗜️ Minify CSS</button><label>Output</label><div class="output-box" id="cssOutput"></div>
                 <div class="row"><span id="cssStats" style="color:#888;font-size:0.7rem;"></span><button class="outline-btn" id="cssCopy">📋 Copy</button></div>`;
-            const inp = document.getElementById('cssInput'),
-                out = document.getElementById('cssOutput');
-            document.getElementById('cssMinify').addEventListener('click', () => {
-                let css = inp.value;
-                const originalLen = css.length;
-                css = css.replace(/\/\*[\s\S]*?\*\//g, '');
-                css = css.replace(/\s+/g, ' ');
-                css = css.replace(/\s*([{}:;,])\s*/g, '$1');
-                css = css.replace(/;\}/g, '}');
-                css = css.trim();
-                out.textContent = css;
-                document.getElementById('cssStats').textContent =
-                    `Original: ${originalLen} chars → Minified: ${css.length} chars (${Math.round((1-css.length/originalLen)*100)}% reduced)`;
-                showToast('✅ CSS Minified');
-            });
-            document.getElementById('cssCopy').addEventListener('click', () => copyText(out.textContent));
+            const inp=document.getElementById('cssInput'),out=document.getElementById('cssOutput');
+            document.getElementById('cssMinify').addEventListener('click',()=>{let css=inp.value;const orig=css.length;css=css.replace(/\/\*[\s\S]*?\*\//g,'').replace(/\s+/g,' ').replace(/\s*([{}:;,])\s*/g,'$1').replace(/;\}/g,'}').trim();out.textContent=css;document.getElementById('cssStats').textContent=`Original: ${orig} → Minified: ${css.length} chars`;});
+            document.getElementById('cssCopy').addEventListener('click',()=>copyText(out.textContent));
         }
 
         // ==================== JS MINIFIER ====================
         function jsMinTool(c) {
-            c.innerHTML = `
-                <label>Paste JavaScript</label><textarea id="jsInput" placeholder="const x = 1;" style="min-height:130px;"></textarea>
-                <button id="jsMinify">⚡ Minify JS</button>
-                <label>Output</label><div class="output-box" id="jsOutput"></div>
+            c.innerHTML = `<label>Paste JavaScript</label><textarea id="jsInput" placeholder="const x = 1;" style="min-height:130px;"></textarea>
+                <button id="jsMinify">⚡ Minify JS</button><label>Output</label><div class="output-box" id="jsOutput"></div>
                 <div class="row"><span id="jsStats" style="color:#888;font-size:0.7rem;"></span><button class="outline-btn" id="jsCopy">📋 Copy</button></div>`;
-            const inp = document.getElementById('jsInput'),
-                out = document.getElementById('jsOutput');
-            document.getElementById('jsMinify').addEventListener('click', () => {
-                let js = inp.value;
-                const originalLen = js.length;
-                js = js.replace(/\/\*[\s\S]*?\*\//g, '');
-                js = js.replace(/\/\/.*$/gm, '');
-                js = js.replace(/\s+/g, ' ');
-                js = js.replace(/\s*([{}();,:+\-*/<>=!&|?])\s*/g, '$1');
-                js = js.trim();
-                out.textContent = js;
-                document.getElementById('jsStats').textContent =
-                    `Original: ${originalLen} chars → Minified: ${js.length} chars`;
-                showToast('✅ JS Minified');
-            });
-            document.getElementById('jsCopy').addEventListener('click', () => copyText(out.textContent));
+            const inp=document.getElementById('jsInput'),out=document.getElementById('jsOutput');
+            document.getElementById('jsMinify').addEventListener('click',()=>{let js=inp.value;const orig=js.length;js=js.replace(/\/\*[\s\S]*?\*\//g,'').replace(/\/\/.*$/gm,'').replace(/\s+/g,' ').replace(/\s*([{}();,:+\-*/<>=!&|?])\s*/g,'$1').trim();out.textContent=js;document.getElementById('jsStats').textContent=`Original: ${orig} → Minified: ${js.length} chars`;});
+            document.getElementById('jsCopy').addEventListener('click',()=>copyText(out.textContent));
         }
 
         // ==================== REGEX TESTER ====================
         function regexTool(c) {
-            c.innerHTML = `
-                <div class="row"><div><label>Pattern</label><input id="rxPattern" placeholder="e.g. \\d+" value="\\d+"></div><div><label>Flags</label><input id="rxFlags" placeholder="e.g. gi" value="g" style="max-width:80px;"></div></div>
-                <label>Test String</label><textarea id="rxInput" placeholder="Enter text to test..." style="min-height:100px;">The year is 2024 and there are 365 days.</textarea>
-                <button id="rxTest">🔍 Test Regex</button>
-                <label>Matches</label><div class="output-box" id="rxOutput"></div>
-                <button class="outline-btn" id="rxCopy">📋 Copy Matches</button>`;
-            document.getElementById('rxTest').addEventListener('click', () => {
-                const pattern = document.getElementById('rxPattern').value;
-                const flags = document.getElementById('rxFlags').value;
-                const input = document.getElementById('rxInput').value;
-                const out = document.getElementById('rxOutput');
-                try {
-                    const regex = new RegExp(pattern, flags);
-                    const matches = [...input.matchAll(regex)];
-                    if (matches.length === 0) { out.textContent = 'No matches found.'; } else {
-                        out.textContent = matches.map((m, i) =>
-                            `Match ${i+1}: "${m[0]}" at index ${m.index}\n${m.length>1?'Groups: '+[...m].slice(1).map((g,j)=>`${j+1}:"${g}"`).join(', ')+'\n':''}`
-                            ).join('\n');
-                    }
-                    showToast(`✅ ${matches.length} match(es)`);
-                } catch (e) { out.textContent = '❌ Regex Error: ' + e.message; }
-            });
-            document.getElementById('rxCopy').addEventListener('click', () => copyText(document.getElementById(
-                'rxOutput').textContent));
+            c.innerHTML = `<div class="row"><div><label>Pattern</label><input id="rxPattern" value="\\d+"></div><div><label>Flags</label><input id="rxFlags" value="g" style="max-width:80px;"></div></div>
+                <label>Test String</label><textarea id="rxInput" style="min-height:100px;">The year is 2024 and there are 365 days.</textarea>
+                <button id="rxTest">🔍 Test Regex</button><label>Matches</label><div class="output-box" id="rxOutput"></div><button class="outline-btn" id="rxCopy">📋 Copy Matches</button>`;
+            document.getElementById('rxTest').addEventListener('click',()=>{try{const regex=new RegExp(document.getElementById('rxPattern').value,document.getElementById('rxFlags').value);const matches=[...document.getElementById('rxInput').value.matchAll(regex)];document.getElementById('rxOutput').textContent=matches.length?matches.map((m,i)=>`Match ${i+1}: "${m[0]}" at index ${m.index}`).join('\n'):'No matches.';}catch(e){document.getElementById('rxOutput').textContent='❌ '+e.message;}});
+            document.getElementById('rxCopy').addEventListener('click',()=>copyText(document.getElementById('rxOutput').textContent));
             document.getElementById('rxTest').click();
         }
 
         // ==================== DIFF CHECKER ====================
         function diffTool(c) {
-            c.innerHTML = `
-                <div class="row"><div><label>Original Text</label><textarea id="diffOrig" style="min-height:120px;">Hello world\nThis is a test\nLine three</textarea></div><div><label>Modified Text</label><textarea id="diffMod" style="min-height:120px;">Hello world\nThis is changed\nLine three\nNew line</textarea></div></div>
-                <button id="diffCheck">📋 Compare</button>
-                <div class="output-box" id="diffOutput" style="min-height:100px;"></div>`;
-            document.getElementById('diffCheck').addEventListener('click', () => {
-                const orig = document.getElementById('diffOrig').value.split('\n');
-                const mod = document.getElementById('diffMod').value.split('\n');
-                const out = document.getElementById('diffOutput');
-                const maxLen = Math.max(orig.length, mod.length);
-                let result = '';
-                for (let i = 0; i < maxLen; i++) {
-                    const o = orig[i] || '';
-                    const m = mod[i] || '';
-                    if (o === m) result +=
-                        `<div class="diff-line">  ${escapeHtml(o)}</div>`;
-                    else {
-                        if (o && o !== m) result +=
-                            `<div class="diff-line diff-removed">- ${escapeHtml(o)}</div>`;
-                        if (m && m !== o) result +=
-                            `<div class="diff-line diff-added">+ ${escapeHtml(m)}</div>`;
-                        if (!o && m) result +=
-                            `<div class="diff-line diff-added">+ ${escapeHtml(m)}</div>`;
-                        if (o && !m) result +=
-                            `<div class="diff-line diff-removed">- ${escapeHtml(o)}</div>`;
-                    }
-                }
-                out.innerHTML = result || 'No differences found.';
-                showToast('✅ Compared');
-            });
+            c.innerHTML = `<div class="row"><div><label>Original</label><textarea id="diffOrig" style="min-height:120px;">Hello world\nThis is a test\nLine three</textarea></div><div><label>Modified</label><textarea id="diffMod" style="min-height:120px;">Hello world\nThis is changed\nLine three\nNew line</textarea></div></div>
+                <button id="diffCheck">🔄 Compare</button><div class="output-box" id="diffOutput" style="min-height:100px;"></div>`;
+            document.getElementById('diffCheck').addEventListener('click',()=>{const orig=document.getElementById('diffOrig').value.split('\n'),mod=document.getElementById('diffMod').value.split('\n');let r='';for(let i=0;i<Math.max(orig.length,mod.length);i++){const o=orig[i]||'',m=mod[i]||'';if(o===m)r+=`<div class="diff-line">  ${o.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;else{if(o&&o!==m)r+=`<div class="diff-line diff-removed">- ${o.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;if(m&&m!==o)r+=`<div class="diff-line diff-added">+ ${m.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;}}document.getElementById('diffOutput').innerHTML=r||'No differences.';});
             document.getElementById('diffCheck').click();
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
         // ==================== PASSWORD GENERATOR ====================
         function passwordTool(c) {
-            c.innerHTML = `
-                <div class="row"><div><label>Length</label><input type="number" id="pwLen" value="16" min="4" max="128"></div><div><label>Count</label><input type="number" id="pwCount" value="3" min="1" max="20"></div></div>
-                <div style="margin:8px 0;"><label style="display:inline;margin-right:12px;"><input type="checkbox" id="pwUpper" checked> Uppercase</label><label style="display:inline;margin-right:12px;"><input type="checkbox" id="pwLower" checked> Lowercase</label><label style="display:inline;margin-right:12px;"><input type="checkbox" id="pwDigits" checked> Digits</label><label style="display:inline;"><input type="checkbox" id="pwSymbols" checked> Symbols</label></div>
-                <button id="pwGen">🔑 Generate</button>
-                <div class="output-box" id="pwOutput" style="min-height:60px;"></div>
-                <div class="speed-metric" style="margin-top:8px;"><div class="val" id="pwStrength">--</div><div class="lbl">Strength Estimate</div></div>
-                <button class="outline-btn" id="pwCopy">📋 Copy All</button>`;
-            document.getElementById('pwGen').addEventListener('click', () => {
-                const len = parseInt(document.getElementById('pwLen').value) || 16;
-                const count = parseInt(document.getElementById('pwCount').value) || 3;
-                const upper = document.getElementById('pwUpper').checked;
-                const lower = document.getElementById('pwLower').checked;
-                const digits = document.getElementById('pwDigits').checked;
-                const symbols = document.getElementById('pwSymbols').checked;
-                let charset = '';
-                if (upper) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                if (lower) charset += 'abcdefghijklmnopqrstuvwxyz';
-                if (digits) charset += '0123456789';
-                if (symbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-                if (!charset) { showToast('⚠️ Select at least one character set'); return; }
-                const pws = [];
-                for (let j = 0; j < count; j++) {
-                    let pw = '';
-                    const bytes = new Uint8Array(len);
-                    crypto.getRandomValues(bytes);
-                    for (let i = 0; i < len; i++) pw += charset[bytes[i] % charset.length];
-                    pws.push(pw);
-                }
-                document.getElementById('pwOutput').textContent = pws.join('\n');
-                const entropy = Math.log2(Math.pow(charset.length, len));
-                document.getElementById('pwStrength').textContent = entropy >= 80 ? '🟢 Strong' : entropy >= 60 ?
-                    '🟡 Moderate' : '🔴 Weak';
-                showToast('✅ Generated');
-            });
-            document.getElementById('pwCopy').addEventListener('click', () => copyText(document.getElementById(
-                'pwOutput').textContent));
+            c.innerHTML = `<div class="row"><div><label>Length</label><input type="number" id="pwLen" value="16" min="4" max="128"></div><div><label>Count</label><input type="number" id="pwCount" value="3" min="1" max="20"></div></div>
+                <div><label><input type="checkbox" id="pwUpper" checked> Uppercase</label><label><input type="checkbox" id="pwLower" checked> Lowercase</label><label><input type="checkbox" id="pwDigits" checked> Digits</label><label><input type="checkbox" id="pwSymbols" checked> Symbols</label></div>
+                <button id="pwGen">🔑 Generate</button><div class="output-box" id="pwOutput"></div><button class="outline-btn" id="pwCopy">📋 Copy All</button>`;
+            document.getElementById('pwGen').addEventListener('click',()=>{let charset='';if(document.getElementById('pwUpper').checked)charset+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';if(document.getElementById('pwLower').checked)charset+='abcdefghijklmnopqrstuvwxyz';if(document.getElementById('pwDigits').checked)charset+='0123456789';if(document.getElementById('pwSymbols').checked)charset+='!@#$%^&*()';if(!charset)return;const pws=[];for(let j=0;j<(parseInt(document.getElementById('pwCount').value)||3);j++){let pw='';const bytes=new Uint8Array(parseInt(document.getElementById('pwLen').value)||16);crypto.getRandomValues(bytes);for(let i=0;i<bytes.length;i++)pw+=charset[bytes[i]%charset.length];pws.push(pw);}document.getElementById('pwOutput').textContent=pws.join('\n');});
+            document.getElementById('pwCopy').addEventListener('click',()=>copyText(document.getElementById('pwOutput').textContent));
             document.getElementById('pwGen').click();
         }
 
         // ==================== HASH GENERATOR ====================
         function hashTool(c) {
-            c.innerHTML = `
-                <label>Input</label><textarea id="hashInput" placeholder="Enter text to hash..." style="min-height:100px;">Hello World</textarea>
+            c.innerHTML = `<label>Input</label><textarea id="hashInput" style="min-height:100px;">Hello World</textarea>
                 <div class="row"><div><label>Algorithm</label><select id="hashAlgo"><option value="SHA-256">SHA-256</option><option value="SHA-512">SHA-512</option><option value="SHA-1">SHA-1</option></select></div></div>
-                <button id="hashGen">#️⃣ Generate Hash</button>
-                <label>Hash (hex)</label><div class="output-box" id="hashOutput" style="word-break:break-all;"></div>
-                <button class="outline-btn" id="hashCopy">📋 Copy</button>
-                <p style="font-size:0.65rem;color:#555;margin-top:6px;">Uses Web Crypto API. MD5 is not supported by SubtleCrypto.</p>`;
-            document.getElementById('hashGen').addEventListener('click', async () => {
-                const input = document.getElementById('hashInput').value;
-                const algo = document.getElementById('hashAlgo').value;
-                const out = document.getElementById('hashOutput');
-                try {
-                    const encoder = new TextEncoder();
-                    const data = encoder.encode(input);
-                    const hashBuffer = await crypto.subtle.digest(algo, data);
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
-                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-                    out.textContent = hashHex;
-                    showToast('✅ Hash generated');
-                } catch (e) { out.textContent = 'Error: ' + e.message; }
-            });
-            document.getElementById('hashCopy').addEventListener('click', () => copyText(document.getElementById(
-                'hashOutput').textContent));
+                <button id="hashGen">#️⃣ Generate Hash</button><label>Hash</label><div class="output-box" id="hashOutput" style="word-break:break-all;"></div><button class="outline-btn" id="hashCopy">📋 Copy</button>`;
+            document.getElementById('hashGen').addEventListener('click',async()=>{try{const data=new TextEncoder().encode(document.getElementById('hashInput').value);const hash=await crypto.subtle.digest(document.getElementById('hashAlgo').value,data);document.getElementById('hashOutput').textContent=Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');}catch(e){document.getElementById('hashOutput').textContent='Error: '+e.message;}});
+            document.getElementById('hashCopy').addEventListener('click',()=>copyText(document.getElementById('hashOutput').textContent));
         }
 
         // ==================== QR CODE GENERATOR ====================
         function qrGeneratorTool(c) {
-            c.innerHTML = `
-                <label>Text or URL</label><input id="qrText" value="https://example.com" placeholder="Enter text or URL...">
-                <div class="row"><div><label>Size (px)</label><input type="number" id="qrSize" value="256" min="100" max="600"></div><div><label>Color</label><input type="color" id="qrColor" value="#000000"></div></div>
-                <button id="qrGen">📱 Generate QR Code</button>
-                <div style="text-align:center;margin:10px 0;" id="qrCanvasContainer"></div>
-                <button class="outline-btn" id="qrDownload">💾 Download PNG</button>`;
-            document.getElementById('qrGen').addEventListener('click', () => {
-                const text = document.getElementById('qrText').value;
-                const size = parseInt(document.getElementById('qrSize').value) || 256;
-                const color = document.getElementById('qrColor').value;
-                const container = document.getElementById('qrCanvasContainer');
-                container.innerHTML = '<canvas id="qrCanvas"></canvas>';
-                const canvas = document.getElementById('qrCanvas');
-                QRCode.toCanvas(canvas, text || ' ', { width: size, color: { dark: color,
-                    light: '#ffffff' } }, (err) => {
-                    if (err) { container.innerHTML =
-                        '<p style="color:#ff073a;">Error generating QR code</p>'; }
-                });
-                showToast('✅ QR Code generated');
-            });
-            document.getElementById('qrDownload').addEventListener('click', () => {
-                const canvas = document.getElementById('qrCanvas');
-                if (!canvas) { showToast('⚠️ Generate a QR code first'); return; }
-                const a = document.createElement('a');
-                a.href = canvas.toDataURL('image/png');
-                a.download = 'qrcode.png';
-                a.click();
-                showToast('💾 Downloaded');
-            });
+            c.innerHTML = `<label>Text or URL</label><input id="qrText" value="https://example.com">
+                <div class="row"><div><label>Size</label><input type="number" id="qrSize" value="256"></div><div><label>Color</label><input type="color" id="qrColor" value="#000000"></div></div>
+                <button id="qrGen">📷 Generate QR Code</button><div id="qrCanvasContainer" style="text-align:center;margin:10px 0;"></div><button class="outline-btn" id="qrDownload">⬇ Download PNG</button>`;
+            document.getElementById('qrGen').addEventListener('click',()=>{const container=document.getElementById('qrCanvasContainer');container.innerHTML='<canvas id="qrCanvas"></canvas>';QRCode.toCanvas(document.getElementById('qrCanvas'),document.getElementById('qrText').value||' ',{width:parseInt(document.getElementById('qrSize').value)||256,color:{dark:document.getElementById('qrColor').value,light:'#ffffff'}});});
+            document.getElementById('qrDownload').addEventListener('click',()=>{const canvas=document.getElementById('qrCanvas');if(!canvas)return;const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='qrcode.png';a.click();});
             document.getElementById('qrGen').click();
         }
 
         // ==================== QR CODE READER ====================
         function qrReaderTool(c) {
-            c.innerHTML = `
-                <p style="color:#aaa;text-align:center;">Upload an image containing a QR code</p>
-                <input type="file" id="qrFile" accept="image/*" style="margin:8px 0;">
-                <div style="text-align:center;margin:10px 0;"><canvas id="qrReadCanvas" style="max-width:100%;display:none;border-radius:12px;"></canvas></div>
-                <div class="output-box" id="qrReadOutput">Result will appear here...</div>
-                <button class="outline-btn" id="qrReadCopy">📋 Copy Result</button>`;
-            document.getElementById('qrFile').addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.getElementById('qrReadCanvas');
-                        canvas.style.display = 'block';
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0);
-                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                        const code = jsQR(imageData.data, canvas.width, canvas.height);
-                        const out = document.getElementById('qrReadOutput');
-                        if (code) { out.textContent = code.data;
-                            showToast('✅ QR Code read!'); } else { out.textContent =
-                                'No QR code found in this image.';
-                            showToast('⚠️ No QR code detected'); }
-                    };
-                    img.src = ev.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-            document.getElementById('qrReadCopy').addEventListener('click', () => copyText(document.getElementById(
-                'qrReadOutput').textContent));
+            c.innerHTML = `<input type="file" id="qrFile" accept="image/*"><div style="text-align:center;margin:10px 0;"><canvas id="qrReadCanvas" style="max-width:100%;display:none;border-radius:12px;"></canvas></div>
+                <div class="output-box" id="qrReadOutput">Result will appear here...</div><button class="outline-btn" id="qrReadCopy">📋 Copy Result</button>`;
+            document.getElementById('qrFile').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const img=new Image();img.onload=()=>{const canvas=document.getElementById('qrReadCanvas');canvas.style.display='block';canvas.width=img.width;canvas.height=img.height;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);const code=jsQR(ctx.getImageData(0,0,canvas.width,canvas.height).data,canvas.width,canvas.height);document.getElementById('qrReadOutput').textContent=code?code.data:'No QR code found.';};img.src=ev.target.result;};reader.readAsDataURL(file);});
+            document.getElementById('qrReadCopy').addEventListener('click',()=>copyText(document.getElementById('qrReadOutput').textContent));
         }
 
         // ==================== BARCODE MAKER ====================
         function barcodeMakerTool(c) {
-            c.innerHTML = `
-                <label>Barcode Data (numbers only for most formats)</label><input id="bcText" value="123456789012" placeholder="Enter numeric data...">
-                <div class="row"><div><label>Format</label><select id="bcFormat"><option value="CODE128">CODE128</option><option value="EAN13">EAN-13</option><option value="UPC">UPC-A</option><option value="CODE39">CODE39</option><option value="ITF">ITF</option></select></div></div>
-                <button id="bcGen">📊 Generate Barcode</button>
-                <div style="text-align:center;margin:10px 0;"><svg id="bcSvg" style="max-width:100%;"></svg></div>
-                <button class="outline-btn" id="bcDownload">💾 Download SVG</button>`;
-            document.getElementById('bcGen').addEventListener('click', () => {
-                const text = document.getElementById('bcText').value;
-                const format = document.getElementById('bcFormat').value;
-                const svg = document.getElementById('bcSvg');
-                svg.innerHTML = '';
-                try {
-                    JsBarcode(svg, text, { format: format, lineColor: '#00ffff', background: '#000',
-                        width: 2, height: 100, displayValue: true });
-                    showToast('✅ Barcode generated');
-                } catch (e) {
-                    svg.innerHTML =
-                        '<text fill="#ff073a" x="10" y="30" font-size="14">Error: Invalid data for this format</text>';
-                    showToast('❌ Error generating barcode');
-                }
-            });
-            document.getElementById('bcDownload').addEventListener('click', () => {
-                const svg = document.getElementById('bcSvg');
-                if (!svg.innerHTML || svg.querySelector('text[fill="#ff073a"]')) { showToast(
-                        '⚠️ Generate a valid barcode first'); return; }
-                const blob = new Blob([svg.outerHTML], { type: 'image/svg+xml' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = 'barcode.svg';
-                a.click();
-                showToast('💾 Downloaded');
-            });
+            c.innerHTML = `<label>Barcode Data</label><input id="bcText" value="123456789012">
+                <div class="row"><div><label>Format</label><select id="bcFormat"><option value="CODE128">CODE128</option><option value="EAN13">EAN-13</option><option value="UPC">UPC-A</option></select></div></div>
+                <button id="bcGen">🛒 Generate Barcode</button><div style="text-align:center;margin:10px 0;"><svg id="bcSvg" style="max-width:100%;"></svg></div><button class="outline-btn" id="bcDownload">⬇ Download SVG</button>`;
+            document.getElementById('bcGen').addEventListener('click',()=>{try{JsBarcode(document.getElementById('bcSvg'),document.getElementById('bcText').value,{format:document.getElementById('bcFormat').value,lineColor:'#00ffff',background:'#000',width:2,height:100,displayValue:true});}catch(e){document.getElementById('bcSvg').innerHTML='<text fill="#ff073a" x="10" y="30">Error</text>';}});
+            document.getElementById('bcDownload').addEventListener('click',()=>{const svg=document.getElementById('bcSvg');if(!svg.innerHTML)return;const blob=new Blob([svg.outerHTML],{type:'image/svg+xml'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='barcode.svg';a.click();});
             document.getElementById('bcGen').click();
         }
 
         // ==================== BARCODE READER ====================
         function barcodeReaderTool(c) {
-            c.innerHTML = `
-                <p style="color:#aaa;text-align:center;">Upload an image containing a barcode</p>
-                <input type="file" id="bcFile" accept="image/*" style="margin:8px 0;">
-                <p id="bcStatus" style="text-align:center;color:#888;font-size:0.8rem;"></p>
-                <div class="output-box" id="bcReadOutput">Result will appear here...</div>
-                <button class="outline-btn" id="bcReadCopy">📋 Copy Result</button>
-                <p style="font-size:0.65rem;color:#555;margin-top:6px;">Uses Quagga2. Supports EAN, UPC, Code128, Code39, ITF, etc.</p>`;
-            document.getElementById('bcFile').addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                const status = document.getElementById('bcStatus');
-                const out = document.getElementById('bcReadOutput');
-                status.textContent = 'Scanning...';
-                out.textContent = 'Processing...';
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0);
-                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                        if (typeof Quagga !== 'undefined' && Quagga.decodeSingle) {
-                            Quagga.decodeSingle({
-                                decoder: { readers: ['ean_reader', 'upc_reader',
-                                        'code_128_reader', 'code_39_reader',
-                                        'itf_reader'
-                                    ] },
-                                locate: true,
-                                src: canvas.toDataURL()
-                            }, function(result) {
-                                if (result && result.codeResult) {
-                                    out.textContent = result.codeResult.code + ' (Format: ' +
-                                        result.codeResult.format + ')';
-                                    status.textContent = '✅ Barcode detected!';
-                                    showToast('✅ Barcode read!');
-                                } else {
-                                    out.textContent =
-                                        'No barcode found. Try a clearer image.';
-                                    status.textContent = '⚠️ No barcode detected';
-                                }
-                            });
-                        } else {
-                            out.textContent =
-                                'Quagga2 library not fully loaded. Try refreshing the page.';
-                            status.textContent = '❌ Library error';
-                        }
-                    };
-                    img.src = ev.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-            document.getElementById('bcReadCopy').addEventListener('click', () => copyText(document.getElementById(
-                'bcReadOutput').textContent));
+            c.innerHTML = `<input type="file" id="bcFile" accept="image/*"><p id="bcStatus" style="text-align:center;color:#888;font-size:0.8rem;"></p>
+                <div class="output-box" id="bcReadOutput">Result will appear here...</div><button class="outline-btn" id="bcReadCopy">📋 Copy Result</button>`;
+            document.getElementById('bcFile').addEventListener('change',function(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=img.width;canvas.height=img.height;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);if(typeof Quagga!=='undefined'){Quagga.decodeSingle({decoder:{readers:['ean_reader','upc_reader','code_128_reader']},locate:true,src:canvas.toDataURL()},result=>{document.getElementById('bcReadOutput').textContent=result?.codeResult?result.codeResult.code+' ('+result.codeResult.format+')':'No barcode found.';});}else{document.getElementById('bcReadOutput').textContent='Library not loaded.';}};img.src=ev.target.result;};reader.readAsDataURL(file);});
+            document.getElementById('bcReadCopy').addEventListener('click',()=>copyText(document.getElementById('bcReadOutput').textContent));
         }
 
-        // ==================== RELIABLE SPEED TEST ====================
+        // ==================== SPEED TEST ====================
         function speedTestTool(c) {
-            c.innerHTML = `
-                <p style="text-align:center;color:#aaa;">Measure your internet connection speed</p>
-                <div class="meter-container" style="margin:10px auto;">
-                    <svg viewBox="0 0 160 160" style="transform:rotate(-90deg);">
-                        <circle class="meter-bg" cx="80" cy="80" r="68" stroke-dasharray="427.3" stroke-dashoffset="0"/>
-                        <circle id="meterFill" class="meter-fill" cx="80" cy="80" r="68" stroke-dasharray="427.3" stroke-dashoffset="427.3"/>
-                    </svg>
-                    <div class="meter-center-text" id="meterCenter">--</div>
-                </div>
-                <div class="speed-gauge" id="speedGauge">--</div>
-                <p style="text-align:center;color:#888;font-size:0.8rem;" id="speedStatus">Ready</p>
-                <div class="row" style="margin:12px 0;">
-                    <div class="speed-metric"><div class="val" id="pingVal">--</div><div class="lbl">Ping (ms)</div></div>
-                    <div class="speed-metric"><div class="val" id="dlVal">--</div><div class="lbl">Download (Mbps)</div></div>
-                    <div class="speed-metric"><div class="val" id="ulVal">--</div><div class="lbl">Upload (Mbps)</div></div>
-                </div>
-                <div style="text-align:center;"><button id="startSpeedTest">🚀 Start Speed Test</button></div>
-                <div id="speedError" style="color:#ff073a;text-align:center;margin-top:8px;display:none;"></div>
-                <p style="color:#555;font-size:0.65rem;text-align:center;margin-top:8px;">Uses Cloudflare & multiple fallback CDNs.</p>`;
-            const gauge = document.getElementById('speedGauge');
-            const status = document.getElementById('speedStatus');
-            const pingEl = document.getElementById('pingVal');
-            const dlEl = document.getElementById('dlVal');
-            const ulEl = document.getElementById('ulVal');
-            const meterFill = document.getElementById('meterFill');
-            const meterCenter = document.getElementById('meterCenter');
-            const btn = document.getElementById('startSpeedTest');
-            const errorDiv = document.getElementById('speedError');
-            const MAX_SPEED = 150;
-            const circumference = 2 * Math.PI * 68;
-
-            function setMeter(speedMbps) {
-                const percent = Math.min(Math.max(speedMbps / MAX_SPEED, 0), 1);
-                meterFill.style.strokeDashoffset = circumference * (1 - percent);
-                meterCenter.textContent = speedMbps ? speedMbps.toFixed(1) : '--';
-            }
-
-            function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
-                const controller = new AbortController();
-                const id = setTimeout(() => controller.abort(), timeoutMs);
-                return fetch(url, { ...options, signal: controller.signal }).then(resp => { clearTimeout(id);
-                    return resp; }).catch(err => { clearTimeout(id); throw err; });
-            }
-            const DOWNLOAD_URLS = [
-                { url: 'https://speed.cloudflare.com/__down?bytes=500000', size: 500000, name: 'Cloudflare' },
-                { url: 'https://httpbin.org/bytes/524288', size: 524288, name: 'httpbin' },
-                { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/JPEG_example_flower_500px.jpg/500px-JPEG_example_flower_500px.jpg',
-                    size: null, name: 'Wikimedia' },
-            ];
-            const PING_URLS = ['https://speed.cloudflare.com/__down?bytes=0', 'https://httpbin.org/delay/0',
-                'https://www.google.com/favicon.ico'
-            ];
-            const UPLOAD_URLS = [{ url: 'https://speed.cloudflare.com/__up', name: 'Cloudflare' }, { url: 'https://httpbin.org/post',
-                name: 'httpbin' }];
-            btn.addEventListener('click', async () => {
-                btn.disabled = true;
-                btn.textContent = '⏳ Testing...';
-                gauge.textContent = '...';
-                gauge.style.color = 'var(--neon-yellow)';
-                status.textContent = 'Checking connectivity...';
-                pingEl.textContent = '...';
-                dlEl.textContent = '...';
-                ulEl.textContent = '...';
-                setMeter(0);
-                errorDiv.style.display = 'none';
-                let online = false;
-                for (const pingUrl of PING_URLS) {
-                    try { await fetchWithTimeout(pingUrl, { method: 'HEAD', cache: 'no-store' }, 5000);
-                        online = true; break; } catch (e) { continue; }
-                }
-                if (!online) { errorDiv.textContent =
-                        '❌ No internet connection detected.';
-                    errorDiv.style.display = 'block';
-                    status.textContent = 'Failed';
-                    gauge.textContent = 'ERR';
-                    gauge.style.color = '#ff073a';
-                    btn.disabled = false;
-                    btn.textContent = '🔄 Retry'; return; }
-                status.textContent = 'Measuring ping...';
-                let totalPing = 0,
-                    pingCount = 0;
-                for (const pingUrl of PING_URLS) {
-                    for (let a = 0; a < 2; a++) {
-                        try {
-                            const start = performance.now();
-                            await fetchWithTimeout(pingUrl, { method: 'HEAD', cache: 'no-store' }, 5000);
-                            totalPing += performance.now() - start;
-                            pingCount++; if (pingCount >= 4) break;
-                        } catch (e) { continue; }
-                    }
-                    if (pingCount >= 4) break;
-                }
-                if (pingCount > 0) pingEl.textContent = Math.round(totalPing / pingCount);
-                else pingEl.textContent = 'N/A';
-                status.textContent = 'Testing download...';
-                let dlMbps = null,
-                    dlSourceUsed = '';
-                for (const dlSource of DOWNLOAD_URLS) {
-                    try {
-                        status.textContent = `Download test (${dlSource.name})...`;
-                        const dlStart = performance.now();
-                        const response = await fetchWithTimeout(dlSource.url, { cache: 'no-store' }, 20000);
-                        const data = await response.arrayBuffer();
-                        const dlEnd = performance.now();
-                        const actualSize = data.byteLength;
-                        if (actualSize < 1000) throw new Error('Too small');
-                        dlMbps = (actualSize * 8) / ((dlEnd - dlStart) / 1000) / 1000000;
-                        dlSourceUsed = dlSource.name;
-                        break;
-                    } catch (e) { continue; }
-                }
-                if (dlMbps !== null) { dlEl.textContent = dlMbps.toFixed(2);
-                    gauge.textContent = dlMbps.toFixed(1);
-                    gauge.style.color = 'var(--neon-lime)';
-                    setMeter(dlMbps);
-                    status.textContent = `📥 Download: ${dlSourceUsed}`; } else { dlEl.textContent = 'N/A';
-                    gauge.textContent = 'ERR';
-                    gauge.style.color = '#ff073a';
-                    setMeter(0);
-                    status.textContent = 'Download failed';
-                    errorDiv.textContent = '⚠️ Download test failed on all servers.';
-                    errorDiv.style.display = 'block'; }
-                status.textContent = 'Testing upload...';
-                let ulMbps = null,
-                    ulSourceUsed = '';
-                const payloadSize = 50 * 1024;
-                const payload = new Uint8Array(payloadSize);
-                crypto.getRandomValues(payload);
-                const blob = new Blob([payload]);
-                for (const ulSource of UPLOAD_URLS) {
-                    try {
-                        status.textContent = `Upload test (${ulSource.name})...`;
-                        const ulStart = performance.now();
-                        await fetchWithTimeout(ulSource.url, { method: 'POST', body: blob,
-                            cache: 'no-store' }, 20000);
-                        const ulEnd = performance.now();
-                        ulMbps = (payloadSize * 8) / ((ulEnd - ulStart) / 1000) / 1000000;
-                        ulSourceUsed = ulSource.name;
-                        break;
-                    } catch (e) { continue; }
-                }
-                if (ulMbps !== null) { ulEl.textContent = ulMbps.toFixed(2);
-                    status.textContent = `✅ Complete (DL:${dlSourceUsed||'N/A'} UL:${ulSourceUsed})`; } else { ulEl
-                        .textContent = 'N/A'; }
-                if (dlMbps === null && ulMbps === null) { errorDiv.textContent =
-                        '❌ All speed tests failed.';
-                    errorDiv.style.display = 'block';
-                    gauge.textContent = 'ERR';
-                    gauge.style.color = '#ff073a'; }
-                btn.disabled = false;
-                btn.textContent = '🚀 Start Speed Test';
-            });
+            c.innerHTML = `<p style="text-align:center;color:#aaa;">Measure your internet connection speed</p>
+                <div class="speed-gauge" id="speedGauge">--</div><p style="text-align:center;color:#888;" id="speedStatus">Ready</p>
+                <div class="row"><div class="speed-metric"><div class="val" id="pingVal">--</div><div class="lbl">Ping (ms)</div></div><div class="speed-metric"><div class="val" id="dlVal">--</div><div class="lbl">Download (Mbps)</div></div><div class="speed-metric"><div class="val" id="ulVal">--</div><div class="lbl">Upload (Mbps)</div></div></div>
+                <button id="startSpeedTest">🚀 Start Speed Test</button>`;
+            document.getElementById('startSpeedTest').addEventListener('click',async()=>{const btn=document.getElementById('startSpeedTest');btn.disabled=true;btn.textContent='⏳ Testing...';try{const start=performance.now();await fetch('https://speed.cloudflare.com/__down?bytes=0',{method:'HEAD',cache:'no-store'});document.getElementById('pingVal').textContent=Math.round(performance.now()-start);const dlStart=performance.now();const data=await(await fetch('https://speed.cloudflare.com/__down?bytes=500000',{cache:'no-store'})).arrayBuffer();const dlMbps=(data.byteLength*8)/((performance.now()-dlStart)/1000)/1000000;document.getElementById('dlVal').textContent=dlMbps.toFixed(2);document.getElementById('speedGauge').textContent=dlMbps.toFixed(1);document.getElementById('speedStatus').textContent='✅ Complete';}catch(e){document.getElementById('speedStatus').textContent='❌ Failed';}btn.disabled=false;btn.textContent='🚀 Start Speed Test';});
         }
 
         // ==================== STOPWATCH & TIMER ====================
         function stopwatchTimerTool(c) {
-            c.innerHTML = `
-                <div class="tab-bar"><button class="tab-btn active" data-tab="sw">⏱️ Stopwatch</button><button class="tab-btn" data-tab="tm">⏲️ Timer</button></div>
-                <div id="swPanel">
-                    <div class="time-display" id="swDisplay">00:00:00.00</div>
-                    <div class="row" style="justify-content:center;"><button id="swStart">▶ Start</button><button id="swLap" class="outline-btn" disabled>🏁 Lap</button><button id="swReset" class="outline-btn">↺ Reset</button></div>
-                    <div class="lap-list" id="lapList"></div>
-                </div>
-                <div id="tmPanel" style="display:none;">
-                    <div class="time-display" id="tmDisplay">00:00:00</div>
-                    <div class="row" style="justify-content:center;"><div><label>Hr</label><input type="number" id="tmHr" value="0" min="0" max="99" style="text-align:center;"></div><div><label>Min</label><input type="number" id="tmMin" value="5" min="0" max="59" style="text-align:center;"></div><div><label>Sec</label><input type="number" id="tmSec" value="0" min="0" max="59" style="text-align:center;"></div></div>
-                    <div class="row" style="justify-content:center;margin-top:10px;"><button id="tmStart">▶ Start</button><button id="tmPause" class="outline-btn" disabled>⏸ Pause</button><button id="tmReset" class="outline-btn">↺ Reset</button></div>
-                </div>`;
-            c.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
-                c.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById('swPanel').style.display = btn.dataset.tab === 'sw' ? 'block' :
-                    'none';
-                document.getElementById('tmPanel').style.display = btn.dataset.tab === 'tm' ? 'block' :
-                    'none';
-            }));
-            let swInterval = null,
-                swRunning = false,
-                swStartTime = 0,
-                swElapsed = 0,
-                lapCount = 0;
-            const swDisplay = document.getElementById('swDisplay'),
-                lapList = document.getElementById('lapList');
-            const swStartBtn = document.getElementById('swStart'),
-                swLapBtn = document.getElementById('swLap'),
-                swResetBtn = document.getElementById('swReset');
-
-            function formatSW(ms) {
-                const cs = Math.floor(ms / 10) % 100,
-                    s = Math.floor(ms / 1000) % 60,
-                    m = Math.floor(ms / 60000) % 60,
-                    h = Math.floor(ms / 3600000);
-                return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${String(cs).padStart(2,'0')}`;
-            }
-
-            function updateSW() {
-                const total = swElapsed + (swRunning ? performance.now() - swStartTime : 0);
-                swDisplay.textContent = formatSW(total);
-                swDisplay.classList.toggle('paused', !swRunning);
-            }
-            swStartBtn.addEventListener('click', () => {
-                if (!swRunning) { swRunning = true;
-                    swStartTime = performance.now();
-                    swStartBtn.textContent = '⏹ Stop';
-                    swStartBtn.style.background = 'linear-gradient(135deg, #ff6600, #ff00ff)';
-                    swLapBtn.disabled = false;
-                    swInterval = setInterval(updateSW, 16); } else { swRunning = false;
-                    swElapsed += performance.now() - swStartTime;
-                    swStartBtn.textContent = '▶ Start';
-                    swStartBtn.style.background =
-                        'linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta))';
-                    swLapBtn.disabled = true;
-                    clearInterval(swInterval);
-                    swInterval = null;
-                    updateSW(); }
-            });
-            swLapBtn.addEventListener('click', () => { lapCount++; const total = swElapsed + (swRunning ? performance
-                    .now() - swStartTime : 0);
-                const div = document.createElement('div');
-                div.className = 'lap-item';
-                div.innerHTML = `<span>Lap ${lapCount}</span><span>${formatSW(total)}</span>`;
-                lapList.insertBefore(div, lapList.firstChild); });
-            swResetBtn.addEventListener('click', () => { swRunning = false;
-                swElapsed = 0;
-                swStartTime = 0;
-                lapCount = 0;
-                clearInterval(swInterval);
-                swInterval = null;
-                swDisplay.textContent = '00:00:00.00';
-                swDisplay.classList.remove('paused');
-                swStartBtn.textContent = '▶ Start';
-                swStartBtn.style.background =
-                    'linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta))';
-                swLapBtn.disabled = true;
-                lapList.innerHTML = ''; });
-            const tmDisplay = document.getElementById('tmDisplay'),
-                tmStartBtn = document.getElementById('tmStart');
-            const tmPauseBtn = document.getElementById('tmPause'),
-                tmResetBtn = document.getElementById('tmReset');
-            const tmHr = document.getElementById('tmHr'),
-                tmMin = document.getElementById('tmMin'),
-                tmSec = document.getElementById('tmSec');
-
-            function getTimerInputMs() { return ((parseInt(tmHr.value) || 0) * 3600 + (parseInt(tmMin.value) || 0) * 60 + (
-                    parseInt(tmSec.value) || 0)) * 1000; }
-
-            function updateTimerUI() {
-                const rem = globalTimer.remaining;
-                tmDisplay.textContent = formatTimeMS(rem);
-                if (globalTimer.expired) { tmDisplay.style.color = '#ff073a';
-                    tmStartBtn.textContent = '▶ Start';
-                    tmPauseBtn.disabled = true; } else if (globalTimer.running) { tmDisplay.style.color = rem < 10000 ?
-                        '#ff6600' : 'var(--neon-lime)';
-                    tmStartBtn.textContent = '⏹ Stop';
-                    tmStartBtn.style.background = 'linear-gradient(135deg, #ff6600, #ff00ff)';
-                    tmPauseBtn.disabled = false; } else { tmDisplay.style.color = rem <= 0 ? 'var(--neon-lime)' : (rem <
-                        10000 ? '#ff6600' : 'var(--neon-lime)');
-                    tmStartBtn.textContent = '▶ Start';
-                    tmStartBtn.style.background =
-                        'linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta))';
-                    tmPauseBtn.disabled = true; }
-            }
-            if (!globalTimer.running && !globalTimer.expired && globalTimer.remaining <= 0) { const ms = getTimerInputMs();
-                globalTimer.remaining = ms;
-                globalTimer.total = ms; }
+            c.innerHTML = `<div class="tab-bar"><button class="tab-btn active" data-tab="sw">⏱️ Stopwatch</button><button class="tab-btn" data-tab="tm">⏲️ Timer</button></div>
+                <div id="swPanel"><div class="time-display" id="swDisplay">00:00:00.00</div>
+                <div class="row"><button id="swStart">▶ Start</button><button id="swLap" class="outline-btn" disabled>🏁 Lap</button><button id="swReset" class="outline-btn">🔄 Reset</button></div><div class="lap-list" id="lapList"></div></div>
+                <div id="tmPanel" style="display:none;"><div class="time-display" id="tmDisplay">00:00:00</div>
+                <div class="row"><div><label>Hr</label><input type="number" id="tmHr" value="0" min="0"></div><div><label>Min</label><input type="number" id="tmMin" value="5" min="0"></div><div><label>Sec</label><input type="number" id="tmSec" value="0" min="0"></div></div>
+                <div class="row"><button id="tmStart">▶ Start</button><button id="tmPause" class="outline-btn" disabled>⏸ Pause</button><button id="tmReset" class="outline-btn">🔄 Reset</button></div></div>`;
+            // Tab switching
+            c.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{c.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('swPanel').style.display=btn.dataset.tab==='sw'?'block':'none';document.getElementById('tmPanel').style.display=btn.dataset.tab==='tm'?'block':'none';}));
+            // Stopwatch logic
+            let swRunning=false,swStartTime=0,swElapsed=0,swInterval=null,lapCount=0;
+            const swDisplay=document.getElementById('swDisplay'),lapList=document.getElementById('lapList');
+            const formatSW=ms=>{const cs=Math.floor(ms/10)%100,s=Math.floor(ms/1000)%60,m=Math.floor(ms/60000)%60,h=Math.floor(ms/3600000);return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${String(cs).padStart(2,'0')}`;};
+            const updateSW=()=>{swDisplay.textContent=formatSW(swElapsed+(swRunning?performance.now()-swStartTime:0));};
+            document.getElementById('swStart').addEventListener('click',function(){if(!swRunning){swRunning=true;swStartTime=performance.now();this.textContent='⏹ Stop';document.getElementById('swLap').disabled=false;swInterval=setInterval(updateSW,16);}else{swRunning=false;swElapsed+=performance.now()-swStartTime;this.textContent='▶ Start';document.getElementById('swLap').disabled=true;clearInterval(swInterval);updateSW();}});
+            document.getElementById('swLap').addEventListener('click',()=>{lapCount++;const div=document.createElement('div');div.className='lap-item';div.innerHTML=`<span>Lap ${lapCount}</span><span>${formatSW(swElapsed+(swRunning?performance.now()-swStartTime:0))}</span>`;lapList.insertBefore(div,lapList.firstChild);});
+            document.getElementById('swReset').addEventListener('click',()=>{swRunning=false;swElapsed=0;lapCount=0;clearInterval(swInterval);swDisplay.textContent='00:00:00.00';document.getElementById('swStart').textContent='▶ Start';document.getElementById('swLap').disabled=true;lapList.innerHTML='';});
+            // Timer logic
+            const tmDisplay=document.getElementById('tmDisplay'),tmStart=document.getElementById('tmStart'),tmPause=document.getElementById('tmPause'),tmReset=document.getElementById('tmReset');
+            const getTimerMs=()=>((parseInt(document.getElementById('tmHr').value)||0)*3600+(parseInt(document.getElementById('tmMin').value)||0)*60+(parseInt(document.getElementById('tmSec').value)||0))*1000;
+            const updateTimerUI=()=>{const rem=globalTimer.remaining;tmDisplay.textContent=formatTimeMS(rem);if(globalTimer.expired){tmStart.textContent='▶ Start';tmPause.disabled=true;}else if(globalTimer.running){tmStart.textContent='⏹ Stop';tmPause.disabled=false;}else{tmStart.textContent='▶ Start';tmPause.disabled=true;}};
+            tmStart.addEventListener('click',()=>{if(globalTimer.running)pauseGlobalTimer();else if(globalTimer.expired){stopGlobalTimer(true);startGlobalTimer(getTimerMs());}else{if(globalTimer.remaining<=0)startGlobalTimer(getTimerMs());else resumeGlobalTimer();}updateTimerUI();});
+            tmPause.addEventListener('click',()=>{pauseGlobalTimer();updateTimerUI();});
+            tmReset.addEventListener('click',()=>{stopGlobalTimer(true);globalTimer.remaining=getTimerMs();tmDisplay.textContent=formatTimeMS(globalTimer.remaining);updateTimerUI();});
             updateTimerUI();
-            tmStartBtn.addEventListener('click', () => { if (globalTimer.running) { pauseGlobalTimer(); } else if (
-                    globalTimer.expired) { stopGlobalTimer(true); const ms = getTimerInputMs();
-                    startGlobalTimer(ms); } else { if (globalTimer.remaining <= 0) { const ms = getTimerInputMs(); if (
-                            ms <= 0) { showToast('⚠️ Set a time'); return; }
-                        startGlobalTimer(ms); } else { resumeGlobalTimer(); } }
-                updateTimerUI(); });
-            tmPauseBtn.addEventListener('click', () => { pauseGlobalTimer();
-                updateTimerUI(); });
-            tmResetBtn.addEventListener('click', () => { stopGlobalTimer(true); const ms = getTimerInputMs();
-                globalTimer.remaining = ms;
-                globalTimer.total = ms;
-                globalTimer.expired = false;
-                tmDisplay.textContent = formatTimeMS(ms);
-                tmDisplay.style.color = 'var(--neon-lime)';
-                tmStartBtn.textContent = '▶ Start';
-                tmStartBtn.style.background =
-                    'linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta))';
-                tmPauseBtn.disabled = true;
-                updateFloatingTimer(); });
-            ['tmHr', 'tmMin', 'tmSec'].forEach(id => document.getElementById(id).addEventListener('input', () => { if (!
-                    globalTimer.running && !globalTimer.expired) { const ms = getTimerInputMs();
-                    globalTimer.remaining = ms;
-                    globalTimer.total = ms;
-                    tmDisplay.textContent = formatTimeMS(ms); } }));
-            let syncInterval = setInterval(() => { if (document.getElementById('tmDisplay')) updateTimerUI();
-                else clearInterval(syncInterval); }, 500);
         }
 
         // ==================== NOTES ====================
         function notesTool(c) {
-            function getNotes() { try { return JSON.parse(localStorage.getItem('devtoolkit_notes') || '[]'); } catch (
-                e) { return []; } }
-
-            function saveNotes(notes) { localStorage.setItem('devtoolkit_notes', JSON.stringify(notes)); }
-            let notes = getNotes(),
-                selectedId = null;
-
-            function renderUI() {
-                const list = document.getElementById('notesList'),
-                    editor = document.getElementById('noteEditor');
-                const title = document.getElementById('noteTitle'),
-                    content = document.getElementById('noteContent');
-                const date = document.getElementById('noteDate'),
-                    del = document.getElementById('noteDelete');
-                list.innerHTML = notes.length ? notes.sort((a, b) => b.updatedAt - a.updatedAt).map(n =>
-                    `<div class="note-card ${n.id===selectedId?'selected':''}" data-id="${n.id}"><h4>${n.title||'Untitled'}</h4><div class="note-date">${new Date(n.updatedAt).toLocaleString()}</div><div class="note-preview">${n.content?n.content.slice(0,60):'Empty...'}</div></div>`
-                ).join('') : '<p style="color:#666;padding:20px;">No notes yet.</p>';
-                if (selectedId && notes.find(n => n.id === selectedId)) { const n = notes.find(n => n.id ===
-                    selectedId);
-                    title.value = n.title;
-                    content.value = n.content;
-                    date.textContent = 'Updated: ' + new Date(n.updatedAt).toLocaleString();
-                    editor.style.display = 'block';
-                    del.style.display = 'inline-block'; } else { title.value = '';
-                    content.value = '';
-                    date.textContent = '';
-                    editor.style.display = 'none';
-                    del.style.display = 'none'; }
+            function getNotes(){try{return JSON.parse(localStorage.getItem('devtoolkit_notes')||'[]');}catch(e){return[];}}
+            function saveNotes(n){localStorage.setItem('devtoolkit_notes',JSON.stringify(n));}
+            let notes=getNotes(),selectedId=null;
+            function renderUI(){
+                const list=document.getElementById('notesList'),editor=document.getElementById('noteEditor');
+                list.innerHTML=notes.length?notes.sort((a,b)=>b.updatedAt-a.updatedAt).map(n=>`<div class="note-card ${n.id===selectedId?'selected':''}" data-id="${n.id}"><h4>${n.title||'Untitled'}</h4><div class="note-date">${new Date(n.updatedAt).toLocaleString()}</div><div class="note-preview">${n.content?n.content.slice(0,60):'Empty...'}</div></div>`).join(''):'<p style="color:#666;">No notes yet.</p>';
+                if(selectedId&&notes.find(n=>n.id===selectedId)){const n=notes.find(n=>n.id===selectedId);document.getElementById('noteTitle').value=n.title;document.getElementById('noteContent').value=n.content;editor.style.display='block';document.getElementById('noteDelete').style.display='inline-block';}else{editor.style.display='none';document.getElementById('noteDelete').style.display='none';}
             }
-            c.innerHTML =
-                `<div class="row"><button id="newNoteBtn">➕ New Note</button><button id="noteDelete" class="danger-btn" style="display:none;">🗑️ Delete</button></div><div class="notes-list" id="notesList"></div><div id="noteEditor" style="display:none;"><label>Title</label><input id="noteTitle" placeholder="Title..."><label>Content</label><textarea id="noteContent" style="min-height:150px;"></textarea><p id="noteDate" style="color:#666;font-size:0.7rem;"></p><p style="color:#444;font-size:0.65rem;">💾 Auto-saves</p></div>`;
-            document.getElementById('newNoteBtn').onclick = () => { const newN = { id: Date.now().toString(36) + Math
-                    .random().toString(36).slice(2, 8), title: '', content: '', createdAt: Date.now(),
-                    updatedAt: Date.now() };
-                notes.push(newN);
-                selectedId = newN.id;
-                saveNotes(notes);
-                renderUI();
-                document.getElementById('noteTitle').focus(); };
-            document.getElementById('noteDelete').onclick = () => { if (selectedId && confirm('Delete?')) { notes = notes
-                    .filter(n => n.id !== selectedId);
-                    selectedId = notes.length ? notes[notes.length - 1].id : null;
-                    saveNotes(notes);
-                    renderUI(); } };
-            document.getElementById('notesList').addEventListener('click', e => { const card = e.target.closest(
-                    '.note-card'); if (card) { selectedId = card.dataset.id;
-                    renderUI(); } });
-            document.getElementById('noteTitle').addEventListener('input', () => { const n = notes.find(n => n.id ===
-                    selectedId); if (n) { n.title = document.getElementById('noteTitle').value;
-                    n.updatedAt = Date.now();
-                    saveNotes(notes); } });
-            document.getElementById('noteContent').addEventListener('input', () => { const n = notes.find(n => n.id ===
-                    selectedId); if (n) { n.content = document.getElementById('noteContent').value;
-                    n.updatedAt = Date.now();
-                    saveNotes(notes); } });
-            if (notes.length && !selectedId) selectedId = notes.sort((a, b) => b.updatedAt - a.updatedAt)[0].id;
+            c.innerHTML=`<div class="row"><button id="newNoteBtn">➕ New Note</button><button id="noteDelete" class="danger-btn" style="display:none;">🗑️ Delete</button></div><div class="notes-list" id="notesList"></div><div id="noteEditor" style="display:none;"><label>Title</label><input id="noteTitle"><label>Content</label><textarea id="noteContent" style="min-height:150px;"></textarea><p style="color:#444;font-size:0.65rem;">💾 Auto-saves</p></div>`;
+            document.getElementById('newNoteBtn').onclick=()=>{const n={id:Date.now().toString(36),title:'',content:'',createdAt:Date.now(),updatedAt:Date.now()};notes.push(n);selectedId=n.id;saveNotes(notes);renderUI();};
+            document.getElementById('noteDelete').onclick=()=>{if(selectedId&&confirm('Delete?')){notes=notes.filter(n=>n.id!==selectedId);selectedId=notes.length?notes[notes.length-1].id:null;saveNotes(notes);renderUI();}};
+            document.getElementById('notesList').addEventListener('click',e=>{const card=e.target.closest('.note-card');if(card){selectedId=card.dataset.id;renderUI();}});
+            document.getElementById('noteTitle').addEventListener('input',()=>{const n=notes.find(n=>n.id===selectedId);if(n){n.title=document.getElementById('noteTitle').value;n.updatedAt=Date.now();saveNotes(notes);}});
+            document.getElementById('noteContent').addEventListener('input',()=>{const n=notes.find(n=>n.id===selectedId);if(n){n.content=document.getElementById('noteContent').value;n.updatedAt=Date.now();saveNotes(notes);}});
+            if(notes.length&&!selectedId)selectedId=notes.sort((a,b)=>b.updatedAt-a.updatedAt)[0].id;
             renderUI();
         }
 
         // ==================== TTS ====================
         function ttsTool(c) {
-            c.innerHTML = `
-                <label>Text to speak</label><textarea id="ttsText" style="min-height:130px;">Hello! This is the DevToolKit Pro text to speech tool.</textarea>
-                <div class="row"><div><label>Voice</label><select id="ttsVoice"></select></div></div>
-                <div class="row"><div><label>Rate: <span id="ttsRateVal">1.0</span>x</label><input type="range" id="ttsRate" min="0.1" max="3" step="0.1" value="1"></div><div><label>Pitch: <span id="ttsPitchVal">1.0</span></label><input type="range" id="ttsPitch" min="0.1" max="2" step="0.1" value="1"></div></div>
-                <div class="row" style="justify-content:center;margin-top:10px;"><button id="ttsSpeak">🔊 Speak</button><button id="ttsPause" class="outline-btn">⏸ Pause</button><button id="ttsStop" class="outline-btn">⏹ Stop</button><button id="ttsDownloadText" class="outline-btn">💾 Download Text</button></div>
-                <div class="tts-note">ℹ️ Audio download is not possible using the browser's built-in speech synthesis. You can download the spoken text as a .txt file.</div>`;
-            const synth = window.speechSynthesis;
-            const voiceSelect = document.getElementById('ttsVoice');
-
-            function populateVoices() { const voices = synth.getVoices();
-                voiceSelect.innerHTML = voices.map(v =>
-                    `<option value="${v.name}">${v.name} (${v.lang})</option>`).join(''); if (voices.length && !
-                    voiceSelect.value) { const en = voices.find(v => v.lang.startsWith('en')); if (en) voiceSelect
-                        .value = en.name; } }
-            populateVoices();
-            synth.onvoiceschanged = populateVoices;
-            document.getElementById('ttsRate').addEventListener('input', e => document.getElementById('ttsRateVal')
-                .textContent = parseFloat(e.target.value).toFixed(1));
-            document.getElementById('ttsPitch').addEventListener('input', e => document.getElementById('ttsPitchVal')
-                .textContent = parseFloat(e.target.value).toFixed(1));
-            document.getElementById('ttsSpeak').addEventListener('click', () => { const text = document.getElementById(
-                    'ttsText').value.trim(); if (!text) return showToast('⚠️ Enter text');
-                synth.cancel(); const u = new SpeechSynthesisUtterance(text); const voice = synth.getVoices().find(
-                    v => v.name === voiceSelect.value); if (voice) u.voice = voice;
-                u.rate = parseFloat(document.getElementById('ttsRate').value);
-                u.pitch = parseFloat(document.getElementById('ttsPitch').value);
-                synth.speak(u);
-                showToast('🔊 Speaking...'); });
-            document.getElementById('ttsPause').addEventListener('click', () => { if (synth.speaking && !synth.paused) {
-                    synth.pause();
-                    showToast('⏸ Paused'); } else if (synth.paused) { synth.resume();
-                    showToast('▶ Resumed'); } });
-            document.getElementById('ttsStop').addEventListener('click', () => { synth.cancel();
-                showToast('⏹ Stopped'); });
-            document.getElementById('ttsDownloadText').addEventListener('click', () => { const text = document
-                    .getElementById('ttsText').value; const blob = new Blob([text], { type: 'text/plain' }); const a =
-                    document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = 'speech.txt';
-                a.click();
-                showToast('💾 Text downloaded'); });
+            c.innerHTML=`<label>Text to speak</label><textarea id="ttsText" style="min-height:130px;">Hello! This is the DevToolKit Pro text to speech tool.</textarea>
+                <div class="row"><div><label>Rate: <span id="ttsRateVal">1.0</span>x</label><input type="range" id="ttsRate" min="0.1" max="3" step="0.1" value="1"></div></div>
+                <div class="row"><button id="ttsSpeak">🔊 Speak</button><button id="ttsPause" class="outline-btn">⏸ Pause</button><button id="ttsStop" class="outline-btn">⏹ Stop</button></div>`;
+            const synth=window.speechSynthesis;
+            document.getElementById('ttsSpeak').addEventListener('click',()=>{const text=document.getElementById('ttsText').value.trim();if(!text)return;synth.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=parseFloat(document.getElementById('ttsRate').value);synth.speak(u);});
+            document.getElementById('ttsPause').addEventListener('click',()=>{if(synth.speaking&&!synth.paused)synth.pause();else if(synth.paused)synth.resume();});
+            document.getElementById('ttsStop').addEventListener('click',()=>synth.cancel());
         }
 
         // ==================== UNIT CONVERTER ====================
         function unitConverterTool(c) {
-            const categoriesUC = {
-                length: { name: '📏 Length', units: [{ id: 'meter', name: 'Meter (m)', factor: 1 }, { id: 'kilometer',
-                        name: 'Kilometer (km)', factor: 1000 }, { id: 'centimeter', name: 'Centimeter (cm)',
-                        factor: 0.01 }, { id: 'millimeter', name: 'Millimeter (mm)', factor: 0.001 },
-                    { id: 'mile', name: 'Mile (mi)', factor: 1609.344 }, { id: 'yard', name: 'Yard (yd)',
-                        factor: 0.9144 }, { id: 'foot', name: 'Foot (ft)', factor: 0.3048 }, { id: 'inch',
-                        name: 'Inch (in)', factor: 0.0254 }
-                ] },
-                weight: { name: '⚖️ Weight', units: [{ id: 'kilogram', name: 'Kilogram (kg)', factor: 1 }, { id: 'gram',
-                        name: 'Gram (g)', factor: 0.001 }, { id: 'milligram', name: 'Milligram (mg)',
-                        factor: 0.000001 }, { id: 'pound', name: 'Pound (lb)', factor: 0.453592 }, { id: 'ounce',
-                        name: 'Ounce (oz)', factor: 0.0283495 }, { id: 'ton', name: 'Ton (t)', factor: 1000 }
-                ] },
-                temperature: { name: '🌡️ Temperature', units: [{ id: 'celsius', name: 'Celsius (°C)', factor: null },
-                    { id: 'fahrenheit', name: 'Fahrenheit (°F)', factor: null }, { id: 'kelvin',
-                        name: 'Kelvin (K)', factor: null }
-                ] },
-                volume: { name: '🧪 Volume', units: [{ id: 'liter', name: 'Liter (L)', factor: 1 }, { id: 'milliliter',
-                        name: 'Milliliter (mL)', factor: 0.001 }, { id: 'gallon', name: 'Gallon (gal)',
-                        factor: 3.78541 }, { id: 'quart', name: 'Quart (qt)', factor: 0.946353 }, { id: 'pint',
-                        name: 'Pint (pt)', factor: 0.473176 }, { id: 'cup', name: 'Cup', factor: 0.236588 }
-                ] },
-                area: { name: '📐 Area', units: [{ id: 'sqmeter', name: 'Square Meter (m²)', factor: 1 },
-                    { id: 'sqkilometer', name: 'Square Kilometer (km²)', factor: 1000000 }, { id: 'sqmile',
-                        name: 'Square Mile (mi²)', factor: 2589988 }, { id: 'sqfoot',
-                        name: 'Square Foot (ft²)', factor: 0.092903 }, { id: 'acre', name: 'Acre',
-                        factor: 4046.86 }, { id: 'hectare', name: 'Hectare (ha)', factor: 10000 }
-                ] },
-                speed: { name: '💨 Speed', units: [{ id: 'mps', name: 'Meter/sec (m/s)', factor: 1 }, { id: 'kph',
-                        name: 'Kilometer/hour (km/h)', factor: 0.277778 }, { id: 'mph',
-                        name: 'Mile/hour (mph)', factor: 0.44704 }, { id: 'knot', name: 'Knot (kn)',
-                        factor: 0.514444 }
-                ] }
-            };
-
-            function convertTemperature(value, from, to) { let c = value; if (from === 'fahrenheit') c = (value - 32) * 5 /
-                    9; if (from === 'kelvin') c = value - 273.15; if (to === 'fahrenheit') return c * 9 / 5 + 32; if (
-                    to === 'kelvin') return c + 273.15; return c; }
-
-            function convert(value, fromUnit, toUnit, catKey) { if (catKey === 'temperature') return convertTemperature(
-                    value, fromUnit, toUnit); const cat = categoriesUC[catKey],
-                    from = cat.units.find(u => u.id === fromUnit),
-                    to = cat.units.find(u => u.id === toUnit); return (from && to) ? (value * from.factor) / to
-                    .factor : value; }
-            c.innerHTML =
-                `<div class="row"><div><label>Category</label><select id="ucCategory"></select></div></div><div class="converter-row"><div><label>Value</label><input type="number" id="ucInput" value="1" step="any"></div><div><label>From</label><select id="ucFrom"></select></div><div class="swap-icon" id="ucSwap">🔄</div><div><label>To</label><select id="ucTo"></select></div></div><div class="result-badge" id="ucResult">--</div><button class="outline-btn" id="ucCopy" style="display:block;margin:0 auto;">📋 Copy Result</button>`;
-            const catSel = document.getElementById('ucCategory'),
-                fromSel = document.getElementById('ucFrom'),
-                toSel = document.getElementById('ucTo');
-            const inputEl = document.getElementById('ucInput'),
-                resultEl = document.getElementById('ucResult');
-
-            function populateCat() { catSel.innerHTML = Object.entries(categoriesUC).map(([k, v]) =>
-                    `<option value="${k}">${v.name}</option>`).join('');
-                populateUnits(); }
-
-            function populateUnits() { const cat = categoriesUC[catSel.value],
-                    opts = cat.units.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
-                fromSel.innerHTML = opts;
-                toSel.innerHTML = opts; if (cat.units.length >= 2) { fromSel.value = cat.units[0].id;
-                    toSel.value = cat.units[cat.units.length - 1].id; }
-                updateResult(); }
-
-            function updateResult() { const val = parseFloat(inputEl.value); if (isNaN(val)) { resultEl.textContent =
-                    '--'; return; } const res = convert(val, fromSel.value, toSel.value, catSel.value);
-                resultEl.textContent = (res === null || isNaN(res)) ? '--' : parseFloat(res.toPrecision(12)) + ' ' + (
-                    categoriesUC[catSel.value].units.find(u => u.id === toSel.value)?.name.split(' ')[0] || ''); }
-            catSel.addEventListener('change', populateUnits);
-            fromSel.addEventListener('change', updateResult);
-            toSel.addEventListener('change', updateResult);
-            inputEl.addEventListener('input', updateResult);
-            document.getElementById('ucSwap').addEventListener('click', () => { const t = fromSel.value;
-                fromSel.value = toSel.value;
-                toSel.value = t;
-                updateResult(); });
-            document.getElementById('ucCopy').addEventListener('click', () => copyText(resultEl.textContent));
-            populateCat();
+            const cats={length:{units:[{id:'meter',name:'Meter',factor:1},{id:'kilometer',name:'Kilometer',factor:1000},{id:'mile',name:'Mile',factor:1609.344}]},weight:{units:[{id:'kilogram',name:'Kilogram',factor:1},{id:'gram',name:'Gram',factor:0.001},{id:'pound',name:'Pound',factor:0.453592}]}};
+            c.innerHTML=`<div class="row"><div><label>Category</label><select id="ucCat">${Object.entries(cats).map(([k,v])=>`<option value="${k}">${k}</option>`).join('')}</select></div></div>
+                <div class="converter-row"><div><label>Value</label><input type="number" id="ucInput" value="1"></div><div><label>From</label><select id="ucFrom"></select></div><div class="swap-icon" id="ucSwap">🔄</div><div><label>To</label><select id="ucTo"></select></div></div>
+                <div class="result-badge" id="ucResult">--</div>`;
+            const populate=()=>{const cat=cats[document.getElementById('ucCat').value];const opts=cat.units.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');document.getElementById('ucFrom').innerHTML=opts;document.getElementById('ucTo').innerHTML=opts;if(cat.units.length>=2){document.getElementById('ucFrom').value=cat.units[0].id;document.getElementById('ucTo').value=cat.units[cat.units.length-1].id;}updateResult();};
+            const updateResult=()=>{const val=parseFloat(document.getElementById('ucInput').value);if(isNaN(val))return;const cat=cats[document.getElementById('ucCat').value];const from=cat.units.find(u=>u.id===document.getElementById('ucFrom').value);const to=cat.units.find(u=>u.id===document.getElementById('ucTo').value);document.getElementById('ucResult').textContent=from&&to?((val*from.factor)/to.factor).toFixed(4)+' '+to.name:'--';};
+            document.getElementById('ucCat').addEventListener('change',populate);
+            document.getElementById('ucFrom').addEventListener('change',updateResult);
+            document.getElementById('ucTo').addEventListener('change',updateResult);
+            document.getElementById('ucInput').addEventListener('input',updateResult);
+            document.getElementById('ucSwap').addEventListener('click',()=>{const t=document.getElementById('ucFrom').value;document.getElementById('ucFrom').value=document.getElementById('ucTo').value;document.getElementById('ucTo').value=t;updateResult();});
+            populate();
         }
 
         // Wrap render functions for floating timer
-        const _renderCategory = renderCategory;
-        renderCategory = function(catId) { _renderCategory(catId);
-            updateFloatingTimer(); };
-        const _renderHome = renderHome;
-        renderHome = function() { _renderHome();
-            updateFloatingTimer(); };
-        const _renderTool = renderTool;
-        renderTool = function(catId, toolId) { _renderTool(catId, toolId);
-            updateFloatingTimer(); };
+        const _renderCategory=renderCategory;renderCategory=function(catId){_renderCategory(catId);updateFloatingTimer();};
+        const _renderHome=renderHome;renderHome=function(){_renderHome();updateFloatingTimer();};
+        const _renderTool=renderTool;renderTool=function(catId,toolId){_renderTool(catId,toolId);updateFloatingTimer();};
 
         renderHome();
     </script>
