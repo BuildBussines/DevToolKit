@@ -1403,15 +1403,23 @@
             c.innerHTML =
                 `<div class="glass-preview" id="glassPreview" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.3);">Glass Effect</div>
         <div class="row"><div><label>Blur</label><input type="range" id="gBlur" min="0" max="30" value="12"></div><div><label>Opacity</label><input type="range" id="gOpacity" min="0" max="100" value="15"></div></div>
+        <div class="row"><div><label>Tint Color</label><input type="color" id="gColor" value="#ffffff"></div><div><label>Border Opacity</label><input type="range" id="gBorderOpacity" min="0" max="100" value="30"></div></div>
         <label>CSS</label><div class="output-box" id="gOutCSS"></div><button class="outline-btn" id="gCopyCSS">?? Copy</button>`;
+            const hexToRgb = hex => { const h = hex.replace('#', '');
+                const bigint = parseInt(h, 16);
+                return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255]; };
             const update = () => { const blur = c.querySelector('#gBlur').value; const op = c.querySelector('#gOpacity')
-                    .value / 100; const preview = c.querySelector('#glassPreview');
-                preview.style.background = `rgba(255,255,255,${op})`;
+                    .value / 100; const borderOp = c.querySelector('#gBorderOpacity').value / 100; const hex = c
+                    .querySelector('#gColor').value; const [r, g, b] = hexToRgb(hex); const preview = c.querySelector(
+                    '#glassPreview');
+                preview.style.background = `rgba(${r},${g},${b},${op})`;
                 preview.style.backdropFilter = `blur(${blur}px)`;
                 preview.style.webkitBackdropFilter = `blur(${blur}px)`;
+                preview.style.border = `1px solid rgba(${r},${g},${b},${borderOp})`;
                 c.querySelector('#gOutCSS').textContent =
-                    `background: rgba(255,255,255,${op});\nbackdrop-filter: blur(${blur}px);\n-webkit-backdrop-filter: blur(${blur}px);\nborder: 1px solid rgba(255,255,255,0.3);\nborder-radius: 20px;`; };
-            ['gBlur', 'gOpacity'].forEach(id => c.querySelector('#' + id).addEventListener('input', update));
+                    `background: rgba(${r},${g},${b},${op});\nbackdrop-filter: blur(${blur}px);\n-webkit-backdrop-filter: blur(${blur}px);\nborder: 1px solid rgba(${r},${g},${b},${borderOp});\nborder-radius: 20px;`; };
+            ['gBlur', 'gOpacity', 'gColor', 'gBorderOpacity'].forEach(id => c.querySelector('#' + id).addEventListener(
+                'input', update));
             c.querySelector('#gCopyCSS').addEventListener('click', () => copyText(c.querySelector('#gOutCSS')
             .textContent));
             update();
@@ -1974,12 +1982,12 @@
                 ['&quot;', '"', 'quotation mark'],
                 ['&apos;', "'", 'apostrophe'],
                 ['&nbsp;', ' ', 'non-breaking space'],
-                ['&copy;', '©', 'copyright'],
-                ['&reg;', '®', 'registered'],
-                ['&trade;', '™', 'trademark'],
-                ['&euro;', '€', 'euro'],
-                ['&pound;', '£', 'pound'],
-                ['&yen;', '¥', 'yen'],
+                ['&copy;', 'Â©', 'copyright'],
+                ['&reg;', 'Â®', 'registered'],
+                ['&trade;', 'â„¢', 'trademark'],
+                ['&euro;', 'â‚¬', 'euro'],
+                ['&pound;', 'Â£', 'pound'],
+                ['&yen;', 'Â¥', 'yen'],
             ];
             c.innerHTML =
                 `<div class="output-box" id="herOutput" style="max-height:400px;overflow-y:auto;">${ents.map(e=>`${e[0]} ? ${e[1]} (${e[2]})`).join('\n')}</div>
