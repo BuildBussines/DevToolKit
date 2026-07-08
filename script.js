@@ -907,7 +907,12 @@
             c.innerHTML =
                 `<input type="color" id="cpBase" value="#ff00ff" style="display:block;margin:0 auto;">
         <div id="cpSwatches" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0;"></div>
+        <div class="tool-preview-box" id="cpPreview" style="background:#ff00ff;">#ff00ff</div>
         <button class="outline-btn" id="cpCopyAll">?? Copy All</button>`;
+            const preview = c.querySelector('#cpPreview');
+            const setPreview = (hex) => { preview.style.background = hex;
+                preview.textContent = hex;
+                preview.style.color = getContrastColor(hex); };
             const update = () => { const base = c.querySelector('#cpBase').value; const hsl = rgbToHsl(parseInt(base
                     .slice(1, 3), 16), parseInt(base.slice(3, 5), 16), parseInt(base.slice(5, 7), 16)); const
                     harmonies = [base];
@@ -916,12 +921,21 @@
                     `<div style="text-align:center;"><div class="color-swatch" style="background:${h};width:50px;height:50px;" data-hex="${h}"></div><span style="font-size:0.6rem;">${h}</span></div>`
                     ).join('');
                 c.querySelectorAll('#cpSwatches .color-swatch').forEach(s => s.addEventListener('click', () => {
-                    copyText(s.dataset.hex); })); };
+                    c.querySelectorAll('#cpSwatches .color-swatch').forEach(sw => sw.classList.remove('selected'));
+                    s.classList.add('selected');
+                    setPreview(s.dataset.hex);
+                    copyText(s.dataset.hex); }));
+                setPreview(base); };
             c.querySelector('#cpBase').addEventListener('input', update);
             c.querySelector('#cpCopyAll').addEventListener('click', () => copyText([...c.querySelectorAll(
                 '#cpSwatches .color-swatch')].map(s => s.dataset.hex).join(', ')));
             update();
         }
+
+        function getContrastColor(hex) { const r = parseInt(hex.slice(1, 3), 16),
+                g = parseInt(hex.slice(3, 5), 16),
+                b = parseInt(hex.slice(5, 7), 16); const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+            return yiq >= 140 ? '#111' : '#fff'; }
 
         function rgbToHsl(r, g, b) { r /= 255;
             g /= 255;
@@ -1429,12 +1443,25 @@
             c.innerHTML =
                 `<div class="row"><div><label>Animation Name</label><input id="animName" value="pulse"></div><div><label>Duration (s)</label><input type="number" id="animDur" value="1" min="0.1" step="0.1"></div></div>
         <div class="row"><div><label>From</label><input id="animFrom" value="scale(1)"></div><div><label>To</label><input id="animTo" value="scale(1.1)"></div></div>
+        <label>Preview</label>
+        <div class="css-preview-panel"><div id="animPreviewBox" style="width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,var(--neon-cyan),var(--neon-magenta));"></div></div>
         <label>Generated Keyframes</label><div class="output-box" id="animOutput"></div><button class="outline-btn" id="animCopy">?? Copy</button>`;
+            let styleTag = document.getElementById('animPreviewStyle');
+            if (!styleTag) { styleTag = document.createElement('style');
+                styleTag.id = 'animPreviewStyle';
+                document.head.appendChild(styleTag); }
             const update = () => { const name = c.querySelector('#animName').value || 'pulse'; const dur = c.querySelector(
                     '#animDur').value; const from = c.querySelector('#animFrom').value; const to = c.querySelector(
                     '#animTo').value;
                 c.querySelector('#animOutput').textContent =
-                    `@keyframes ${name} {\n  0% { transform: ${from}; }\n  100% { transform: ${to}; }\n}\n\n.element {\n  animation: ${name} ${dur}s ease-in-out infinite;\n}`; };
+                    `@keyframes ${name} {\n  0% { transform: ${from}; }\n  100% { transform: ${to}; }\n}\n\n.element {\n  animation: ${name} ${dur}s ease-in-out infinite;\n}`;
+                const previewName = 'animPreview_' + name;
+                styleTag.textContent =
+                    `@keyframes ${previewName} { 0% { transform: ${from}; } 100% { transform: ${to}; } }`;
+                const box = c.querySelector('#animPreviewBox');
+                box.style.animation = 'none';
+                void box.offsetWidth;
+                box.style.animation = `${previewName} ${dur}s ease-in-out infinite alternate`; };
             ['animName', 'animDur', 'animFrom', 'animTo'].forEach(id => c.querySelector('#' + id).addEventListener(
                 'input', update));
             c.querySelector('#animCopy').addEventListener('click', () => copyText(c.querySelector('#animOutput')
@@ -1789,12 +1816,17 @@
             c.innerHTML =
                 `<div style="font-size:2.5rem;text-align:center;padding:30px;color:#fff;text-shadow:2px 2px 4px rgba(0,0,0,0.5);" id="tsPreview">Shadow Text</div>
         <div class="row"><div><label>X</label><input type="range" id="tsX" min="-20" max="20" value="2"></div><div><label>Y</label><input type="range" id="tsY" min="-20" max="20" value="2"></div><div><label>Blur</label><input type="range" id="tsBlur" min="0" max="30" value="4"></div></div>
+        <div class="row"><div><label>Colour</label><input type="color" id="tsColor" value="#000000"></div><div><label>Opacity</label><input type="range" id="tsOpacity" min="0" max="100" value="50"></div></div>
         <label>CSS</label><div class="output-box" id="tsCSS"></div><button class="outline-btn" id="tsCopy">?? Copy</button>`;
-            const update = () => { const sv =
-                    `${c.querySelector('#tsX').value}px ${c.querySelector('#tsY').value}px ${c.querySelector('#tsBlur').value}px rgba(0,0,0,0.5)`;
+            const hexToRgb = (hex) => { const h = hex.replace('#', ''); const r = parseInt(h.substring(0, 2), 16); const g =
+                    parseInt(h.substring(2, 4), 16); const b = parseInt(h.substring(4, 6), 16); return `${r}, ${g}, ${b}`; };
+            const update = () => { const opacity = c.querySelector('#tsOpacity').value / 100; const rgb = hexToRgb(c
+                    .querySelector('#tsColor').value); const sv =
+                    `${c.querySelector('#tsX').value}px ${c.querySelector('#tsY').value}px ${c.querySelector('#tsBlur').value}px rgba(${rgb}, ${opacity.toFixed(2)})`;
                 c.querySelector('#tsPreview').style.textShadow = sv;
                 c.querySelector('#tsCSS').textContent = `text-shadow: ${sv};`; };
-            ['tsX', 'tsY', 'tsBlur'].forEach(id => c.querySelector('#' + id).addEventListener('input', update));
+            ['tsX', 'tsY', 'tsBlur', 'tsColor', 'tsOpacity'].forEach(id => c.querySelector('#' + id).addEventListener(
+                'input', update));
             c.querySelector('#tsCopy').addEventListener('click', () => copyText(c.querySelector('#tsCSS').textContent));
             update();
         }
